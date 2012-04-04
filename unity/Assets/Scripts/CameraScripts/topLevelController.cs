@@ -16,7 +16,7 @@ public class topLevelController : MonoBehaviour {
 	public homingMissileCamera mC;
 	
 	public GameObject controlledMissileOjbect;
-	public homingMissileCamera contMisScript;
+	public ControlledMissile contMisScript;
 	//TODO Arlen: public yourMissileScript 
 	/*
 	 * Your script will need the following function calls:
@@ -129,7 +129,7 @@ public class topLevelController : MonoBehaviour {
 				
 				controlledMissileOjbect = missile;
 				//TODO Arlen:  replace this getcomponent with the correct information
-				contMisScript = missile.GetComponentInChildren<homingMissileCamera>();
+				contMisScript = missile.GetComponentInChildren<ControlledMissile>();
 				contMisScript.tLC = this;
 				return true;
 			default:
