@@ -37,20 +37,36 @@
     <Reference Include="System.XML" />
 	<Reference Include="System.Core" />
 	<Reference Include="UnityEngine">
+<<<<<<< HEAD
 	  <HintPath>C:/Program Files/Unity/Editor/Data/Managed/UnityEngine.dll</HintPath>
 	</Reference>
 	<Reference Include="UnityEditor">
 	  <HintPath>C:/Program Files/Unity/Editor/Data/Managed/UnityEditor.dll</HintPath>
+=======
+	  <HintPath>C:/Program Files (x86)/Unity/Editor/Data/Managed/UnityEngine.dll</HintPath>
+	</Reference>
+	<Reference Include="UnityEditor">
+	  <HintPath>C:/Program Files (x86)/Unity/Editor/Data/Managed/UnityEditor.dll</HintPath>
+>>>>>>> 3c834aaa11bffb62fca5662f849d3ce99ac0fbdf
 	</Reference>
   </ItemGroup>
   <ItemGroup>
      <Compile Include="Assets\MainCam.cs" />
      <Compile Include="Assets\Scripts\BillboardScripts\navPoint.cs" />
      <Compile Include="Assets\Scripts\CameraScripts\firstPersonTower.cs" />
+<<<<<<< HEAD
      <Compile Include="Assets\Scripts\CameraScripts\homingMissileCamera.cs" />
      <Compile Include="Assets\Scripts\CameraScripts\thirdPersonTower.cs" />
      <Compile Include="Assets\Scripts\CameraScripts\topLevelController.cs" />
      <Compile Include="Assets\Scripts\ControlledMissile.cs" />
+=======
+     <Compile Include="Assets\Scripts\CameraScripts\freeFlyCamera.cs" />
+     <Compile Include="Assets\Scripts\CameraScripts\homingMissileCamera.cs" />
+     <Compile Include="Assets\Scripts\CameraScripts\thirdPersonTower.cs" />
+     <Compile Include="Assets\Scripts\CameraScripts\topLevelController.cs" />
+     <Compile Include="Assets\Scripts\SetupScripts\Player.cs" />
+     <Compile Include="Assets\Scripts\SetupScripts\PlayerManager.cs" />
+>>>>>>> 3c834aaa11bffb62fca5662f849d3ce99ac0fbdf
      <Compile Include="Assets\Scripts\asteroidField.cs" />
      <Compile Include="Assets\Scripts\asteroidScript.cs" />
      <Compile Include="Assets\Scripts\lightScripts\sunLight.cs" />
