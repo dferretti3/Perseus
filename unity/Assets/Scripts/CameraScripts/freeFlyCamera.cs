@@ -7,8 +7,9 @@ public class freeFlyCamera : MonoBehaviour {
 	public float max_velocity;
 	public float friction;
 	public float rotation_speed;
+	public float zoom_speed;
 	
-	Vector3 velocity,ud_velocity;
+	Vector3 velocity,ud_velocity,zoom_velocity;
 	//mouse rotate
 	public float mr_x,mr_y;
 	
@@ -19,6 +20,7 @@ public class freeFlyCamera : MonoBehaviour {
 		mode = true;
 		velocity = Vector3.zero;
 		ud_velocity = Vector3.zero;
+		zoom_velocity = Vector3.zero;
 		mr_x = transform.rotation.eulerAngles.y;
 		mr_y = -transform.rotation.eulerAngles.x;
 	}
@@ -54,6 +56,17 @@ public class freeFlyCamera : MonoBehaviour {
 				mr_y += rotation_speed*Input.GetAxis("Mouse Y")*Time.fixedDeltaTime;
 				transform.rotation = Quaternion.Euler(-mr_y,mr_x,0);
 			}
+			
+			//handle scrolling
+			float scroll = Input.GetAxis("Mouse ScrollWheel");
+			Vector3 Z = scroll*transform.forward;
+			zoom_velocity += zoom_speed*Z;
+			zoom_velocity *= (1.0f-friction);
+			if (zoom_velocity.magnitude>max_velocity) {
+				zoom_velocity *= max_velocity/zoom_velocity.magnitude;
+			}
+			transform.position += zoom_velocity*Time.fixedDeltaTime;
+			
 		} else {
 			//else we're inside the towers
 			mr_x += rotation_speed*Input.GetAxis("Mouse X")*Time.fixedDeltaTime;

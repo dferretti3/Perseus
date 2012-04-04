@@ -5,7 +5,7 @@ public class PlayerManager : MonoBehaviour {
 	
 	public Player[] players;
 	int index;
-	bool next_b;
+	int next_b;
 	
 	public float offset;
 	public int max_towers;
@@ -23,7 +23,7 @@ public class PlayerManager : MonoBehaviour {
 		tower_pos = new Vector3[max_towers];
 		tower_rots = new Quaternion[max_towers];
 		num_towers = 0;
-		next_b = false;
+		next_b = 0;
 		index = 0;
 		foreach (Player p in players) {
 			p.my_turn = false;
@@ -44,8 +44,9 @@ public class PlayerManager : MonoBehaviour {
 			controlTowers();
 			return;
 		}
-		if (next_b) {
-			next_b = false;
+		if (next_b>0) next_b++;
+		if (next_b>=10) {
+			next_b = 0;
 			index++;
 			index %= players.Length;
 			players[index].my_turn = true;
@@ -78,7 +79,7 @@ public class PlayerManager : MonoBehaviour {
 	}
 	
 	public void next() {
-		next_b = true;
+		next_b = 1;
 	}
 	
 	public Vector3 pos() {

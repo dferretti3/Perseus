@@ -14,7 +14,7 @@ public class Player : MonoBehaviour {
 	
 	// Use this for initialization
 	void Start () {
-		
+		my_turn=false;
 	}
 	
 	// Update is called once per frame
