@@ -1,0 +1,14 @@
+﻿<Properties>
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\SetupScripts\PlayerManager.cs">
+    <Files>
+      <File FileName="Assets\Scripts\CameraScripts\freeFlyCamera.cs" Line="58" Column="34" />
+      <File FileName="Assets\Scripts\SetupScripts\PlayerManager.cs" Line="35" Column="49" />
+      <File FileName="Assets\Scripts\SetupScripts\Player.cs" Line="29" Column="43" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+</Properties>
