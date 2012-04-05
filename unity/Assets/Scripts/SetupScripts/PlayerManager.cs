@@ -37,7 +37,9 @@ public class PlayerManager : MonoBehaviour {
 	
 	// Update is called once per frame
 	void FixedUpdate () {
-		
+		if (Input.GetKeyDown("n")) {
+			Application.LoadLevel("testScene");
+		}
 		if (num_towers>=max_towers) {
 			renderer.enabled = false;
 			players[index].my_turn = false;

@@ -64,13 +64,46 @@ public class firstPersonTower : MonoBehaviour {
 	void fireMissile(missileType mType)
 	{
 		int prefabNum = -1;
+		GameObject tempMissile;
 		if(mType == missileType.Homing)
 		{
 			prefabNum = 0;
+			tempMissile = (GameObject)Instantiate(missilePrefab[prefabNum]);
+			if(tLC.addNewMissile(tempMissile,mType))
+			{
+				tempMissile.transform.rotation = Quaternion.LookRotation(-transform.parent.up,transform.parent.forward);
+				tempMissile.transform.position = transform.parent.position;
+				missileScript msS = tempMissile.GetComponent<missileScript>();
+				msS.init();
+			}
+			else
+			{
+				Destroy(tempMissile);
+				if(tLC.moveToMissile(0))
+				{
+					cleanUpOnExit();
+				}
+			}
 		}
 		else if(mType == missileType.Controlled)
 		{
 			prefabNum = 1;
+			tempMissile = (GameObject)Instantiate(missilePrefab[prefabNum]);
+			if(tLC.addNewMissile(tempMissile,mType))
+			{
+				tempMissile.transform.rotation = Quaternion.LookRotation(transform.parent.forward,transform.parent.up);
+				tempMissile.transform.position = transform.parent.position;
+				ControlledMissile msS = tempMissile.GetComponent<ControlledMissile>();
+				msS.init();
+			}
+			else
+			{
+				Destroy(tempMissile);
+				if(tLC.moveToMissile(1))
+				{
+					cleanUpOnExit();
+				}
+			}
 		}
 		else if(mType == missileType.Static)
 		{
@@ -79,18 +112,6 @@ public class firstPersonTower : MonoBehaviour {
 		if(missilePrefab.Length <= prefabNum || prefabNum < 0)
 		{
 			return;
-		}
-		GameObject tempMissile = (GameObject)Instantiate(missilePrefab[prefabNum]);
-		if(tLC.addNewMissile(tempMissile,mType))
-		{
-			tempMissile.transform.rotation = Quaternion.LookRotation(-transform.parent.up,transform.parent.forward);
-			tempMissile.transform.position = transform.parent.position;
-			missileScript msS = tempMissile.GetComponent<missileScript>();
-			msS.init();
-		}
-		else
-		{
-			Destroy(tempMissile);
 		}
 	}
 	
@@ -163,20 +184,22 @@ public class firstPersonTower : MonoBehaviour {
 				transform.parent.RotateAround(transform.right,Mathf.PI*Time.deltaTime/20);
 			}
 		
-			if(Input.GetKeyDown(KeyCode.LeftShift))
+			if(Input.GetKey(KeyCode.LeftShift))
 			{
 				if(tLC == null)
 				{
 					tLC = transform.parent.GetComponentInChildren<topLevelController>();
-					if(tLC != null)
-					{
-						tLC.openMiniScreen();
-					}
 				}
-				else
+				int miniScreen = -1;
+				if(Input.GetKeyDown(KeyCode.Alpha1))
 				{
-					tLC.openMiniScreen();
+					tLC.openMiniScreen(0);
 				}
+				else if(Input.GetKeyDown(KeyCode.Alpha2))
+				{
+					tLC.openMiniScreen(1);
+				}
+				
 			}
 			if(Input.GetKeyDown(KeyCode.Q))
 			{
@@ -195,27 +218,6 @@ public class firstPersonTower : MonoBehaviour {
 					tLC.moveToThirdPerson();
 				}
 				//TODO implement the rest of switching to the other camera
-			}
-			else if(Input.GetKeyDown(KeyCode.E))
-			{
-				if(tLC == null)
-				{
-					tLC = transform.parent.GetComponentInChildren<topLevelController>();
-					if(tLC != null)
-					{
-						if(tLC.moveToMissile())
-						{
-							cleanUpOnExit();
-						}
-					}
-				}
-				else
-				{
-					if(tLC.moveToMissile())
-					{
-						cleanUpOnExit();
-					}
-				}
 			}
 		}
 		else if(justActivated)

@@ -69,20 +69,22 @@ public class thirdPersonTower : MonoBehaviour {
 				transform.parent.RotateAround(transform.right,Mathf.PI*Time.deltaTime/10);
 			}
 		
-			if(Input.GetKeyDown(KeyCode.LeftShift))
+			if(Input.GetKey(KeyCode.LeftShift))
 			{
 				if(tLC == null)
 				{
 					tLC = transform.parent.GetComponentInChildren<topLevelController>();
-					if(tLC != null)
-					{
-						tLC.openMiniScreen();
-					}
 				}
-				else
+				int miniScreen = -1;
+				if(Input.GetKeyDown(KeyCode.Alpha1))
 				{
-					tLC.openMiniScreen();
+					tLC.openMiniScreen(0);
 				}
+				else if(Input.GetKeyDown(KeyCode.Alpha2))
+				{
+					tLC.openMiniScreen(1);
+				}
+				
 			}
 			if(Input.GetKeyDown(KeyCode.Q))
 			{
@@ -102,25 +104,25 @@ public class thirdPersonTower : MonoBehaviour {
 				}
 				//TODO implement the rest of switching to the other camera
 			}
-			else if(Input.GetKeyDown(KeyCode.E))
+			
+			
+			if(tLC == null)
 			{
-				if(tLC == null)
-				{
 					tLC = transform.parent.GetComponentInChildren<topLevelController>();
-					if(tLC != null)
-					{
-						if(tLC.moveToMissile())
-						{
-							cleanUpOnExit();
-						}
-					}
-				}
-				else
+			}
+			
+			if(Input.GetKeyDown(KeyCode.Alpha1))
+			{
+				if(tLC.moveToMissile(0))
 				{
-					if(tLC.moveToMissile())
-					{
-						cleanUpOnExit();
-					}
+					cleanUpOnExit();
+				}
+			}
+			else if(Input.GetKeyDown(KeyCode.Alpha2))
+			{
+				if(tLC.moveToMissile(1))
+				{
+					cleanUpOnExit();
 				}
 			}
 		}

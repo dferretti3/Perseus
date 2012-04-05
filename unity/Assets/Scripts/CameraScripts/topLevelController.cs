@@ -79,6 +79,33 @@ public class topLevelController : MonoBehaviour {
 		fPT.makeActive();
 	}
 	
+	public bool moveToMissile(int missileNum)
+	{
+		if(missileNum == 0 && mC != null)
+		{
+			mC.makeActive();
+			return true;
+		}
+		else if(missileNum == 1 && contMisScript != null)
+		{
+			contMisScript.makeActive();
+			return true;
+		}
+		return false;
+	}
+	
+	public void openMiniScreen(int missileNum)
+	{
+		if(missileNum == 0 && mC != null)
+		{
+			mC.openMiniScreen();
+		}
+		else if(missileNum == 1 && contMisScript != null)
+		{
+			contMisScript.openMiniScreen();
+		}
+	}
+	
 	public bool moveToMissile()
 	{
 		if(contMisScript != null)
