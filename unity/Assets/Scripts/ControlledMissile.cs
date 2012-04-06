@@ -9,11 +9,12 @@ public class ControlledMissile : MonoBehaviour {
 	private float rectWidth = 0f;
 	private bool justActivated = false;
 	float turnspeed = 2.0f;
-	float flyspeed = 6.0f;
+	float flyspeed = 1.0f;
 	public Camera cameraView;
 	int view = -1;
 	int invert = 1;
 	private bool begin = false;
+	private bool colliding = false;
 	// Use this for initialization
 	void Start () {
 		
@@ -85,7 +86,7 @@ public class ControlledMissile : MonoBehaviour {
 			
 			rigidbody.AddRelativeTorque(y*invert*-turnspeed,x*turnspeed,0);
 			
-			float rotateAmount = 1.0f;
+			float rotateAmount = 0.6f;
       		if (Input.GetAxis("Horizontal") < 0)
 				transform.Rotate( 0, 0,rotateAmount);
        		else if (Input.GetAxis("Horizontal") > 0)
@@ -94,15 +95,13 @@ public class ControlledMissile : MonoBehaviour {
 	}
 	
 	void OnTriggerEnter(Collider col){
-		print(col);
-		if(col.gameObject.name=="Terrain")
-			kill();
-		if(col.gameObject.name=="Bullet(Clone)")
-			kill();
-		if(col.gameObject.name=="EnemyTower" || col.gameObject.name == "SpherePivot")
+		if(colliding)
 			kill();
 	}
 	
+	void OnTriggerExit(Collider col){
+		colliding=true;
+	}
 	public void makeActive(){
 		Screen.lockCursor = true;
 		cameraView.enabled = true;

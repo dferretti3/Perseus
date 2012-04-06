@@ -12,13 +12,15 @@ public class firstPersonTower : MonoBehaviour {
 	private float missileButtonWidth;
 	private float missileButtonHeight;
 	public GameObject[] missilePrefab;
-	
+		float turnspeed = 2.0f;
+
 	
 	// Use this for initialization
 	void Start () {
 		targetSize = Screen.width/10;
 		missileButtonWidth = Screen.width/10;
 		missileButtonHeight = Screen.height/10;
+		    Screen.lockCursor = true;
 	}
 	
 	
@@ -127,6 +129,7 @@ public class firstPersonTower : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+			
 		
 		if(controlType == ControlType.Full && !justActivated)
 		{
@@ -211,7 +214,12 @@ public class firstPersonTower : MonoBehaviour {
 			{
 				transform.parent.RotateAround(transform.right,Mathf.PI*Time.deltaTime/20);
 			}
-			
+	
+			float y = Input.GetAxis("Mouse Y");
+			float x = Input.GetAxis("Mouse X");
+			transform.parent.Rotate(new Vector3(-y, 0, 0) * Time.deltaTime * 50);
+			transform.parent.Rotate(new Vector3(0, x, 0) * Time.deltaTime * 50);
+    		transform.parent.eulerAngles = new Vector3(transform.parent.eulerAngles.x,transform.parent.eulerAngles.y, 0);
 			
 			if(Input.GetKeyDown(KeyCode.Q))
 			{

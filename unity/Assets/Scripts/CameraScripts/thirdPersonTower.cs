@@ -12,6 +12,7 @@ public class thirdPersonTower : MonoBehaviour {
 	private bool justActivated = false;
 	// Use this for initialization
 	void Start () {
+		Screen.lockCursor = true;
 		float horRad = 18*Mathf.Cos(verticleAngle);
 		transform.localPosition = new Vector3(Mathf.Cos(angle)*horRad,15*Mathf.Sin(verticleAngle),Mathf.Sin(angle)*horRad);
 	}
@@ -68,7 +69,11 @@ public class thirdPersonTower : MonoBehaviour {
 			{
 				transform.parent.RotateAround(transform.right,Mathf.PI*Time.deltaTime/10);
 			}
-		
+			float y = Input.GetAxis("Mouse Y");
+			float x = Input.GetAxis("Mouse X");
+			transform.parent.Rotate(new Vector3(-y, 0, 0) * Time.deltaTime * 50);
+			transform.parent.Rotate(new Vector3(0, x, 0) * Time.deltaTime * 50);
+    		transform.parent.eulerAngles = new Vector3(transform.parent.eulerAngles.x,transform.parent.eulerAngles.y, 0);
 			if(Input.GetKey(KeyCode.LeftShift))
 			{
 				if(tLC == null)
