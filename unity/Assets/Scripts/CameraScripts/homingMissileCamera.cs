@@ -16,6 +16,7 @@ public class homingMissileCamera : MonoBehaviour
 	private float homingDampener = 5f;
 	GUIStyle myStyle;
 	public Font warning;
+	private homingMissileScript missile;
 	
 	// Use this for initialization
 	void Start ()
@@ -56,6 +57,11 @@ public class homingMissileCamera : MonoBehaviour
 	// Update is called once per frame
 	void Update ()
 	{
+		if(missile == null)
+		{
+			missile = transform.parent.gameObject.GetComponentInChildren<homingMissileScript>();
+		}
+		
 		
 		if(transform.position.y > 50 || transform.position.y < -50)
 		{
@@ -140,6 +146,7 @@ public class homingMissileCamera : MonoBehaviour
 				if(hasTarget)
 				{
 					hasTarget = false;
+					missile.toggleTarget();
 					target = null;
 				}
 				else
@@ -165,7 +172,7 @@ public class homingMissileCamera : MonoBehaviour
 		{
 			if(Input.GetKey(KeyCode.Space))
 			{
-				missileScript msS = transform.parent.gameObject.GetComponent<missileScript>();
+				homingMissileScript msS = transform.parent.gameObject.GetComponent<homingMissileScript>();
 				msS.kill();
 			}
 		}
@@ -175,7 +182,7 @@ public class homingMissileCamera : MonoBehaviour
 	
 	void selfDestruct()
 	{
-		missileScript msS = transform.parent.gameObject.GetComponent<missileScript>();
+		homingMissileScript msS = transform.parent.gameObject.GetComponent<homingMissileScript>();
 		msS.kill();
 	}
 	
@@ -201,6 +208,7 @@ public class homingMissileCamera : MonoBehaviour
 		
 		if(foundAt >= 0)
 		{
+			missile.toggleTarget();
 			hasTarget = true;
 			target = found[foundAt];
 		}

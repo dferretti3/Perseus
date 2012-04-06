@@ -40,7 +40,7 @@ public class navPoint : MonoBehaviour
 		transform.rotation = Quaternion.LookRotation (fwd, -Camera.current.transform.forward);
 		transform.localPosition = localPos + Camera.current.transform.up * transform.renderer.bounds.size.y;
 		
-		Vector3 screenPos = Camera.current.WorldToNormalizedViewportPoint(transform.position);
+		Vector3 screenPos = Camera.current.WorldToNormalizedViewportPoint(transform.parent.position);
 		Vector2 xY = new Vector2(screenPos.x - .5f,screenPos.y - .5f);
 		if(xY.magnitude < .1)
 		{

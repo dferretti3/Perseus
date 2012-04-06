@@ -113,16 +113,30 @@ public class thirdPersonTower : MonoBehaviour {
 			
 			if(Input.GetKeyDown(KeyCode.Alpha1))
 			{
-				if(tLC.moveToMissile(0))
+				if(Input.GetKey(KeyCode.LeftShift))
 				{
-					cleanUpOnExit();
+					tLC.openMiniScreen(0);
+				}
+				else
+				{
+					if(tLC.moveToMissile(0))
+					{
+						cleanUpOnExit();
+					}
 				}
 			}
 			else if(Input.GetKeyDown(KeyCode.Alpha2))
 			{
-				if(tLC.moveToMissile(1))
+				if(Input.GetKey(KeyCode.LeftShift))
 				{
-					cleanUpOnExit();
+					tLC.openMiniScreen(1);
+				}
+				else
+				{
+					if(tLC.moveToMissile(1))
+					{
+						cleanUpOnExit();
+					}
 				}
 			}
 		}

@@ -73,7 +73,7 @@ public class firstPersonTower : MonoBehaviour {
 			{
 				tempMissile.transform.rotation = Quaternion.LookRotation(-transform.parent.up,transform.parent.forward);
 				tempMissile.transform.position = transform.parent.position;
-				missileScript msS = tempMissile.GetComponent<missileScript>();
+				homingMissileScript msS = tempMissile.GetComponent<homingMissileScript>();
 				msS.init();
 			}
 			else
@@ -139,12 +139,26 @@ public class firstPersonTower : MonoBehaviour {
 					tLC = transform.parent.GetComponentInChildren<topLevelController>();
 					if(tLC != null)
 					{
-						fireMissile(missileType.Homing);
+						if(Input.GetKey(KeyCode.LeftShift))
+						{
+							tLC.openMiniScreen(0);
+						}
+						else
+						{
+							fireMissile(missileType.Homing);
+						}
 					}
 				}
 				else
 				{
-					fireMissile(missileType.Homing);
+					if(Input.GetKey(KeyCode.LeftShift))
+					{
+						tLC.openMiniScreen(0);
+					}
+					else
+					{
+						fireMissile(missileType.Homing);
+					}
 				}
 			}
 			if(Input.GetKeyDown(KeyCode.Alpha2))
@@ -154,12 +168,26 @@ public class firstPersonTower : MonoBehaviour {
 					tLC = transform.parent.GetComponentInChildren<topLevelController>();
 					if(tLC != null)
 					{
-						fireMissile(missileType.Controlled);
+						if(Input.GetKey(KeyCode.LeftShift))
+						{
+							tLC.openMiniScreen(1);
+						}
+						else
+						{
+							fireMissile(missileType.Controlled);
+						}
 					}
 				}
 				else
 				{
-					fireMissile(missileType.Controlled);
+					if(Input.GetKey(KeyCode.LeftShift))
+					{
+						tLC.openMiniScreen(1);
+					}
+					else
+					{
+						fireMissile(missileType.Controlled);
+					}
 				}
 			}
 			
@@ -183,24 +211,8 @@ public class firstPersonTower : MonoBehaviour {
 			{
 				transform.parent.RotateAround(transform.right,Mathf.PI*Time.deltaTime/20);
 			}
-		
-			if(Input.GetKey(KeyCode.LeftShift))
-			{
-				if(tLC == null)
-				{
-					tLC = transform.parent.GetComponentInChildren<topLevelController>();
-				}
-				int miniScreen = -1;
-				if(Input.GetKeyDown(KeyCode.Alpha1))
-				{
-					tLC.openMiniScreen(0);
-				}
-				else if(Input.GetKeyDown(KeyCode.Alpha2))
-				{
-					tLC.openMiniScreen(1);
-				}
-				
-			}
+			
+			
 			if(Input.GetKeyDown(KeyCode.Q))
 			{
 				if(tLC == null)
