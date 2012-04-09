@@ -17,6 +17,7 @@ public class freeFlyCamera : MonoBehaviour {
 	
 	// Use this for initialization
 	void Start () {
+		Application.runInBackground = true;
 		mode = true;
 		velocity = Vector3.zero;
 		ud_velocity = Vector3.zero;
@@ -24,7 +25,7 @@ public class freeFlyCamera : MonoBehaviour {
 		mr_x = transform.rotation.eulerAngles.y;
 		mr_y = -transform.rotation.eulerAngles.x;
 	}
-	
+
 	// Update is called once per frame
 	void FixedUpdate () {
 		float move_x = Input.GetAxis("Horizontal");

@@ -10,14 +10,25 @@ public class PlayerManager : MonoBehaviour {
 	public float offset;
 	public int max_towers;
 	int num_towers;
-	
+	string ip = "143.215.114.72";
 	freeFlyCamera my_camera;
 	
 	public GameObject plane;
 	
 	Vector3[] tower_pos;
 	Quaternion[] tower_rots;
-	
+	void OnGUI(){
+		if(GUI.Button(new Rect(10,10,100,20), "Create Server"))
+		{
+			Network.InitializeServer(2, 25000);
+		}
+		ip = GUI.TextArea(new Rect(10,30,200,20), ip);
+		if(GUI.Button(new Rect(10, 50, 100, 20), "Connect"))
+		{
+			Network.Connect(ip, 25000);
+		}
+		
+	}
 	// Use this for initialization
 	void Start () {
 		tower_pos = new Vector3[max_towers];
@@ -35,8 +46,20 @@ public class PlayerManager : MonoBehaviour {
 		my_camera = cam.GetComponent<freeFlyCamera>();
 	}
 	
+	void OnServerInitialized() { 
+		print("STARTED");
+	}
+	
+	void OnConnectedToServer() { 
+		print("CONNECTED");
+	}
+	
+	void OnFailedToConnect(NetworkConnectionError e){
+		print("X " + e);
+	}
 	// Update is called once per frame
 	void FixedUpdate () {
+		
 		if (Input.GetKeyDown("n")) {
 			Application.LoadLevel("testScene");
 		}
