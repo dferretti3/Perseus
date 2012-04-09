@@ -67,8 +67,9 @@ public class PlayerManager : MonoBehaviour {
 		if (num_towers>=max_towers) {
 			renderer.enabled = false;
 			players[index].my_turn = false;
-			SaveTowerLocs.saveLocs(tower_pos[0],tower_pos[1],tower_rots[0],tower_rots[1]);
-			Application.LoadLevel("testScene");
+			GameObject.Find("SavedData").GetComponent<SaveTowerLocs>().saveLocs(tower_pos[0],tower_pos[1],tower_rots[0],tower_rots[1]);
+			//Application.LoadLevel("testScene");
+			enabled = false;
 			controlTowers();
 			return;
 		}

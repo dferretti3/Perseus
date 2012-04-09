@@ -2,7 +2,7 @@ using UnityEngine;
 using System.Collections;
 
 public class SaveTowerLocs : MonoBehaviour {
-	public static GameObject towerPrefab;
+	public GameObject towerPrefab;
 	// Use this for initialization
 	void Start () {
 	
@@ -13,7 +13,7 @@ public class SaveTowerLocs : MonoBehaviour {
 	
 	}
 	
-	public static void saveLocs(Vector3 p1, Vector3 p2, Quaternion r1, Quaternion r2)
+	public void saveLocs(Vector3 p1, Vector3 p2, Quaternion r1, Quaternion r2)
 	{
 		bool isP1 = false;
 		if(Random.value > .5)
