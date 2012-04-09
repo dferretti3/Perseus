@@ -10,7 +10,7 @@ public class PlayerManager : MonoBehaviour {
 	public float offset;
 	public int max_towers;
 	int num_towers;
-	string ip = "143.215.114.72";
+	string ip = "143.215.207.77";
 	freeFlyCamera my_camera;
 	
 	public GameObject plane;
@@ -34,6 +34,7 @@ public class PlayerManager : MonoBehaviour {
 		tower_pos = new Vector3[max_towers];
 		tower_rots = new Quaternion[max_towers];
 		num_towers = 0;
+		max_towers = 1;
 		next_b = 0;
 		index = 0;
 		foreach (Player p in players) {
@@ -66,6 +67,8 @@ public class PlayerManager : MonoBehaviour {
 		if (num_towers>=max_towers) {
 			renderer.enabled = false;
 			players[index].my_turn = false;
+			SaveTowerLocs.saveLocs(tower_pos[0],tower_pos[1],tower_rots[0],tower_rots[1]);
+			Application.LoadLevel("testScene");
 			controlTowers();
 			return;
 		}
