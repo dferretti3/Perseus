@@ -2,7 +2,7 @@ using UnityEngine;
 using System.Collections;
 
 public class SaveTowerLocs : MonoBehaviour {
-
+	public static GameObject towerPrefab;
 	// Use this for initialization
 	void Start () {
 	
@@ -15,6 +15,33 @@ public class SaveTowerLocs : MonoBehaviour {
 	
 	public static void saveLocs(Vector3 p1, Vector3 p2, Quaternion r1, Quaternion r2)
 	{
+		bool isP1 = false;
+		if(Random.value > .5)
+		{
+			isP1 = true;
+		}
+		GameObject tower1 = (GameObject)GameObject.Instantiate(towerPrefab);
+		tower1.transform.position = p1;
+		tower1.transform.rotation = r1;
+		GameObject tower2 = (GameObject)GameObject.Instantiate(towerPrefab);
+		tower2.transform.position = p2;
+		tower2.transform.rotation = r2;
+		navPoint p1Nav = tower1.GetComponentInChildren<navPoint>();
+		p1Nav.playerColor = Color.red;
+		p1Nav.nameTag = "PLR1";
+		p1Nav = tower2.GetComponentInChildren<navPoint>();
+		p1Nav.playerColor = Color.blue;
+		p1Nav.nameTag = "PLR2";
+		if(isP1)
+		{
+			topLevelController tlC = tower1.GetComponentInChildren<topLevelController>();
+			tlC.isActive = true;
+		}
+		else
+		{
+			topLevelController tlC = tower2.GetComponentInChildren<topLevelController>();
+			tlC.isActive = true;
+		}
 		PlayerPrefs.SetFloat("p1.x",p1.x);
 		PlayerPrefs.SetFloat("p1.y",p1.y);
 		PlayerPrefs.SetFloat("p1.z",p1.z);
