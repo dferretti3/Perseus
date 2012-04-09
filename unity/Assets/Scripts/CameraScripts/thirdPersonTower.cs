@@ -53,21 +53,21 @@ public class thirdPersonTower : MonoBehaviour {
 			
 			if(Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.A))
 			{
-				transform.parent.RotateAroundLocal(Vector3.up,-Mathf.PI*Time.deltaTime/10);
+				transform.parent.RotateAroundLocal(Vector3.up,-Mathf.PI*Time.deltaTime/5);
 			}
 			else if(Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.D))
 			{
-				transform.parent.RotateAroundLocal(Vector3.up,Mathf.PI*Time.deltaTime/10);
+				transform.parent.RotateAroundLocal(Vector3.up,Mathf.PI*Time.deltaTime/5);
 			}
 			
 			
 			if((Input.GetKey(KeyCode.UpArrow) || Input.GetKey(KeyCode.W)) && yAngle < Mathf.PI/8)
 			{
-				transform.parent.RotateAroundLocal(transform.right,-Mathf.PI*Time.deltaTime/10);
+				transform.parent.RotateAroundLocal(transform.right,-Mathf.PI*Time.deltaTime/5);
 			}
 			else if((Input.GetKey(KeyCode.DownArrow) || Input.GetKey(KeyCode.S)) && yAngle > -Mathf.PI/8)
 			{
-				transform.parent.RotateAround(transform.right,Mathf.PI*Time.deltaTime/10);
+				transform.parent.RotateAround(transform.right,Mathf.PI*Time.deltaTime/5);
 			}
 			float y = Input.GetAxis("Mouse Y");
 			float x = Input.GetAxis("Mouse X");
