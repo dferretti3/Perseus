@@ -71,7 +71,10 @@ public class PlayerManager : MonoBehaviour {
 			GameObject.Find("SavedData").GetComponent<SaveTowerLocs>().saveLocs(tower_pos[0],tower_pos[1],tower_rots[0],tower_rots[1],normals[0],normals[2]);
 			//Application.LoadLevel("testScene");
 			enabled = false;
-			controlTowers();
+			my_camera.GetComponent<AudioListener>().enabled = false;
+			GameObject.Destroy(GameObject.Find("Player1").gameObject);
+			GameObject.Destroy(GameObject.Find("Player2").gameObject);
+			//controlTowers();
 			return;
 		}
 		if (next_b>0) next_b++;
@@ -91,10 +94,11 @@ public class PlayerManager : MonoBehaviour {
 	}
 	
 	public void mark(RaycastHit hitInfo) {
+		print(index);
 		//if (index!=0) return;
 		tower_pos[index] = pos(hitInfo)+0.5f*Vector3.up;
 		tower_rots[index] = Quaternion.Euler(0,90,0)*Quaternion.RotateTowards(rot(),Quaternion.LookRotation(Vector3.up),15);
-		normals[index] = hitInfo.normal;
+		normals[index] = hitInfo.normal.normalized;
 		tower_rots[index] = Quaternion.LookRotation(Vector3.Cross(Camera.main.transform.right,hitInfo.normal),hitInfo.normal);
 	}
 	

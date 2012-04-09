@@ -57,6 +57,5 @@ public class SaveTowerLocs : MonoBehaviour {
 		PlayerPrefs.SetFloat("r2.y",r2.y);
 		PlayerPrefs.SetFloat("r2.z",r2.z);
 		PlayerPrefs.SetFloat("r2.w",r2.w);
-		print("HERE");
 	}
 }
