@@ -13,18 +13,19 @@ public class SaveTowerLocs : MonoBehaviour {
 	
 	}
 	
-	public void saveLocs(Vector3 p1, Vector3 p2, Quaternion r1, Quaternion r2)
+	public void saveLocs(Vector3 p1, Vector3 p2, Quaternion r1, Quaternion r2, Vector3 n1, Vector3 n2)
 	{
+		float d = 4;
 		bool isP1 = false;
 		if(Random.value > .5)
 		{
 			isP1 = true;
 		}
 		GameObject tower1 = (GameObject)GameObject.Instantiate(towerPrefab);
-		tower1.transform.position = p1;
+		tower1.transform.position = p1+d*n1;
 		tower1.transform.rotation = r1;
 		GameObject tower2 = (GameObject)GameObject.Instantiate(towerPrefab);
-		tower2.transform.position = p2;
+		tower2.transform.position = p2+d*n2;
 		tower2.transform.rotation = r2;
 		navPoint p1Nav = tower1.GetComponentInChildren<navPoint>();
 		p1Nav.playerColor = Color.red;

@@ -15,7 +15,7 @@ public class PlayerManager : MonoBehaviour {
 	
 	public GameObject plane;
 	
-	Vector3[] tower_pos;
+	Vector3[] tower_pos,normals;
 	Quaternion[] tower_rots;
 	void OnGUI(){
 		if(GUI.Button(new Rect(10,10,100,20), "Create Server"))
@@ -31,8 +31,9 @@ public class PlayerManager : MonoBehaviour {
 	}
 	// Use this for initialization
 	void Start () {
-		tower_pos = new Vector3[max_towers];
-		tower_rots = new Quaternion[max_towers];
+		tower_pos = new Vector3[2*max_towers];
+		tower_rots = new Quaternion[2*max_towers];
+		normals = new Vector3[2*max_towers];
 		num_towers = 0;
 		max_towers = 1;
 		next_b = 0;
@@ -67,7 +68,7 @@ public class PlayerManager : MonoBehaviour {
 		if (num_towers>=max_towers) {
 			renderer.enabled = false;
 			players[index].my_turn = false;
-			GameObject.Find("SavedData").GetComponent<SaveTowerLocs>().saveLocs(tower_pos[0],tower_pos[1],tower_rots[0],tower_rots[1]);
+			GameObject.Find("SavedData").GetComponent<SaveTowerLocs>().saveLocs(tower_pos[0],tower_pos[1],tower_rots[0],tower_rots[1],normals[0],normals[2]);
 			//Application.LoadLevel("testScene");
 			enabled = false;
 			controlTowers();
@@ -84,15 +85,17 @@ public class PlayerManager : MonoBehaviour {
 		Color c = players[index].color;
 		renderer.material.color = new Color(c.r,c.g,c.b,0.5f);
 		RaycastHit hitInfo = new RaycastHit();
-		renderer.enabled = plane.collider.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition),out hitInfo,1000.0f);
+		renderer.enabled = Terrain.activeTerrain.collider.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition),out hitInfo,5000.0f);
 		transform.position = pos(hitInfo);
 		transform.rotation = rot();
 	}
 	
 	public void mark(RaycastHit hitInfo) {
-		if (index!=0) return;
-		tower_pos[num_towers] = pos(hitInfo)+0.5f*Vector3.up;
-		tower_rots[num_towers] = Quaternion.Euler(0,90,0)*Quaternion.RotateTowards(rot(),Quaternion.LookRotation(Vector3.up),15);
+		//if (index!=0) return;
+		tower_pos[index] = pos(hitInfo)+0.5f*Vector3.up;
+		tower_rots[index] = Quaternion.Euler(0,90,0)*Quaternion.RotateTowards(rot(),Quaternion.LookRotation(Vector3.up),15);
+		normals[index] = hitInfo.normal;
+		tower_rots[index] = Quaternion.LookRotation(Vector3.Cross(Camera.main.transform.right,hitInfo.normal),hitInfo.normal);
 	}
 	
 	int cont = 0;
@@ -120,7 +123,8 @@ public class PlayerManager : MonoBehaviour {
 	public Vector3 pos(RaycastHit hitInfo) {
 		float x = hitInfo.point.x;
 		float z = hitInfo.point.z;
-		return new Vector3(x,0,z);
+		float y = Terrain.activeTerrain.SampleHeight(new Vector3(x,0,z));
+		return new Vector3(x,y,z);
 	}
 	
 	public Quaternion rot() {

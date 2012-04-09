@@ -9,9 +9,9 @@
       <File FileName="Assets\Scripts\CameraScripts\homingMissileCamera.cs" Line="1" Column="1" />
       <File FileName="Assets\Scripts\ControlledMissile.cs" Line="1" Column="1" />
       <File FileName="Assets\Scripts\homingMissileScript.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\SetupScripts\PlayerManager.cs" Line="72" Column="20" />
+      <File FileName="Assets\Scripts\SetupScripts\PlayerManager.cs" Line="34" Column="29" />
       <File FileName="Assets\Scripts\SetupScripts\Player.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\SetupScripts\SaveTowerLocs.cs" Line="5" Column="8" />
+      <File FileName="Assets\Scripts\SetupScripts\SaveTowerLocs.cs" Line="26" Column="34" />
       <File FileName="Assets\Scripts\BillboardScripts\navPoint.cs" Line="1" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>

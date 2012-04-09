@@ -22,7 +22,7 @@ public class Player : MonoBehaviour {
 		if (!my_turn) return;
 		if (Input.GetMouseButtonDown(0)) {
 			RaycastHit hitInfo = new RaycastHit();
-			if (!plane.collider.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition),out hitInfo,1000.0f)) return;
+			if (!Terrain.activeTerrain.collider.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition),out hitInfo,5000.0f)) return;
 			//GameObject obj = GameObject.Instantiate(turret,manager.pos(hitInfo),manager.rot()) as GameObject;
 			GameObject obj = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
 			obj.transform.position = manager.pos(hitInfo);
