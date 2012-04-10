@@ -16,6 +16,7 @@ public class PlayerManager : MonoBehaviour {
 	public GameObject plane;
 	
 	Vector3[] tower_pos,normals;
+	GameObject[] objects;
 	Quaternion[] tower_rots;
 	void OnGUI(){
 		if(GUI.Button(new Rect(10,10,100,20), "Create Server"))
@@ -34,6 +35,7 @@ public class PlayerManager : MonoBehaviour {
 		tower_pos = new Vector3[2*max_towers];
 		tower_rots = new Quaternion[2*max_towers];
 		normals = new Vector3[2*max_towers];
+		objects = new GameObject[2*max_towers];
 		num_towers = 0;
 		max_towers = 1;
 		next_b = 0;
@@ -71,12 +73,12 @@ public class PlayerManager : MonoBehaviour {
 			
 			
 			
-			GameObject.Find("SavedData").GetComponent<SaveTowerLocs>().saveLocs(tower_pos[0],tower_pos[1],tower_rots[0],tower_rots[1],normals[0],normals[2]);
+			GameObject.Find("SavedData").GetComponent<SaveTowerLocs>().saveLocs(tower_pos[0],tower_pos[1],tower_rots[0],tower_rots[1],normals[0],normals[1]);
 			//Application.LoadLevel("testScene");
 			enabled = false;
 			my_camera.GetComponent<AudioListener>().enabled = false;
-			GameObject.Destroy(GameObject.Find("Player1").gameObject);
-			GameObject.Destroy(GameObject.Find("Player2").gameObject);
+			GameObject.Destroy(objects[0]);
+			GameObject.Destroy(objects[1]);
 			//controlTowers();
 			return;
 		}
@@ -96,11 +98,12 @@ public class PlayerManager : MonoBehaviour {
 		transform.rotation = rot();
 	}
 	
-	public void mark(RaycastHit hitInfo, Vector3 posit) {
+	public void mark(RaycastHit hitInfo, Vector3 posit, GameObject obj) {
 		print(index);
 		//if (index!=0) return;
 		tower_pos[index] = pos(hitInfo)+0.5f*Vector3.up;
 		tower_pos[index] = posit;
+		objects[index] = obj;
 		tower_rots[index] = Quaternion.Euler(0,90,0)*Quaternion.RotateTowards(rot(),Quaternion.LookRotation(Vector3.up),15);
 		normals[index] = hitInfo.normal.normalized;
 		tower_rots[index] = Quaternion.LookRotation(Vector3.Cross(Camera.main.transform.right,hitInfo.normal),hitInfo.normal);

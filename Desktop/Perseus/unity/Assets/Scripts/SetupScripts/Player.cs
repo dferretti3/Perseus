@@ -33,7 +33,7 @@ public class Player : MonoBehaviour {
 		obj.transform.rotation = manager.rot();
 		obj.renderer.material.color = color;
 		my_turn = false;
-		manager.mark(hitInfo, obj.transform.position);
+		manager.mark(hitInfo, obj.transform.position, obj);
 		manager.next();
 		if(Network.isClient)
 			networkView.RPC("createTower2", RPCMode.Server, obj.transform.position);
@@ -49,7 +49,7 @@ public class Player : MonoBehaviour {
 		obj.transform.rotation = manager.rot();
 		obj.renderer.material.color = color;
 		my_turn = false;
-		manager.mark(hitInfo, obj.transform.position);
+		manager.mark(hitInfo, obj.transform.position,obj);
 		manager.next();
 	}
 }
