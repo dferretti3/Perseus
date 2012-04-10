@@ -15,6 +15,11 @@ public class SaveTowerLocs : MonoBehaviour {
 	
 	public void saveLocs(Vector3 p1, Vector3 p2, Quaternion r1, Quaternion r2, Vector3 n1, Vector3 n2)
 	{
+		spaceSetupScript ssS = GameObject.FindGameObjectWithTag("spaceSetup").GetComponentInChildren<spaceSetupScript>();
+		if(ssS != null)
+		{
+			ssS.setupSpace();
+		}
 		float d = 4;
 		bool isP1 = false;
 		if(Random.value > .5)
