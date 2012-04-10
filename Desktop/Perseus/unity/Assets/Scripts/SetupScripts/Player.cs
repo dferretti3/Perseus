@@ -32,6 +32,7 @@ public class Player : MonoBehaviour {
 		if (!Terrain.activeTerrain.collider.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition),out hitInfo,5000.0f)) return;
 		//GameObject obj = GameObject.Instantiate(turret,manager.pos(hitInfo),manager.rot()) as GameObject;
 		GameObject obj = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
+		obj.transform.localScale*=5;
 		obj.transform.position = manager.pos(hitInfo);
 		obj.transform.rotation = manager.rot();
 		obj.renderer.material.color = color;
