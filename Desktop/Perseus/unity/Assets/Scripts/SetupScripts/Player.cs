@@ -20,7 +20,10 @@ public class Player : MonoBehaviour {
 	// Update is called once per frame
 	void FixedUpdate () {
 		if (!my_turn) return;
-		if (Input.GetMouseButtonDown(0)) {
+		if (gameObject.name=="Player1" && Network.isServer && Input.GetMouseButtonDown(0)) {
+			createTower();
+		}
+		if (gameObject.name=="Player2" && Network.isClient && Input.GetMouseButtonDown(0)) {
 			createTower();
 		}
 	}
