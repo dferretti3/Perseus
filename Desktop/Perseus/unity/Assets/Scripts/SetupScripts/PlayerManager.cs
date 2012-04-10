@@ -18,17 +18,31 @@ public class PlayerManager : MonoBehaviour {
 	Vector3[] tower_pos,normals;
 	GameObject[] objects;
 	Quaternion[] tower_rots;
+	
+	
+	bool netsetup = false;
 	void OnGUI(){
-		if(GUI.Button(new Rect(10,10,100,20), "Create Server"))
+		if(!netsetup)
 		{
-			Network.InitializeServer(2, 25000);
+			if(GUI.Button(new Rect(10,10,100,20), "Create Server"))
+			{
+				Network.InitializeServer(2, 25000);
+			}
+			ip = GUI.TextArea(new Rect(10,30,200,20), ip);
+			if(GUI.Button(new Rect(10, 50, 100, 20), "Connect"))
+			{
+				Network.Connect(ip, 25000);
+			}
+			if(Network.isClient || Network.isServer)
+				netsetup=true;
 		}
-		ip = GUI.TextArea(new Rect(10,30,200,20), ip);
-		if(GUI.Button(new Rect(10, 50, 100, 20), "Connect"))
+		if(netsetup)
 		{
-			Network.Connect(ip, 25000);
+			if(Network.isServer)
+			GUI.Label(new Rect(10, 10, 100, 30), "Server");
+			if(Network.isClient)
+			GUI.Label(new Rect(10, 10, 100, 30), "Client");
 		}
-		
 	}
 	// Use this for initialization
 	void Start () {
@@ -67,35 +81,38 @@ public class PlayerManager : MonoBehaviour {
 		if (Input.GetKeyDown("n")) {
 			Application.LoadLevel("testScene");
 		}
-		if (num_towers>=max_towers) {
-			renderer.enabled = false;
-			players[index].my_turn = false;		
-			
-			
-			
-			GameObject.Find("SavedData").GetComponent<SaveTowerLocs>().saveLocs(tower_pos[0],tower_pos[1],tower_rots[0],tower_rots[1],normals[0],normals[1]);
-			//Application.LoadLevel("testScene");
-			enabled = false;
-			my_camera.GetComponent<AudioListener>().enabled = false;
-			GameObject.Destroy(objects[0]);
-			GameObject.Destroy(objects[1]);
-			//controlTowers();
-			return;
+		
+		if(netsetup){
+			if (num_towers>=max_towers) {
+				renderer.enabled = false;
+				players[index].my_turn = false;		
+				
+				
+				
+				GameObject.Find("SavedData").GetComponent<SaveTowerLocs>().saveLocs(tower_pos[0],tower_pos[1],tower_rots[0],tower_rots[1],normals[0],normals[1]);
+				//Application.LoadLevel("testScene");
+				enabled = false;
+				my_camera.GetComponent<AudioListener>().enabled = false;
+				GameObject.Destroy(objects[0]);
+				GameObject.Destroy(objects[1]);
+				//controlTowers();
+				return;
+			}
+			if (next_b>0) next_b++;
+			if (next_b>=10) {
+				next_b = 0;
+				index++;
+				index %= players.Length;
+				players[index].my_turn = true;
+				if (index==0) num_towers++;
+			}
+			Color c = players[index].color;
+			renderer.material.color = new Color(c.r,c.g,c.b,0.5f);
+			RaycastHit hitInfo = new RaycastHit();
+			renderer.enabled = Terrain.activeTerrain.collider.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition),out hitInfo,5000.0f);
+			transform.position = pos(hitInfo);
+			transform.rotation = rot();
 		}
-		if (next_b>0) next_b++;
-		if (next_b>=10) {
-			next_b = 0;
-			index++;
-			index %= players.Length;
-			players[index].my_turn = true;
-			if (index==0) num_towers++;
-		}
-		Color c = players[index].color;
-		renderer.material.color = new Color(c.r,c.g,c.b,0.5f);
-		RaycastHit hitInfo = new RaycastHit();
-		renderer.enabled = Terrain.activeTerrain.collider.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition),out hitInfo,5000.0f);
-		transform.position = pos(hitInfo);
-		transform.rotation = rot();
 	}
 	
 	public void mark(RaycastHit hitInfo, Vector3 posit, GameObject obj) {
