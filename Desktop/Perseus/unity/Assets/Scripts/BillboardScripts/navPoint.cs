@@ -21,6 +21,17 @@ public class navPoint : MonoBehaviour
 		displayMesh.text = nameTag;
 		displayMesh.renderer.material.color = playerColor;
 	}
+	
+	public void refresh()
+	{
+		Destroy(nameDisplay);
+		renderer.material.SetColor("_TintColor",playerColor);
+		nameDisplay = (GameObject)Instantiate(nameDisplayPref);
+		nameDisplay.transform.position = transform.position;
+		TextMesh displayMesh = nameDisplay.GetComponent<TextMesh>();
+		displayMesh.text = nameTag;
+		displayMesh.renderer.material.color = playerColor;
+	}
 
 
 	void OnWillRenderObject ()

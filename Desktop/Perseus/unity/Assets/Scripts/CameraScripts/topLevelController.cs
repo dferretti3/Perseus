@@ -5,6 +5,11 @@ public enum missileType {Homing, Controlled, Static};
 
 public class topLevelController : MonoBehaviour {
 	
+	public Color playerColor;
+	public string nameTag;
+	
+	private bool coloredParent = false;
+	
 	public bool isActive = true;
 	public GameObject thirdPerson;
 	public thirdPersonTower tPT;
@@ -51,6 +56,20 @@ public class topLevelController : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+		
+		if(!coloredParent)
+		{
+			navPoint toColor = gameObject.transform.parent.gameObject.GetComponentInChildren<navPoint>();
+			if(toColor != null)
+			{
+				toColor.playerColor = playerColor;
+				toColor.nameTag = nameTag;
+				toColor.refresh();
+			}
+			coloredParent = true;
+		}
+		
+		
 		if(mC == null && homingMissileObject != null)
 		{
 			mC = homingMissileObject.GetComponent<homingMissileCamera>();
@@ -145,6 +164,9 @@ public class topLevelController : MonoBehaviour {
 				}
 		
 				homingMissileObject = missile;
+				navPoint homingNav = homingMissileObject.GetComponentInChildren<navPoint>();
+				homingNav.playerColor = playerColor;
+				homingNav.nameTag = nameTag;
 				mC = homingMissileObject.GetComponentInChildren<homingMissileCamera>();
 				mC.tLC = this;
 				return true;
@@ -155,6 +177,9 @@ public class topLevelController : MonoBehaviour {
 				}
 				
 				controlledMissileOjbect = missile;
+				navPoint contNav = controlledMissileOjbect.GetComponentInChildren<navPoint>();
+				contNav.playerColor = playerColor;
+				contNav.nameTag = nameTag;
 				//TODO Arlen:  replace this getcomponent with the correct information
 				contMisScript = missile.GetComponentInChildren<ControlledMissile>();
 				contMisScript.tLC = this;

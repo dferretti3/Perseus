@@ -27,21 +27,19 @@ public class SaveTowerLocs : MonoBehaviour {
 		GameObject tower2 = (GameObject)GameObject.Instantiate(towerPrefab);
 		tower2.transform.position = p2+d*n2;
 		tower2.transform.rotation = r2;
-		navPoint p1Nav = tower1.GetComponentInChildren<navPoint>();
-		p1Nav.playerColor = Color.red;
-		p1Nav.nameTag = "PLR1";
-		p1Nav = tower2.GetComponentInChildren<navPoint>();
-		p1Nav.playerColor = Color.blue;
-		p1Nav.nameTag = "PLR2";
+		topLevelController topCont1 = tower1.GetComponentInChildren<topLevelController>();
+		topCont1.playerColor = Color.red;
+		topCont1.nameTag = "PLR1";
+		topLevelController topCont2 = tower2.GetComponentInChildren<topLevelController>();
+		topCont2.playerColor = Color.blue;
+		topCont2.nameTag = "PLR2";
 		if(isP1)
 		{
-			topLevelController tlC = tower1.GetComponentInChildren<topLevelController>();
-			tlC.isActive = true;
+			topCont1.isActive = true;
 		}
 		else
 		{
-			topLevelController tlC = tower2.GetComponentInChildren<topLevelController>();
-			tlC.isActive = true;
+			topCont2.isActive = true;
 		}
 		PlayerPrefs.SetFloat("p1.x",p1.x);
 		PlayerPrefs.SetFloat("p1.y",p1.y);
