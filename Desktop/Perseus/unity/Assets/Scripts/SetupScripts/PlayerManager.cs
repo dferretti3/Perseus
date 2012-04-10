@@ -115,15 +115,14 @@ public class PlayerManager : MonoBehaviour {
 		}
 	}
 	
-	public void mark(RaycastHit hitInfo, Vector3 posit, GameObject obj) {
+	public void mark(Vector3 hitInfo, Vector3 posit, GameObject obj) {
 		print(index);
 		//if (index!=0) return;
-		tower_pos[index] = pos(hitInfo)+0.5f*Vector3.up;
 		tower_pos[index] = posit;
 		objects[index] = obj;
 		tower_rots[index] = Quaternion.Euler(0,90,0)*Quaternion.RotateTowards(rot(),Quaternion.LookRotation(Vector3.up),15);
-		normals[index] = hitInfo.normal.normalized;
-		tower_rots[index] = Quaternion.LookRotation(Vector3.Cross(Camera.main.transform.right,hitInfo.normal),hitInfo.normal);
+		normals[index] = hitInfo.normalized;
+		tower_rots[index] = Quaternion.LookRotation(Vector3.Cross(Camera.main.transform.right,hitInfo),hitInfo);
 	}
 	
 	int cont = 0;

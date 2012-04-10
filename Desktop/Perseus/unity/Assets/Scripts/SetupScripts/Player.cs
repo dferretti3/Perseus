@@ -36,23 +36,23 @@ public class Player : MonoBehaviour {
 		obj.transform.rotation = manager.rot();
 		obj.renderer.material.color = color;
 		my_turn = false;
-		manager.mark(hitInfo, obj.transform.position, obj);
+		manager.mark(hitInfo.normal, obj.transform.position, obj);
 		manager.next();
 		if(Network.isClient)
-			networkView.RPC("createTower2", RPCMode.Server, obj.transform.position);
+			networkView.RPC("createTower2", RPCMode.Server, obj.transform.position, hitInfo.normal);
 		if(Network.isServer)
-			networkView.RPC("createTower2", RPCMode.Others, obj.transform.position);
+			networkView.RPC("createTower2", RPCMode.Others, obj.transform.position, hitInfo.normal);
 		//obj.GetComponent<MeshFilter>().mesh = manager.mesh;
 	}
 	
 	[RPC]
-	void createTower2(Vector3 pos){
+	void createTower2(Vector3 pos, Vector3 normal){
 		GameObject obj = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
 		obj.transform.position = pos;
 		obj.transform.rotation = manager.rot();
 		obj.renderer.material.color = color;
 		my_turn = false;
-		manager.mark(hitInfo, obj.transform.position,obj);
+		manager.mark(normal, obj.transform.position,obj);
 		manager.next();
 	}
 }
