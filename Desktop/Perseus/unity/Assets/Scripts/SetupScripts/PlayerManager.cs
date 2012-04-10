@@ -67,7 +67,10 @@ public class PlayerManager : MonoBehaviour {
 		}
 		if (num_towers>=max_towers) {
 			renderer.enabled = false;
-			players[index].my_turn = false;
+			players[index].my_turn = false;		
+			
+			
+			
 			GameObject.Find("SavedData").GetComponent<SaveTowerLocs>().saveLocs(tower_pos[0],tower_pos[1],tower_rots[0],tower_rots[1],normals[0],normals[2]);
 			//Application.LoadLevel("testScene");
 			enabled = false;
@@ -93,10 +96,11 @@ public class PlayerManager : MonoBehaviour {
 		transform.rotation = rot();
 	}
 	
-	public void mark(RaycastHit hitInfo) {
+	public void mark(RaycastHit hitInfo, Vector3 posit) {
 		print(index);
 		//if (index!=0) return;
 		tower_pos[index] = pos(hitInfo)+0.5f*Vector3.up;
+		tower_pos[index] = posit;
 		tower_rots[index] = Quaternion.Euler(0,90,0)*Quaternion.RotateTowards(rot(),Quaternion.LookRotation(Vector3.up),15);
 		normals[index] = hitInfo.normal.normalized;
 		tower_rots[index] = Quaternion.LookRotation(Vector3.Cross(Camera.main.transform.right,hitInfo.normal),hitInfo.normal);
