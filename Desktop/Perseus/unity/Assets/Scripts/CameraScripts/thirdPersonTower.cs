@@ -17,6 +17,27 @@ public class thirdPersonTower : MonoBehaviour {
 		transform.localPosition = new Vector3(Mathf.Cos(angle)*horRad,15*Mathf.Sin(verticleAngle),Mathf.Sin(angle)*horRad);
 	}
 	
+	void OnGUI()
+	{
+		if(controlType == ControlType.Full)
+		{
+			if(tLC != null)
+			{
+				string currentMissile = "";
+				if(tLC.currentMissileSelection == 0)
+				{
+					currentMissile = "HOMING MISSILE";
+				}
+				else if(tLC.currentMissileSelection == 1)
+				{
+					currentMissile = "CONTROLLED MISSILE";
+				}
+				
+				GUI.TextArea(new Rect(0,0,200,50),"Current Missile:\n\n\t\t" + currentMissile);
+			}
+		}
+	}
+	
 	/*void OnPreRender()
 	{
 		Debug.Log("Camera: " + camera.name + " OnPreRender()");
@@ -30,6 +51,7 @@ public class thirdPersonTower : MonoBehaviour {
 	
 	public void makeActive()
 	{
+		Screen.lockCursor = true;
 		controlType = ControlType.Full;
 		camera.enabled = true;
 		AudioListener aL = gameObject.GetComponent<AudioListener>();
@@ -45,6 +67,10 @@ public class thirdPersonTower : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		
+		if(tLC == null)
+		{
+			tLC = transform.parent.GetComponentInChildren<topLevelController>();
+		}
 		
 		if(controlType == ControlType.Full && !justActivated)
 		{
@@ -74,21 +100,20 @@ public class thirdPersonTower : MonoBehaviour {
 			transform.parent.Rotate(new Vector3(-y, 0, 0) * Time.deltaTime * 50);
 			transform.parent.Rotate(new Vector3(0, x, 0) * Time.deltaTime * 50);
     		transform.parent.eulerAngles = new Vector3(transform.parent.eulerAngles.x,transform.parent.eulerAngles.y, 0);
-			if(Input.GetKey(KeyCode.LeftShift))
+			if(Input.GetMouseButtonDown(0))
+			{
+				if(tLC.moveToMissile(tLC.currentMissileSelection))
+				{
+					cleanUpOnExit();
+				}
+			}
+			if(Input.GetMouseButtonDown(1))
 			{
 				if(tLC == null)
 				{
 					tLC = transform.parent.GetComponentInChildren<topLevelController>();
 				}
-				int miniScreen = -1;
-				if(Input.GetKeyDown(KeyCode.Alpha1))
-				{
-					tLC.openMiniScreen(0);
-				}
-				else if(Input.GetKeyDown(KeyCode.Alpha2))
-				{
-					tLC.openMiniScreen(1);
-				}
+				tLC.openMiniScreen(tLC.currentMissileSelection);
 				
 			}
 			if(Input.GetKeyDown(KeyCode.Q))
@@ -108,41 +133,6 @@ public class thirdPersonTower : MonoBehaviour {
 					tLC.moveToFirstPerson();
 				}
 				//TODO implement the rest of switching to the other camera
-			}
-			
-			
-			if(tLC == null)
-			{
-					tLC = transform.parent.GetComponentInChildren<topLevelController>();
-			}
-			
-			if(Input.GetKeyDown(KeyCode.Alpha1))
-			{
-				if(Input.GetKey(KeyCode.LeftShift))
-				{
-					tLC.openMiniScreen(0);
-				}
-				else
-				{
-					if(tLC.moveToMissile(0))
-					{
-						cleanUpOnExit();
-					}
-				}
-			}
-			else if(Input.GetKeyDown(KeyCode.Alpha2))
-			{
-				if(Input.GetKey(KeyCode.LeftShift))
-				{
-					tLC.openMiniScreen(1);
-				}
-				else
-				{
-					if(tLC.moveToMissile(1))
-					{
-						cleanUpOnExit();
-					}
-				}
 			}
 		}
 		else if(justActivated)
@@ -167,5 +157,6 @@ public class thirdPersonTower : MonoBehaviour {
 		camera.enabled = false;
 		AudioListener aL = gameObject.GetComponent<AudioListener>();
 		aL.enabled = false;
+		Screen.lockCursor = false;
 	}
 }

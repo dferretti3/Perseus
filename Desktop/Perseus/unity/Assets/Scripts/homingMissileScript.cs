@@ -55,7 +55,7 @@ public class homingMissileScript : MonoBehaviour
 		{
 			PlayAudioClip(explosion,transform.position,4f);
 			mC.transferControl();
-        	Destroy(gameObject);
+        	Network.Destroy(gameObject);
 		}
     }
 	
@@ -73,7 +73,7 @@ public class homingMissileScript : MonoBehaviour
 	{
 		PlayAudioClip(explosion,transform.position,4f);
 		mC.transferControl();
-        Destroy(gameObject);
+        Network.Destroy(gameObject);
 	}
 	
 	
@@ -87,6 +87,12 @@ public class homingMissileScript : MonoBehaviour
         Destroy(go, clip.length);
         return source;
     }
+	
+	[RPC]
+	void setNavColor(Vector3 pColor, string nTag)
+	{
+		GetComponentInChildren<navPoint>().subRefresh(new Color(pColor.x,pColor.y,pColor.z,1f),nTag);
+	}
 	
 	
 	

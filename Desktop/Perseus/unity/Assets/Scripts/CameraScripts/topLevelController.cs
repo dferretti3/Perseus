@@ -22,6 +22,10 @@ public class topLevelController : MonoBehaviour {
 	
 	public GameObject controlledMissileOjbect;
 	public ControlledMissile contMisScript;
+	
+	public int currentMissileSelection = 0;
+	private int numMissiles = 2;
+	
 	//TODO Arlen: public yourMissileScript 
 	/*
 	 * Your script will need the following function calls:
@@ -52,6 +56,21 @@ public class topLevelController : MonoBehaviour {
 		{
 			tPT.shutDownControl();
 		}
+		if(isActive)
+		{
+			tPT.shutDownControl();
+			fPT.makeActive();
+		}
+	}
+	
+	public void scrollMissileSelection(int direction)
+	{
+		currentMissileSelection += direction;
+		while(currentMissileSelection < 0)
+		{
+			currentMissileSelection = numMissiles - currentMissileSelection;
+		}
+		currentMissileSelection = currentMissileSelection % numMissiles;
 	}
 	
 	// Update is called once per frame
@@ -65,8 +84,8 @@ public class topLevelController : MonoBehaviour {
 				toColor.playerColor = playerColor;
 				toColor.nameTag = nameTag;
 				toColor.refresh();
+				coloredParent = true;
 			}
-			coloredParent = true;
 		}
 		
 		
@@ -180,6 +199,7 @@ public class topLevelController : MonoBehaviour {
 				navPoint contNav = controlledMissileOjbect.GetComponentInChildren<navPoint>();
 				contNav.playerColor = playerColor;
 				contNav.nameTag = nameTag;
+				contNav.refresh();
 				//TODO Arlen:  replace this getcomponent with the correct information
 				contMisScript = missile.GetComponentInChildren<ControlledMissile>();
 				contMisScript.tLC = this;

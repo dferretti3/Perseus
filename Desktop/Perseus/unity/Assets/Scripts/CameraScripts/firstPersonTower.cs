@@ -20,7 +20,7 @@ public class firstPersonTower : MonoBehaviour {
 		targetSize = Screen.width/10;
 		missileButtonWidth = Screen.width/10;
 		missileButtonHeight = Screen.height/10;
-		    Screen.lockCursor = true;
+		Screen.lockCursor = true;
 	}
 	
 	
@@ -30,47 +30,46 @@ public class firstPersonTower : MonoBehaviour {
 		if(controlType == ControlType.Full)
 		{
 			GUI.DrawTexture(new Rect(Screen.width/2 - targetSize/2,Screen.height/2 - targetSize/2,targetSize,targetSize),target);
-			if(GUI.Button(new Rect(Screen.width/25,5,missileButtonWidth - 10,missileButtonHeight),"M1"))
+			string currentMissile = "";
+			if(tLC != null)
 			{
-				if(tLC == null)
+				if(tLC.currentMissileSelection == 0)
 				{
-					tLC = transform.parent.GetComponentInChildren<topLevelController>();
-					if(tLC != null)
-					{
-						fireMissile(missileType.Homing);
-					}
+					currentMissile = "HOMING MISSILE";
 				}
-				else
+				else if(tLC.currentMissileSelection == 1)
 				{
-					fireMissile(missileType.Homing);
+					currentMissile = "CONTROLLED MISSILE";
 				}
-			}
-			if(GUI.Button(new Rect(Screen.width/25 + missileButtonWidth,5,missileButtonWidth - 10,missileButtonHeight),"M2"))
-			{
-				if(tLC == null)
-				{
-					tLC = transform.parent.GetComponentInChildren<topLevelController>();
-					if(tLC != null)
-					{
-						fireMissile(missileType.Controlled);
-					}
-				}
-				else
-				{
-					fireMissile(missileType.Controlled);
-				}
+				
+				GUI.TextArea(new Rect(0,0,200,50),"Current Missile:\n\n\t\t" + currentMissile);
 			}
 		}
 	}
 	
-	void fireMissile(missileType mType)
+	
+	
+	void fireMissile(int missileTypeNum)
 	{
+		missileType mType;
+		if(missileTypeNum == 0)
+		{
+			mType = missileType.Homing;
+		}
+		else if(missileTypeNum == 1)
+		{
+			mType = missileType.Controlled;
+		}
+		else
+		{
+			return;
+		}
 		int prefabNum = -1;
 		GameObject tempMissile;
 		if(mType == missileType.Homing)
 		{
 			prefabNum = 0;
-			tempMissile = (GameObject)Instantiate(missilePrefab[prefabNum]);
+			tempMissile = (GameObject)Network.Instantiate(missilePrefab[prefabNum],new Vector3(-1000f,-1000f,-1000f),Quaternion.identity,0);
 			if(tLC.addNewMissile(tempMissile,mType))
 			{
 				tempMissile.transform.rotation = Quaternion.LookRotation(-transform.parent.up,transform.parent.forward);
@@ -120,6 +119,7 @@ public class firstPersonTower : MonoBehaviour {
 	
 	public void makeActive()
 	{
+		Screen.lockCursor = true;
 		controlType = ControlType.Full;
 		camera.enabled = true;
 		AudioListener aL = gameObject.GetComponent<AudioListener>();
@@ -129,69 +129,28 @@ public class firstPersonTower : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-			
+		if(tLC == null)
+		{
+			tLC = transform.parent.GetComponentInChildren<topLevelController>();
+		}
 		
 		if(controlType == ControlType.Full && !justActivated)
 		{
 			float yAngle = Mathf.Asin(transform.parent.forward.y/Mathf.Abs(transform.parent.forward.magnitude));
 			
-			if(Input.GetKeyDown(KeyCode.Alpha1))
+			if(Input.GetMouseButtonDown(0))
 			{
-				if(tLC == null)
-				{
-					tLC = transform.parent.GetComponentInChildren<topLevelController>();
-					if(tLC != null)
-					{
-						if(Input.GetKey(KeyCode.LeftShift))
-						{
-							tLC.openMiniScreen(0);
-						}
-						else
-						{
-							fireMissile(missileType.Homing);
-						}
-					}
-				}
-				else
-				{
-					if(Input.GetKey(KeyCode.LeftShift))
-					{
-						tLC.openMiniScreen(0);
-					}
-					else
-					{
-						fireMissile(missileType.Homing);
-					}
-				}
+				fireMissile(tLC.currentMissileSelection);
 			}
-			if(Input.GetKeyDown(KeyCode.Alpha2))
+			else if(Input.GetMouseButtonDown(1))
 			{
-				if(tLC == null)
-				{
-					tLC = transform.parent.GetComponentInChildren<topLevelController>();
-					if(tLC != null)
-					{
-						if(Input.GetKey(KeyCode.LeftShift))
-						{
-							tLC.openMiniScreen(1);
-						}
-						else
-						{
-							fireMissile(missileType.Controlled);
-						}
-					}
-				}
-				else
-				{
-					if(Input.GetKey(KeyCode.LeftShift))
-					{
-						tLC.openMiniScreen(1);
-					}
-					else
-					{
-						fireMissile(missileType.Controlled);
-					}
-				}
+				tLC.openMiniScreen(tLC.currentMissileSelection);
+			}
+			float scrollValue = Input.GetAxis("Mouse ScrollWheel");
+			scrollValue = scrollValue*10;
+			if(scrollValue != 0)
+			{
+				tLC.scrollMissileSelection(Mathf.RoundToInt(scrollValue));
 			}
 			
 			
@@ -253,5 +212,6 @@ public class firstPersonTower : MonoBehaviour {
 		camera.enabled = false;
 		AudioListener aL = gameObject.GetComponent<AudioListener>();
 		aL.enabled = false;
+		Screen.lockCursor = false;
 	}
 }

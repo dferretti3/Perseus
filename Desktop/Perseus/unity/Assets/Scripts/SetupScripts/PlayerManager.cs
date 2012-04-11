@@ -27,11 +27,13 @@ public class PlayerManager : MonoBehaviour {
 			if(GUI.Button(new Rect(10,10,100,20), "Create Server"))
 			{
 				Network.InitializeServer(2, 25000);
+				PlayerPrefs.SetInt("playerNum",0);
 			}
 			ip = GUI.TextArea(new Rect(10,30,200,20), ip);
 			if(GUI.Button(new Rect(10, 50, 100, 20), "Connect"))
 			{
 				Network.Connect(ip, 25000);
+				PlayerPrefs.SetInt("playerNum",1);
 			}
 			if(Network.isClient || Network.isServer)
 				netsetup=true;
@@ -79,7 +81,7 @@ public class PlayerManager : MonoBehaviour {
 	void FixedUpdate () {
 		
 		if (Input.GetKeyDown("n")) {
-			Application.LoadLevel("testScene");
+			//Application.LoadLevel("testScene");
 		}
 		
 		if(netsetup){

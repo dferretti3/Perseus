@@ -49,6 +49,7 @@ public class Player : MonoBehaviour {
 	[RPC]
 	void createTower2(Vector3 pos, Vector3 normal){
 		GameObject obj = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
+		obj.transform.localScale = new Vector3(5,5,5);
 		obj.transform.position = pos;
 		obj.transform.rotation = manager.rot();
 		obj.renderer.material.color = color;

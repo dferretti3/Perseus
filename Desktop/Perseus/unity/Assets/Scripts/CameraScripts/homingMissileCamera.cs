@@ -47,7 +47,7 @@ public class homingMissileCamera : MonoBehaviour
 		}
 		else if(camType == ControlType.Full)
 		{
-			if(transform.position.y < -30 || transform.position.y > 30)
+			if(transform.position.y < -60 || transform.position.y > 60)
 			{
 				GUI.TextArea(new Rect(Screen.width/2 - 125,Screen.height*3/4,250,60),"WARNING",myStyle);
 			}
@@ -63,7 +63,7 @@ public class homingMissileCamera : MonoBehaviour
 		}
 		
 		
-		if(transform.position.y > 50 || transform.position.y < -50)
+		if(transform.position.y > 80 || transform.position.y < -80)
 		{
 			selfDestruct();
 		}
@@ -138,10 +138,9 @@ public class homingMissileCamera : MonoBehaviour
 			}
 		}
 		
-		if(camType == ControlType.Full)
+		if(camType == ControlType.Full && !justActivated)
 		{
-			
-			if(Input.GetKeyDown(KeyCode.LeftShift))
+			if(Input.GetMouseButtonDown(1))
 			{
 				if(hasTarget)
 				{
@@ -154,17 +153,14 @@ public class homingMissileCamera : MonoBehaviour
 					aquireTarget();
 				}
 			}
-		}
-		
-		if(camType == ControlType.Full && !justActivated)
-		{
-			if(Input.GetKeyDown(KeyCode.E))
+			if(Input.GetAxis("Mouse ScrollWheel") != 0)
 			{
 				transferControl();
 			}
-			if(Input.GetKeyDown(KeyCode.LeftShift))
+			if(Input.GetMouseButtonDown(0))
 			{
-				
+				homingMissileScript msS = transform.parent.gameObject.GetComponent<homingMissileScript>();
+				msS.kill();
 			}
 		}
 		

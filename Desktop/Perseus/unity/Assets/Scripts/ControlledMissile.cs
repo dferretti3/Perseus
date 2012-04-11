@@ -57,9 +57,13 @@ public class ControlledMissile : MonoBehaviour {
 		
 		if(controlType == ControlType.Full && !justActivated)
 		{
-			if(Input.GetKeyDown(KeyCode.E))
+			if(Input.GetAxis("Mouse ScrollWheel") != 0)
 			{
 				transferControl();
+			}
+			if(Input.GetMouseButtonDown(0))
+			{
+				kill();
 			}
 		}
 		
@@ -141,6 +145,12 @@ public class ControlledMissile : MonoBehaviour {
 	private void kill()
 	{
 		transferControl();
-		Destroy(gameObject);
+		Network.Destroy(gameObject);
+	}
+	
+	[RPC]
+	void setNavColor(Vector3 pColor, string nTag)
+	{
+		GetComponentInChildren<navPoint>().subRefresh(new Color(pColor.x,pColor.y,pColor.z,1f),nTag);
 	}
 }

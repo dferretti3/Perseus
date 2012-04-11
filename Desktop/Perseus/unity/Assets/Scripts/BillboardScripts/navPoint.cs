@@ -22,8 +22,27 @@ public class navPoint : MonoBehaviour
 		displayMesh.renderer.material.color = playerColor;
 	}
 	
+	void OnDisable()
+	{
+		Destroy(nameDisplay);
+	}
+	
 	public void refresh()
 	{
+		Destroy(nameDisplay);
+		renderer.material.SetColor("_TintColor",playerColor);
+		nameDisplay = (GameObject)Instantiate(nameDisplayPref);
+		nameDisplay.transform.position = transform.position;
+		TextMesh displayMesh = nameDisplay.GetComponent<TextMesh>();
+		displayMesh.text = nameTag;
+		displayMesh.renderer.material.color = playerColor;
+		//transform.parent.networkView.RPC("setNavColor",RPCMode.Others,new Vector3(playerColor.r,playerColor.g,playerColor.b),nameTag);
+	}
+	
+	public void subRefresh(Color pCol, string nTag)
+	{
+		playerColor = pCol;
+		nameTag = nTag;
 		Destroy(nameDisplay);
 		renderer.material.SetColor("_TintColor",playerColor);
 		nameDisplay = (GameObject)Instantiate(nameDisplayPref);

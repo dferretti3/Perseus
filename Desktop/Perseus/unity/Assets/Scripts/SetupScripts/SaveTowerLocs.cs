@@ -22,28 +22,24 @@ public class SaveTowerLocs : MonoBehaviour {
 		}
 		float d = 4;
 		bool isP1 = false;
-		if(Random.value > .5)
+		if(PlayerPrefs.GetInt("playerNum") == 0)
 		{
 			isP1 = true;
 		}
-		GameObject tower1 = (GameObject)GameObject.Instantiate(towerPrefab);
-		tower1.transform.position = p1+d*n1;
-		tower1.transform.rotation = r1;
-		GameObject tower2 = (GameObject)GameObject.Instantiate(towerPrefab);
-		tower2.transform.position = p2+d*n2;
-		tower2.transform.rotation = r2;
-		topLevelController topCont1 = tower1.GetComponentInChildren<topLevelController>();
-		topCont1.playerColor = Color.red;
-		topCont1.nameTag = "PLR1";
-		topLevelController topCont2 = tower2.GetComponentInChildren<topLevelController>();
-		topCont2.playerColor = Color.blue;
-		topCont2.nameTag = "PLR2";
 		if(isP1)
 		{
+			GameObject tower1 = (GameObject)Network.Instantiate(towerPrefab,p1+d*n1,r1,0);
+			topLevelController topCont1 = tower1.GetComponentInChildren<topLevelController>();
+			topCont1.playerColor = Color.red;
+			topCont1.nameTag = "PLR1";
 			topCont1.isActive = true;
 		}
 		else
 		{
+			GameObject tower2 = (GameObject)Network.Instantiate(towerPrefab,p2+d*n2,r2,0);
+			topLevelController topCont2 = tower2.GetComponentInChildren<topLevelController>();
+			topCont2.playerColor = Color.blue;
+			topCont2.nameTag = "PLR2";
 			topCont2.isActive = true;
 		}
 		PlayerPrefs.SetFloat("p1.x",p1.x);
