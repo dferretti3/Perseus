@@ -1,28 +1,28 @@
 using UnityEngine;
 using System.Collections;
 
-public enum missileType {Homing, Controlled, Static};
+public enum missileType
+{
+	Homing,
+	Controlled,
+	Static
+};
 
-public class topLevelController : MonoBehaviour {
+public class topLevelController : MonoBehaviour
+{
 	
 	public Color playerColor;
 	public string nameTag;
-	
 	private bool coloredParent = false;
-	
 	public bool isActive = true;
 	public GameObject thirdPerson;
 	public thirdPersonTower tPT;
 	public GameObject firstPerson;
 	public firstPersonTower fPT;
-	
-	
 	public GameObject homingMissileObject;
 	public homingMissileCamera mC;
-	
 	public GameObject controlledMissileOjbect;
 	public ControlledMissile contMisScript;
-	
 	public int currentMissileSelection = 0;
 	private int numMissiles = 2;
 	
@@ -45,110 +45,105 @@ public class topLevelController : MonoBehaviour {
 	
 	
 	// Use this for initialization
-	void Start () {
-		if(homingMissileObject != null)
-		{
-			mC = homingMissileObject.GetComponent<homingMissileCamera>();
+	void Start ()
+	{
+		if (transform.parent.networkView.viewID.owner != Network.player) {
+			isActive = false;
 		}
-		tPT = thirdPerson.GetComponent<thirdPersonTower>();
-		fPT = firstPerson.GetComponent<firstPersonTower>();
-		if(tPT != null && !isActive)
-		{
-			tPT.shutDownControl();
+		
+		if (homingMissileObject != null) {
+			mC = homingMissileObject.GetComponent<homingMissileCamera> ();
 		}
-		if(isActive)
-		{
-			tPT.shutDownControl();
-			fPT.makeActive();
+		tPT = thirdPerson.GetComponent<thirdPersonTower> ();
+		fPT = firstPerson.GetComponent<firstPersonTower> ();
+		if (tPT != null && !isActive) {
+			tPT.shutDownControl ();
+		}
+		if (isActive) {
+			tPT.shutDownControl ();
+			fPT.makeActive ();
 		}
 	}
 	
-	public void scrollMissileSelection(int direction)
+	private bool ownedByCurrentPlayer ()
+	{
+		return transform.parent.networkView.viewID.owner == Network.player;
+	}
+	
+	public void scrollMissileSelection (int direction)
 	{
 		currentMissileSelection += direction;
-		while(currentMissileSelection < 0)
-		{
+		while (currentMissileSelection < 0) {
 			currentMissileSelection = numMissiles - currentMissileSelection;
 		}
 		currentMissileSelection = currentMissileSelection % numMissiles;
 	}
 	
 	// Update is called once per frame
-	void Update () {
+	void Update ()
+	{
+		if (ownedByCurrentPlayer ()) {
+			if (!coloredParent) {
+				navPoint toColor = gameObject.transform.parent.gameObject.GetComponentInChildren<navPoint> ();
+				if (toColor != null) {
+					toColor.playerColor = playerColor;
+					toColor.nameTag = nameTag;
+					toColor.refresh ();
+					coloredParent = true;
+				}
+			}
 		
-		if(!coloredParent)
-		{
-			navPoint toColor = gameObject.transform.parent.gameObject.GetComponentInChildren<navPoint>();
-			if(toColor != null)
-			{
-				toColor.playerColor = playerColor;
-				toColor.nameTag = nameTag;
-				toColor.refresh();
-				coloredParent = true;
+		
+			if (mC == null && homingMissileObject != null) {
+				mC = homingMissileObject.GetComponent<homingMissileCamera> ();
+			}
+			if (tPT == null) {
+				tPT = thirdPerson.GetComponent<thirdPersonTower> ();
+				if (tPT != null && !isActive) {
+					tPT.shutDownControl ();
+				}
+			}
+			if (fPT == null) {
+				fPT = firstPerson.GetComponent<firstPersonTower> ();
 			}
 		}
-		
-		
-		if(mC == null && homingMissileObject != null)
-		{
-			mC = homingMissileObject.GetComponent<homingMissileCamera>();
-		}
-		if(tPT == null)
-		{
-			tPT = thirdPerson.GetComponent<thirdPersonTower>();
-			if(tPT != null && !isActive)
-			{
-				tPT.shutDownControl();
-			}
-		}
-		if(fPT == null)
-		{
-			fPT = firstPerson.GetComponent<firstPersonTower>();
-		}
 	}
 	
-	public void moveToThirdPerson()
+	public void moveToThirdPerson ()
 	{
-		tPT.makeActive();
+		tPT.makeActive ();
 	}
 	
-	public void moveToFirstPerson()
+	public void moveToFirstPerson ()
 	{
-		fPT.makeActive();
+		fPT.makeActive ();
 	}
 	
-	public bool moveToMissile(int missileNum)
+	public bool moveToMissile (int missileNum)
 	{
-		if(missileNum == 0 && mC != null)
-		{
-			mC.makeActive();
+		if (missileNum == 0 && mC != null) {
+			mC.makeActive ();
 			return true;
-		}
-		else if(missileNum == 1 && contMisScript != null)
-		{
-			contMisScript.makeActive();
+		} else if (missileNum == 1 && contMisScript != null) {
+			contMisScript.makeActive ();
 			return true;
 		}
 		return false;
 	}
 	
-	public void openMiniScreen(int missileNum)
+	public void openMiniScreen (int missileNum)
 	{
-		if(missileNum == 0 && mC != null)
-		{
-			mC.openMiniScreen();
-		}
-		else if(missileNum == 1 && contMisScript != null)
-		{
-			contMisScript.openMiniScreen();
+		if (missileNum == 0 && mC != null) {
+			mC.openMiniScreen ();
+		} else if (missileNum == 1 && contMisScript != null) {
+			contMisScript.openMiniScreen ();
 		}
 	}
 	
-	public bool moveToMissile()
+	public bool moveToMissile ()
 	{
-		if(contMisScript != null)
-		{
-			contMisScript.makeActive();
+		if (contMisScript != null) {
+			contMisScript.makeActive ();
 			return true;
 		}
 		return false;
@@ -160,11 +155,10 @@ public class topLevelController : MonoBehaviour {
 		return false;*/
 	}
 	
-	public void openMiniScreen()
+	public void openMiniScreen ()
 	{
-		if(contMisScript != null)
-		{
-			contMisScript.openMiniScreen();
+		if (contMisScript != null) {
+			contMisScript.openMiniScreen ();
 		}
 		/*if(mC != null)
 		{
@@ -172,39 +166,37 @@ public class topLevelController : MonoBehaviour {
 		}*/
 	}
 	
-	public bool addNewMissile(GameObject missile,missileType mType)
+	public bool addNewMissile (GameObject missile, missileType mType)
 	{
-		switch(mType)
-		{
-			case(missileType.Homing):
-				if(homingMissileObject != null)
-				{
-					return false;
-				}
+		switch (mType) {
+		case(missileType.Homing):
+			if (homingMissileObject != null) {
+				return false;
+			}
 		
-				homingMissileObject = missile;
-				navPoint homingNav = homingMissileObject.GetComponentInChildren<navPoint>();
-				homingNav.playerColor = playerColor;
-				homingNav.nameTag = nameTag;
-				mC = homingMissileObject.GetComponentInChildren<homingMissileCamera>();
-				mC.tLC = this;
-				return true;
-			case(missileType.Controlled):
-				if(controlledMissileOjbect != null)
-				{
-					return false;
-				}
+			homingMissileObject = missile;
+			navPoint homingNav = homingMissileObject.GetComponentInChildren<navPoint> ();
+			homingNav.playerColor = playerColor;
+			homingNav.nameTag = nameTag;
+			homingNav.refresh();
+			mC = homingMissileObject.GetComponentInChildren<homingMissileCamera> ();
+			mC.tLC = this;
+			return true;
+		case(missileType.Controlled):
+			if (controlledMissileOjbect != null) {
+				return false;
+			}
 				
-				controlledMissileOjbect = missile;
-				navPoint contNav = controlledMissileOjbect.GetComponentInChildren<navPoint>();
-				contNav.playerColor = playerColor;
-				contNav.nameTag = nameTag;
-				contNav.refresh();
+			controlledMissileOjbect = missile;
+			navPoint contNav = controlledMissileOjbect.GetComponentInChildren<navPoint> ();
+			contNav.playerColor = playerColor;
+			contNav.nameTag = nameTag;
+			contNav.refresh ();
 				//TODO Arlen:  replace this getcomponent with the correct information
-				contMisScript = missile.GetComponentInChildren<ControlledMissile>();
-				contMisScript.tLC = this;
-				return true;
-			default:
+			contMisScript = missile.GetComponentInChildren<ControlledMissile> ();
+			contMisScript.tLC = this;
+			return true;
+		default:
 			return false;
 		}
 	}

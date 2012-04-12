@@ -11,13 +11,18 @@ public class homingMissileScript : MonoBehaviour
 	private bool begin = false;
 	private bool hasTarget = false;
 	private float normalSpeed = 15;
-	private float targetSpeed = 25;
+	private float targetSpeed = 45;
 	
 	// Use this for initialization
 	void Start ()
 	{
 		audio.clip = explosion;
 		audio.Stop();
+	}
+	
+	private bool ownedByCurrentPlayer ()
+	{
+		return networkView.viewID.owner == Network.player;
 	}
 	
 	public void init()
@@ -51,7 +56,7 @@ public class homingMissileScript : MonoBehaviour
 	}
 	
 	void OnTriggerEnter(Collider other) {
-		if(leftTower)
+		if(leftTower && ownedByCurrentPlayer())
 		{
 			PlayAudioClip(explosion,transform.position,4f);
 			mC.transferControl();
@@ -61,7 +66,7 @@ public class homingMissileScript : MonoBehaviour
 	
 	void OnTriggerExit(Collider other)
 	{
-		if(!leftTower)
+		if(!leftTower && ownedByCurrentPlayer())
 		{
 			audio.PlayOneShot(explosion,.5f);
 			mC.transferControl();
@@ -71,9 +76,13 @@ public class homingMissileScript : MonoBehaviour
 	
 	public void kill()
 	{
-		PlayAudioClip(explosion,transform.position,4f);
-		mC.transferControl();
-        Network.Destroy(gameObject);
+		if(ownedByCurrentPlayer())
+		{
+			networkView.RPC("died",RPCMode.Others,transform.position);
+			PlayAudioClip(explosion,transform.position,4f);
+			mC.transferControl();
+        	Network.Destroy(gameObject);
+		}
 	}
 	
 	
@@ -91,7 +100,14 @@ public class homingMissileScript : MonoBehaviour
 	[RPC]
 	void setNavColor(Vector3 pColor, string nTag)
 	{
+		Debug.Log("Received notification to change nav color...");
 		GetComponentInChildren<navPoint>().subRefresh(new Color(pColor.x,pColor.y,pColor.z,1f),nTag);
+	}
+	
+	[RPC]
+	void died(Vector3 pos)
+	{
+		PlayAudioClip(explosion,pos,4f);
 	}
 	
 	

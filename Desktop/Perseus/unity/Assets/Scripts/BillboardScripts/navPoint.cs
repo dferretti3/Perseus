@@ -13,6 +13,10 @@ public class navPoint : MonoBehaviour
 
 	void Start ()
 	{
+		if(nameDisplay != null)
+		{
+			Destroy(nameDisplay);
+		}
 		localPos = transform.localPosition;
 		renderer.material.SetColor("_TintColor",playerColor);
 		nameDisplay = (GameObject)Instantiate(nameDisplayPref);
@@ -36,16 +40,23 @@ public class navPoint : MonoBehaviour
 		TextMesh displayMesh = nameDisplay.GetComponent<TextMesh>();
 		displayMesh.text = nameTag;
 		displayMesh.renderer.material.color = playerColor;
-		//transform.parent.networkView.RPC("setNavColor",RPCMode.Others,new Vector3(playerColor.r,playerColor.g,playerColor.b),nameTag);
+		Debug.Log("Sending RPC to change nav color...");
+		transform.parent.networkView.RPC("setNavColor",RPCMode.OthersBuffered,new Vector3(playerColor.r,playerColor.g,playerColor.b),nameTag);
 	}
 	
 	public void subRefresh(Color pCol, string nTag)
 	{
+		Debug.Log("Attempting to update a networked nav point...");
 		playerColor = pCol;
 		nameTag = nTag;
 		Destroy(nameDisplay);
 		renderer.material.SetColor("_TintColor",playerColor);
 		nameDisplay = (GameObject)Instantiate(nameDisplayPref);
+		if(nameDisplay == null)
+		{
+			Debug.Log("Name display == null here....");
+			//nameDisplay = (GameObject)Instantiate(nameDisplayPref);
+		}
 		nameDisplay.transform.position = transform.position;
 		TextMesh displayMesh = nameDisplay.GetComponent<TextMesh>();
 		displayMesh.text = nameTag;
@@ -55,7 +66,8 @@ public class navPoint : MonoBehaviour
 
 	void OnWillRenderObject ()
 	{
-		if ((transform.position - Camera.current.transform.position).magnitude < 25) {
+		Vector3 vectorTo = transform.position - Camera.current.transform.position;
+		if ((vectorTo).magnitude < 25) {
 			transform.localScale = Vector3.zero;
 			nameDisplay.transform.localScale = Vector3.zero;
 			return;
@@ -67,8 +79,9 @@ public class navPoint : MonoBehaviour
 		
 		//then calc the player's new rotation quat
 		
-		transform.rotation = Quaternion.LookRotation (fwd, -Camera.current.transform.forward);
-		transform.localPosition = localPos + Camera.current.transform.up * transform.renderer.bounds.size.y;
+		transform.rotation = Quaternion.LookRotation (fwd, vectorTo);
+		transform.localPosition = localPos;
+		transform.position = transform.position + Camera.current.transform.up * transform.renderer.bounds.size.y;
 		
 		Vector3 screenPos = Camera.current.WorldToNormalizedViewportPoint(transform.parent.position);
 		Vector2 xY = new Vector2(screenPos.x - .5f,screenPos.y - .5f);

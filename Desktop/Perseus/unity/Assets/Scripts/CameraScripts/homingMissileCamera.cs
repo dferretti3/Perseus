@@ -13,7 +13,7 @@ public class homingMissileCamera : MonoBehaviour
 	private bool hasTarget = false;
 	private GameObject target;
 	private float dampener = 10f;
-	private float homingDampener = 5f;
+	private float homingDampener = 1f;
 	GUIStyle myStyle;
 	public Font warning;
 	private homingMissileScript missile;
@@ -34,22 +34,30 @@ public class homingMissileCamera : MonoBehaviour
 		camera.enabled = false;
 	}
 	
+	private bool ownedByCurrentPlayer ()
+	{
+		return transform.parent.networkView.viewID.owner == Network.player;
+	}
+	
 	void OnGUI()
 	{
-		if(camType == ControlType.Inset)
+		if(ownedByCurrentPlayer())
 		{
-			Rect currentScreen = camera.rect;
-			currentScreen.x = currentScreen.x*Screen.width;
-			currentScreen.width = currentScreen.width*Screen.width + 2;
-			currentScreen.height = currentScreen.height*Screen.height + 2;
-			currentScreen.y = Screen.height - currentScreen.y*Screen.height - currentScreen.height;
-			GUI.DrawTexture(currentScreen,videoBorder);
-		}
-		else if(camType == ControlType.Full)
-		{
-			if(transform.position.y < -60 || transform.position.y > 60)
+			if(camType == ControlType.Inset)
 			{
-				GUI.TextArea(new Rect(Screen.width/2 - 125,Screen.height*3/4,250,60),"WARNING",myStyle);
+				Rect currentScreen = camera.rect;
+				currentScreen.x = currentScreen.x*Screen.width;
+				currentScreen.width = currentScreen.width*Screen.width + 2;
+				currentScreen.height = currentScreen.height*Screen.height + 2;
+				currentScreen.y = Screen.height - currentScreen.y*Screen.height - currentScreen.height;
+				GUI.DrawTexture(currentScreen,videoBorder);
+			}
+			else if(camType == ControlType.Full)
+			{
+				if(transform.position.y < -150 || transform.position.y > 150)
+				{
+					GUI.TextArea(new Rect(Screen.width/2 - 125,Screen.height*3/4,250,60),"WARNING",myStyle);
+				}
 			}
 		}
 	}
@@ -62,8 +70,11 @@ public class homingMissileCamera : MonoBehaviour
 			missile = transform.parent.gameObject.GetComponentInChildren<homingMissileScript>();
 		}
 		
+		if(ownedByCurrentPlayer())
+		{
 		
-		if(transform.position.y > 80 || transform.position.y < -80)
+		
+		if(transform.position.y > 200 || transform.position.y < -200)
 		{
 			selfDestruct();
 		}
@@ -174,6 +185,7 @@ public class homingMissileCamera : MonoBehaviour
 		}
 		
 		justActivated = false;
+		}
 	}
 	
 	void selfDestruct()
@@ -276,12 +288,15 @@ public class homingMissileCamera : MonoBehaviour
 	
 	public void makeActive()
 	{
-		camera.enabled = true;
-		camType = ControlType.Full;
-		justActivated = true;
-		camera.rect = new Rect(0f,0f,1f,1f);
-		AudioListener aL = gameObject.GetComponent<AudioListener>();
-		aL.enabled = true;
+		if(ownedByCurrentPlayer())
+		{
+			camera.enabled = true;
+			camType = ControlType.Full;
+			justActivated = true;
+			camera.rect = new Rect(0f,0f,1f,1f);
+			AudioListener aL = gameObject.GetComponent<AudioListener>();
+			aL.enabled = true;
+		}
 	}
 	
 	public void transferControl()
