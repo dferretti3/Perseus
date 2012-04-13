@@ -4,13 +4,17 @@ using System.Collections;
 public class SaveTowerLocs : MonoBehaviour {
 	public GameObject towerPrefab;
 	// Use this for initialization
+	float money = 20;
 	void Start () {
-	
+		PlayerPrefs.SetFloat("money", money);
 	}
 	
 	// Update is called once per frame
 	void Update () {
-	
+		if(Network.isServer || Network.isClient){
+			money += Time.deltaTime;
+			PlayerPrefs.SetFloat("money", money);
+		}
 	}
 	
 	public void saveLocs(Vector3 p1, Vector3 p2, Quaternion r1, Quaternion r2, Vector3 n1, Vector3 n2)
