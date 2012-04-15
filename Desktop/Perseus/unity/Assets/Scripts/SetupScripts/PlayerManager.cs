@@ -118,7 +118,6 @@ public class PlayerManager : MonoBehaviour {
 	}
 	
 	public void mark(Vector3 hitInfo, Vector3 posit, GameObject obj) {
-		print(index);
 		//if (index!=0) return;
 		tower_pos[index] = posit;
 		objects[index] = obj;

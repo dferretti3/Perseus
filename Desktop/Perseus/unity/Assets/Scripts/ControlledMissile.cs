@@ -16,15 +16,49 @@ public class ControlledMissile : MonoBehaviour
 	int invert = 1;
 	private bool begin = false;
 	private bool colliding = false;
+	GUIStyle myStyle;
+	public Font warning;
+	public Texture2D videoBorder;
+
 	// Use this for initialization
 	void Start ()
 	{
-		
+		myStyle = new GUIStyle();
+		myStyle.font = warning;
+		myStyle.alignment = TextAnchor.MiddleCenter;
+		myStyle.fontSize = 50;
+		myStyle.normal.textColor = Color.red;
+		myStyle.normal.background = null;
 	}
 	
 	public void init ()
 	{
 		begin = true;
+	}
+	
+	void OnGUI(){
+
+		if(networkView.viewID.owner == Network.player)
+		{
+
+			if(controlType == ControlType.Inset)
+			{
+				Rect currentScreen = camera.rect;
+				currentScreen.x = currentScreen.x*Screen.width;
+				currentScreen.width = currentScreen.width*Screen.width + 2;
+				currentScreen.height = currentScreen.height*Screen.height + 2;
+				currentScreen.y = Screen.height - currentScreen.y*Screen.height - currentScreen.height;
+				GUI.DrawTexture(currentScreen,videoBorder);
+			}
+			else if(controlType == ControlType.Full)
+			{
+				if(transform.position.y > 150 || transform.position.y < -150 || transform.position.x > 250 || transform.position.x
+				<-250 || transform.position.z > 250 || transform.position.z < -250)
+				{
+					GUI.TextArea(new Rect(Screen.width/2 - 125,Screen.height*3/4,250,60),"WARNING",myStyle);
+				}
+			}
+		}
 	}
 	
 	void Update ()
@@ -66,7 +100,11 @@ public class ControlledMissile : MonoBehaviour
 					kill ();
 				}
 			}
-		
+			if(transform.position.y > 200 || transform.position.y < -200 || transform.position.x > 300 || transform.position.x
+				<-300 || transform.position.z > 300 || transform.position.z < -300)
+			{
+				kill();
+			}
 			justActivated = false;
 		}
 	}
@@ -77,11 +115,13 @@ public class ControlledMissile : MonoBehaviour
 		if(networkView.viewID.owner == Network.player)
 		{
 			if (controlType == ControlType.Full) {
+				Screen.lockCursor = true;
 				float x = Input.GetAxis ("Mouse X");
 				float y = Input.GetAxis ("Mouse Y");
 				if (Input.GetKeyDown (KeyCode.I))
 					invert = -1;
-			
+				if(Input.GetKey(KeyCode.Space))
+					kill();
 				rigidbody.AddRelativeTorque (y * invert * -turnspeed, x * turnspeed, 0);
 			
 				float rotateAmount = 0.6f;

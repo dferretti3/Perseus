@@ -5,19 +5,21 @@ public class SaveTowerLocs : MonoBehaviour {
 	public GameObject towerPrefab;
 	// Use this for initialization
 	float money = 20;
+	bool income = false;
 	void Start () {
 		PlayerPrefs.SetFloat("money", money);
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		if(Network.isServer || Network.isClient){
-			PlayerPrefs.SetFloat("money", PlayerPrefs.GetFloat("money")+Time.deltaTime);
+		if(income){
+			PlayerPrefs.SetFloat("money", PlayerPrefs.GetFloat("money")+Time.deltaTime*0.33f);
 		}
 	}
 	
 	public void saveLocs(Vector3 p1, Vector3 p2, Quaternion r1, Quaternion r2, Vector3 n1, Vector3 n2)
 	{
+		income=true;
 		GameObject ssS = GameObject.FindGameObjectWithTag("spaceSetup");
 		if(ssS != null)
 		{

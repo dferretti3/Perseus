@@ -4,7 +4,7 @@ using System.Collections;
 public class firstPersonTower : MonoBehaviour {
 	
 	public ControlType controlType = ControlType.None;
-	//public Font warning;
+	//public Font warning;	
 	private topLevelController tLC;
 	private bool justActivated = false;
 	private float targetSize;
@@ -42,7 +42,7 @@ public class firstPersonTower : MonoBehaviour {
 					currentMissile = "CONTROLLED MISSILE";
 				}
 				
-				GUI.TextArea(new Rect(0,0,200,50),"Current Missile:\n\n\t\t" + currentMissile);
+				GUI.TextArea(new Rect(0,0,200,50),"\n\t\t" + currentMissile + "\n\t\t\t\t\t\t\t\t\tCost: 10");
 			}
 		}
 	}
@@ -74,12 +74,17 @@ public class firstPersonTower : MonoBehaviour {
 				tempMissile.tag = "P1";
 			if(Network.isClient)
 				tempMissile.tag = "P2";
-			if(tLC.addNewMissile(tempMissile,mType))
+			
+			if(!tLC.moveToMissile(0)&&PlayerPrefs.GetFloat("money")>10)
 			{
-				tempMissile.transform.rotation = Quaternion.LookRotation(-transform.parent.up,transform.parent.forward);
-				tempMissile.transform.position = transform.parent.position;
-				homingMissileScript msS = tempMissile.GetComponent<homingMissileScript>();
-				msS.init();
+				if(tLC.addNewMissile(tempMissile,mType))
+				{
+					PlayerPrefs.SetFloat("money", PlayerPrefs.GetFloat("money")-10);
+					tempMissile.transform.rotation = Quaternion.LookRotation(-transform.parent.up,transform.parent.forward);
+					tempMissile.transform.position = transform.parent.position;
+					homingMissileScript msS = tempMissile.GetComponent<homingMissileScript>();
+					msS.init();
+				}
 			}
 			else
 			{
@@ -98,12 +103,16 @@ public class firstPersonTower : MonoBehaviour {
 				tempMissile.tag = "P1";
 			if(Network.isClient)
 				tempMissile.tag = "P2";
-			if(tLC.addNewMissile(tempMissile,mType))
+			if(!tLC.moveToMissile(1)&&PlayerPrefs.GetFloat("money")>10)
 			{
-				tempMissile.transform.rotation = Quaternion.LookRotation(transform.parent.forward,transform.parent.up);
-				tempMissile.transform.position = transform.parent.position+transform.forward*20 ;
-				ControlledMissile msS = tempMissile.GetComponent<ControlledMissile>();
-				msS.init();
+				if(tLC.addNewMissile(tempMissile,mType))
+				{
+					PlayerPrefs.SetFloat("money", PlayerPrefs.GetFloat("money")-10);
+					tempMissile.transform.rotation = Quaternion.LookRotation(transform.parent.forward,transform.parent.up);
+					tempMissile.transform.position = transform.parent.position+transform.forward*20 ;
+					ControlledMissile msS = tempMissile.GetComponent<ControlledMissile>();
+					msS.init();
+				}
 			}
 			else
 			{

@@ -33,7 +33,7 @@ public class thirdPersonTower : MonoBehaviour {
 					currentMissile = "CONTROLLED MISSILE";
 				}
 				
-				GUI.TextArea(new Rect(0,0,200,50),"Current Missile:\n\n\t\t" + currentMissile);
+				GUI.TextArea(new Rect(0,0,200,50),"\n\t\t" + currentMissile + "\n\t\t\t\t\t\t\t\t\tCost: 10");
 			}
 		}
 	}

@@ -17,7 +17,8 @@ public class homingMissileCamera : MonoBehaviour
 	GUIStyle myStyle;
 	public Font warning;
 	private homingMissileScript missile;
-	
+
+
 	// Use this for initialization
 	void Start ()
 	{
@@ -32,6 +33,7 @@ public class homingMissileCamera : MonoBehaviour
 		audio.Play();
 		camType = ControlType.None;
 		camera.enabled = false;
+		Screen.lockCursor = true;
 	}
 	
 	private bool ownedByCurrentPlayer ()
@@ -74,8 +76,9 @@ public class homingMissileCamera : MonoBehaviour
 		{
 		
 		
-		if(transform.position.y > 200 || transform.position.y < -200)
-		{
+		if(transform.position.y > 200 || transform.position.y < -200 || transform.position.x > 300 || transform.position.x
+				<-300 || transform.position.z > 300 || transform.position.z < -300)
+			{
 			selfDestruct();
 		}
 		

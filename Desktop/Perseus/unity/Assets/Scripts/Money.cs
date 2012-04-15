@@ -21,9 +21,5 @@ public class Money : MonoBehaviour {
 		PlayerPrefs.SetFloat("money", PlayerPrefs.GetFloat("money")+inc);
 		Network.Destroy(gameObject);
 	}
-	
-	[RPC]
-	void setNavColor(Vector3 pColor, string nTag)
-	{
-	}
+
 }

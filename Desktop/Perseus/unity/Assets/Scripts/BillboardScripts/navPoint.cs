@@ -40,13 +40,13 @@ public class navPoint : MonoBehaviour
 		TextMesh displayMesh = nameDisplay.GetComponent<TextMesh>();
 		displayMesh.text = nameTag;
 		displayMesh.renderer.material.color = playerColor;
-		Debug.Log("Sending RPC to change nav color...");
+		//Debug.Log("Sending RPC to change nav color...");
 		transform.parent.networkView.RPC("setNavColor",RPCMode.OthersBuffered,new Vector3(playerColor.r,playerColor.g,playerColor.b),nameTag);
 	}
 	
 	public void subRefresh(Color pCol, string nTag)
 	{
-		Debug.Log("Attempting to update a networked nav point...");
+		//Debug.Log("Attempting to update a networked nav point...");
 		playerColor = pCol;
 		nameTag = nTag;
 		Destroy(nameDisplay);

@@ -12,7 +12,7 @@ public class homingMissileScript : MonoBehaviour
 	private bool hasTarget = false;
 	private float normalSpeed = 15;
 	private float targetSpeed = 45;
-	
+
 	// Use this for initialization
 	void Start ()
 	{
@@ -44,6 +44,7 @@ public class homingMissileScript : MonoBehaviour
 			{
 				speed = targetSpeed;
 			}
+			
 			transform.Translate(transform.up*speed*Time.deltaTime,Space.World);
 		}
 		
