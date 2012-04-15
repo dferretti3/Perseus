@@ -12,8 +12,7 @@ public class SaveTowerLocs : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		if(Network.isServer || Network.isClient){
-			money += Time.deltaTime;
-			PlayerPrefs.SetFloat("money", money);
+			PlayerPrefs.SetFloat("money", PlayerPrefs.GetFloat("money")+Time.deltaTime);
 		}
 	}
 	

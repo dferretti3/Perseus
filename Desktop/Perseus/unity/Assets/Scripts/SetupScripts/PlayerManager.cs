@@ -10,11 +10,10 @@ public class PlayerManager : MonoBehaviour {
 	public float offset;
 	public int max_towers;
 	int num_towers;
-	string ip = "143.215.122.254";
+	string ip = "127.0.0.1";
 	freeFlyCamera my_camera;
 	
 	public GameObject plane;
-	
 	Vector3[] tower_pos,normals;
 	GameObject[] objects;
 	Quaternion[] tower_rots;
@@ -72,6 +71,7 @@ public class PlayerManager : MonoBehaviour {
 	
 	void OnConnectedToServer() { 
 		print("CONNECTED");
+
 	}
 	
 	void OnFailedToConnect(NetworkConnectionError e){

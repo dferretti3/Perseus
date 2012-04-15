@@ -56,7 +56,7 @@ public class homingMissileScript : MonoBehaviour
 	}
 	
 	void OnTriggerEnter(Collider other) {
-		if(leftTower && ownedByCurrentPlayer())
+		if(leftTower && ownedByCurrentPlayer() && other.gameObject.name != "Money(Clone)")
 		{
 			PlayAudioClip(explosion,transform.position,4f);
 			mC.transferControl();
@@ -66,7 +66,7 @@ public class homingMissileScript : MonoBehaviour
 	
 	void OnTriggerExit(Collider other)
 	{
-		if(!leftTower && ownedByCurrentPlayer())
+		if(!leftTower && ownedByCurrentPlayer() && other.gameObject.name != "Money(Clone)")
 		{
 			audio.PlayOneShot(explosion,.5f);
 			mC.transferControl();

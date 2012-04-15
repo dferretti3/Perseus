@@ -70,6 +70,10 @@ public class firstPersonTower : MonoBehaviour {
 		{
 			prefabNum = 0;
 			tempMissile = (GameObject)Network.Instantiate(missilePrefab[prefabNum],new Vector3(-1000f,-1000f,-1000f),Quaternion.identity,0);
+			if(Network.isServer)
+				tempMissile.tag = "P1";
+			if(Network.isClient)
+				tempMissile.tag = "P2";
 			if(tLC.addNewMissile(tempMissile,mType))
 			{
 				tempMissile.transform.rotation = Quaternion.LookRotation(-transform.parent.up,transform.parent.forward);
@@ -89,11 +93,15 @@ public class firstPersonTower : MonoBehaviour {
 		else if(mType == missileType.Controlled)
 		{
 			prefabNum = 1;
-			tempMissile = (GameObject)Instantiate(missilePrefab[prefabNum]);
+			tempMissile = (GameObject)Network.Instantiate(missilePrefab[prefabNum],new Vector3(-1000f,-1000f,-1000f),Quaternion.identity,0);
+			if(Network.isServer)
+				tempMissile.tag = "P1";
+			if(Network.isClient)
+				tempMissile.tag = "P2";
 			if(tLC.addNewMissile(tempMissile,mType))
 			{
 				tempMissile.transform.rotation = Quaternion.LookRotation(transform.parent.forward,transform.parent.up);
-				tempMissile.transform.position = transform.parent.position;
+				tempMissile.transform.position = transform.parent.position+transform.forward*20 ;
 				ControlledMissile msS = tempMissile.GetComponent<ControlledMissile>();
 				msS.init();
 			}

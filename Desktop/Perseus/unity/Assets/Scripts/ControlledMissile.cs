@@ -94,14 +94,11 @@ public class ControlledMissile : MonoBehaviour
 	}
 	
 	void OnTriggerEnter (Collider col)
-	{
-		if (colliding)
-			kill ();
-	}
-	
-	void OnTriggerExit (Collider col)
-	{
-		colliding = true;
+	{		
+		if(col.gameObject.name != "Money(Clone)")
+		{
+			kill();
+		}
 	}
 
 	public void makeActive ()
@@ -143,8 +140,8 @@ public class ControlledMissile : MonoBehaviour
 	{
 		if(networkView.viewID.owner == Network.player)
 		{
-			transferControl ();
-			Network.Destroy (gameObject);
+			transferControl();
+        	Network.Destroy(gameObject);
 		}
 	}
 	
