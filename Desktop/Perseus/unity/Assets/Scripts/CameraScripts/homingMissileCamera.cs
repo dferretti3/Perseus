@@ -56,7 +56,8 @@ public class homingMissileCamera : MonoBehaviour
 			}
 			else if(camType == ControlType.Full)
 			{
-				if(transform.position.y < -150 || transform.position.y > 150)
+				if(transform.position.y > 150 || transform.position.y < -150 || transform.position.x > 250 || transform.position.x
+				<-250 || transform.position.z > 250 || transform.position.z < -250)	
 				{
 					GUI.TextArea(new Rect(Screen.width/2 - 125,Screen.height*3/4,250,60),"WARNING",myStyle);
 				}
