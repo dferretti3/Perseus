@@ -22,7 +22,9 @@ public class MoneyManager : MonoBehaviour {
 			int randx = Random.Range(-250, 250);
 			int randz = Random.Range(-250, 250);
 			int randy = Random.Range(10,100);
-			Network.Instantiate(Money, new Vector3(randx, randy, randz), Quaternion.identity, 0);
+			GameObject m = (GameObject)Network.Instantiate(Money, new Vector3(randx, randy, randz), Quaternion.identity, 0);
+			int scale = Random.Range(1,5);
+			m.transform.localScale = new Vector3(scale, scale, scale);
 		}
 	}
 }
