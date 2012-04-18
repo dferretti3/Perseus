@@ -5,7 +5,8 @@ public enum missileType
 {
 	Homing,
 	Controlled,
-	Static
+	Static,
+	AIControlled
 };
 
 public class topLevelController : MonoBehaviour
@@ -23,8 +24,10 @@ public class topLevelController : MonoBehaviour
 	public homingMissileCamera mC;
 	public GameObject controlledMissileOjbect;
 	public ControlledMissile contMisScript;
+	public GameObject AIContMissileObject;
+	public AIControlledMissile aiContMissileScript;
 	public int currentMissileSelection = 0;
-	private int numMissiles = 3;
+	private int numMissiles = 4;
 	
 	//TODO Arlen: public yourMissileScript 
 	/*
@@ -128,6 +131,10 @@ public class topLevelController : MonoBehaviour
 			contMisScript.makeActive ();
 			return true;
 		}
+		else if(missileNum == 3 && aiContMissileScript != null) {
+			aiContMissileScript.makeActive();
+			return true;
+		}
 		return false;
 	}
 	
@@ -137,6 +144,9 @@ public class topLevelController : MonoBehaviour
 			mC.openMiniScreen ();
 		} else if (missileNum == 1 && contMisScript != null) {
 			contMisScript.openMiniScreen ();
+		}
+		else if (missileNum == 3 && aiContMissileScript != null) {
+			aiContMissileScript.openMiniScreen ();
 		}
 	}
 	
@@ -192,9 +202,23 @@ public class topLevelController : MonoBehaviour
 			contNav.playerColor = playerColor;
 			contNav.nameTag = nameTag;
 			contNav.refresh ();
-				//TODO Arlen:  replace this getcomponent with the correct information
 			contMisScript = missile.GetComponentInChildren<ControlledMissile> ();
 			contMisScript.tLC = this;
+			return true;
+		case(missileType.AIControlled):
+			Debug.Log("Received fire command");
+			if(AIContMissileObject != null) {
+				return false;
+			}
+			Debug.Log("Setting up AI missile");
+			AIContMissileObject = missile;
+			navPoint aicontNav = AIContMissileObject.GetComponentInChildren<navPoint>();
+			aicontNav.playerColor = playerColor;
+			aicontNav.nameTag = nameTag;
+			aicontNav.refresh();
+			aiContMissileScript = missile.GetComponentInChildren<AIControlledMissile>();
+			aiContMissileScript.tLC = this;
+			Debug.Log("Returning true");
 			return true;
 		default:
 			return false;

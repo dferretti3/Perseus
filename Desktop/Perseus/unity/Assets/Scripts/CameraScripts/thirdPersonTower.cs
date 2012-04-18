@@ -10,6 +10,7 @@ public class thirdPersonTower : MonoBehaviour {
 	public ControlType controlType = ControlType.None;
 	private topLevelController tLC;
 	private bool justActivated = false;
+	private string cost;
 	// Use this for initialization
 	void Start () {
 		Screen.lockCursor = true;
@@ -27,13 +28,25 @@ public class thirdPersonTower : MonoBehaviour {
 				if(tLC.currentMissileSelection == 0)
 				{
 					currentMissile = "HOMING MISSILE";
+					cost = "Cost: 10";
 				}
 				else if(tLC.currentMissileSelection == 1)
 				{
 					currentMissile = "CONTROLLED MISSILE";
+					cost = "Cost: 10";
+				}
+				else if(tLC.currentMissileSelection == 2)
+				{
+					currentMissile = "MACHINE GUN";
+					cost = "Cost: 0";
+				}
+				else if(tLC.currentMissileSelection == 3)
+				{
+					currentMissile = "AI MISSILE";
+					cost = "Cost: 0";
 				}
 				
-				GUI.TextArea(new Rect(0,0,200,50),"\n\t\t" + currentMissile + "\n\t\t\t\t\t\t\t\t\tCost: 10");
+				GUI.TextArea(new Rect(0,0,200,50),"\n\t\t" + currentMissile + "\n\t\t\t\t\t\t\t\t\t"+cost);
 			}
 		}
 	}
