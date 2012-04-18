@@ -12,7 +12,7 @@ public class homingMissileScript : MonoBehaviour
 	private bool hasTarget = false;
 	private float normalSpeed = 15;
 	private float targetSpeed = 45;
-
+	int lives = 2;
 	// Use this for initialization
 	void Start ()
 	{
@@ -57,12 +57,18 @@ public class homingMissileScript : MonoBehaviour
 	}
 	
 	void OnTriggerEnter(Collider other) {
-		if(leftTower && ownedByCurrentPlayer() && other.gameObject.name != "Money(Clone)")
+		if(other.gameObject.name == "Bullet(Clone)")
+		{
+			lives--;
+			if(lives<=0)
+				kill();
+		}
+		else if(leftTower && ownedByCurrentPlayer() && other.gameObject.name != "Money(Clone)")
 		{
 			PlayAudioClip(explosion,transform.position,4f);
 			mC.transferControl();
         	Network.Destroy(gameObject);
-		}
+		}	
     }
 	
 	void OnTriggerExit(Collider other)

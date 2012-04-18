@@ -15,11 +15,10 @@ public class ControlledMissile : MonoBehaviour
 	int view = -1;
 	int invert = 1;
 	private bool begin = false;
-	private bool colliding = false;
 	GUIStyle myStyle;
 	public Font warning;
 	public Texture2D videoBorder;
-
+	int lives = 2;
 	// Use this for initialization
 	void Start ()
 	{
@@ -134,11 +133,18 @@ public class ControlledMissile : MonoBehaviour
 	}
 	
 	void OnTriggerEnter (Collider col)
-	{		
-		if(col.gameObject.name != "Money(Clone)")
+	{	
+		if(col.gameObject.name == "Bullet(Clone)")
+		{
+			lives--;
+			if(lives<=0)
+				kill();
+		}
+		else if(col.gameObject.name != "Money(Clone)")
 		{
 			kill();
 		}
+
 	}
 
 	public void makeActive ()

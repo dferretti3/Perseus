@@ -13,7 +13,7 @@ public class firstPersonTower : MonoBehaviour {
 	private float missileButtonHeight;
 	public GameObject[] missilePrefab;
 		float turnspeed = 2.0f;
-
+	string cost;
 	
 	// Use this for initialization
 	void Start () {
@@ -36,13 +36,20 @@ public class firstPersonTower : MonoBehaviour {
 				if(tLC.currentMissileSelection == 0)
 				{
 					currentMissile = "HOMING MISSILE";
+					cost = "Cost: 10";
 				}
 				else if(tLC.currentMissileSelection == 1)
 				{
 					currentMissile = "CONTROLLED MISSILE";
+					cost = "Cost: 10";
+				}
+				else if(tLC.currentMissileSelection == 2)
+				{
+					currentMissile = "MACHINE GUN";
+					cost = "Cost: 0";
 				}
 				
-				GUI.TextArea(new Rect(0,0,200,50),"\n\t\t" + currentMissile + "\n\t\t\t\t\t\t\t\t\tCost: 10");
+				GUI.TextArea(new Rect(0,0,200,50),"\n\t\t" + currentMissile + "\n\t\t\t\t\t\t\t\t\t"+cost);
 			}
 		}
 	}
@@ -59,6 +66,10 @@ public class firstPersonTower : MonoBehaviour {
 		else if(missileTypeNum == 1)
 		{
 			mType = missileType.Controlled;
+		}
+		else if(missileTypeNum == 2)
+		{
+			mType = missileType.Static;
 		}
 		else
 		{
@@ -126,6 +137,11 @@ public class firstPersonTower : MonoBehaviour {
 		else if(mType == missileType.Static)
 		{
 			prefabNum = 2;
+			tempMissile = (GameObject)Network.Instantiate(missilePrefab[prefabNum],transform.parent.position+transform.forward*20,Quaternion.LookRotation(transform.parent.forward,transform.parent.up),0);
+			if(Network.isServer)
+				tempMissile.tag = "P1";
+			if(Network.isClient)
+				tempMissile.tag = "P2";
 		}
 		if(missilePrefab.Length <= prefabNum || prefabNum < 0)
 		{

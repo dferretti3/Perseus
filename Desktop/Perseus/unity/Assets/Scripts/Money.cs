@@ -14,8 +14,11 @@ public class Money : MonoBehaviour {
 	}
 	
 	void OnTriggerEnter(Collider col){
-		PlayerPrefs.SetFloat("money", PlayerPrefs.GetFloat("money")+inc);
-		Network.Destroy(gameObject);
+		if(col.gameObject.name != "Bullet(Clone)")
+		{
+			PlayerPrefs.SetFloat("money", PlayerPrefs.GetFloat("money")+inc);
+			Network.Destroy(gameObject);
+		}
 	}
 
 }

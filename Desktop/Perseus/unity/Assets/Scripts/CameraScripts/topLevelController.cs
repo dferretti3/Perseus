@@ -24,7 +24,7 @@ public class topLevelController : MonoBehaviour
 	public GameObject controlledMissileOjbect;
 	public ControlledMissile contMisScript;
 	public int currentMissileSelection = 0;
-	private int numMissiles = 2;
+	private int numMissiles = 3;
 	
 	//TODO Arlen: public yourMissileScript 
 	/*
@@ -73,10 +73,10 @@ public class topLevelController : MonoBehaviour
 	public void scrollMissileSelection (int direction)
 	{
 		currentMissileSelection += direction;
-		while (currentMissileSelection < 0) {
-			currentMissileSelection = numMissiles - currentMissileSelection;
-		}
-		currentMissileSelection = currentMissileSelection % numMissiles;
+		if(currentMissileSelection<0)
+			currentMissileSelection=numMissiles-1;
+		if(currentMissileSelection>numMissiles-1)
+			currentMissileSelection=0;
 	}
 	
 	// Update is called once per frame
