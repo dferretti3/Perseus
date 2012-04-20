@@ -213,6 +213,19 @@ public class AIControlledMissile : MonoBehaviour
 	{
 		if (networkView.viewID.owner == Network.player) {
 			transferControl ();
+			ParticleSystem engine = GetComponentInChildren<ParticleSystem>();
+			engine.transform.parent = null;
+			engine.enableEmission = false;
+			engine.GetComponent<ParticleAnimator>().autodestruct = true;
+			float explosionRad = 10;
+			int halfHit = 10;
+			Collider[] hitTurretts = Physics.OverlapSphere(transform.position,explosionRad,1<<10);
+			foreach(Collider turrett in hitTurretts)
+			{
+				topLevelController ttlc = turrett.transform.GetComponentInChildren<topLevelController>();
+				int hitFor = (int)(explosionRad - (turrett.transform.position - transform.position).magnitude)*halfHit + halfHit;
+				transform.networkView.RPC("hitTower",turrett.networkView.owner,hitFor);
+			}
 			Network.Destroy (gameObject);
 		}
 	}

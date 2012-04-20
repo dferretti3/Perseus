@@ -28,6 +28,7 @@ public class topLevelController : MonoBehaviour
 	public AIControlledMissile aiContMissileScript;
 	public int currentMissileSelection = 0;
 	private int numMissiles = 4;
+	private int health = 100;
 	
 	//TODO Arlen: public yourMissileScript 
 	/*
@@ -66,6 +67,21 @@ public class topLevelController : MonoBehaviour
 			tPT.shutDownControl ();
 			fPT.makeActive ();
 		}
+	}
+	
+	public void hitPlayer(int damage)
+	{
+		health -= damage;
+		if(health <= 0)
+		{
+			Network.Destroy(transform.parent.gameObject);
+		}
+		transform.parent.networkView.RPC("updateHealth",RPCMode.OthersBuffered,health);
+	}
+	
+	public void setHealth(int currentVal)
+	{
+		health = currentVal;
 	}
 	
 	private bool ownedByCurrentPlayer ()

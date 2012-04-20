@@ -21,5 +21,17 @@ public class networkCatcher : MonoBehaviour
 	{
 		GetComponentInChildren<navPoint>().subRefresh(new Color(pColor.x,pColor.y,pColor.z,1f),nTag);
 	}
+	
+	[RPC]
+	void hitTower(int damage)
+	{
+		GetComponentInChildren<topLevelController>().hitPlayer(damage);
+	}
+	
+	[RPC]
+	void updateHealth(int currentHealth)
+	{
+		GetComponentInChildren<topLevelController>().setHealth(currentHealth);
+	}
 }
 
