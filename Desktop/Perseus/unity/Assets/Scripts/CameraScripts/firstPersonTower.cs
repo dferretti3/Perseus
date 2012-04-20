@@ -148,10 +148,6 @@ public class firstPersonTower : MonoBehaviour {
 		{
 			prefabNum = 2;
 			tempMissile = (GameObject)Network.Instantiate(missilePrefab[prefabNum],transform.parent.position+transform.forward*20,Quaternion.LookRotation(transform.parent.forward,transform.parent.up),0);
-			if(Network.isServer)
-				tempMissile.tag = "P1";
-			if(Network.isClient)
-				tempMissile.tag = "P2";
 		}
 		else if(mType == missileType.AIControlled)
 		{

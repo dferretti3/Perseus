@@ -1,17 +1,18 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\networkCatcher.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\AIControl.cs">
     <Files>
       <File FileName="Assets\Scripts\CameraScripts\thirdPersonTower.cs" Line="1" Column="1" />
       <File FileName="Assets\Scripts\CameraScripts\homingMissileCamera.cs" Line="1" Column="1" />
       <File FileName="Assets\Scripts\homingMissileScript.cs" Line="1" Column="1" />
       <File FileName="Assets\Scripts\ControlledMissile.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\CameraScripts\firstPersonTower.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\CameraScripts\firstPersonTower.cs" Line="150" Column="121" />
       <File FileName="Assets\Scripts\CameraScripts\topLevelController.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\Bullet.cs" Line="13" Column="36" />
+      <File FileName="Assets\Scripts\Bullet.cs" Line="30" Column="1" />
       <File FileName="Assets\Scripts\SetupScripts\Player.cs" Line="1" Column="1" />
       <File FileName="Assets\Scripts\Money.cs" Line="1" Column="1" />
       <File FileName="Assets\Scripts\networkCatcher.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\AIControl.cs" Line="27" Column="14" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
