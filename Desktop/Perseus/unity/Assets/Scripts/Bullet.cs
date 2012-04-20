@@ -3,8 +3,7 @@ using System.Collections;
 
 public class Bullet : MonoBehaviour {
 	
-	Vector3 velocity;
-	float projectilespeed = 2.0f;
+	float projectilespeed = 3.0f;
 	int count = 0;
 	// Use this for initialization
 	void Start () {
@@ -28,4 +27,5 @@ public class Bullet : MonoBehaviour {
 			col.gameObject.name==("homingMissile(Clone)"))
 			Network.Destroy(this.gameObject);
 	}
+
 }
