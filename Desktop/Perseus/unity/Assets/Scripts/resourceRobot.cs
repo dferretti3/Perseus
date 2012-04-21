@@ -27,7 +27,7 @@ public class resourceRobot : MonoBehaviour
 					foundAt = x;
 				}
 			}
-			if(x > -1)
+			if(foundAt > -1)
 			{
 				moneyTarget = coins[foundAt].gameObject;
 			}
