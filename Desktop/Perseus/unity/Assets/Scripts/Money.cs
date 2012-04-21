@@ -10,14 +10,16 @@ public class Money : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		inc = 6-transform.localScale.x;
 	}
 	
 	void OnTriggerEnter(Collider col){
 		if(col.gameObject.name != "Bullet(Clone)")
 		{
-			PlayerPrefs.SetFloat("money", PlayerPrefs.GetFloat("money")+inc);
-			Network.Destroy(gameObject);
+			if(col.gameObject.networkView.owner == Network.player)
+			{
+				PlayerPrefs.SetFloat("money", PlayerPrefs.GetFloat("money")+ 6 - transform.localScale.x);
+				Network.Destroy(gameObject);
+			}
 		}
 	}
 

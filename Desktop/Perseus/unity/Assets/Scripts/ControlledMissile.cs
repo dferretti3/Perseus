@@ -96,8 +96,8 @@ public class ControlledMissile : MonoBehaviour
 				}
 				float y = Input.GetAxis("Mouse Y");
 				float x = Input.GetAxis("Mouse X");
-				transform.Rotate(new Vector3(-y, 0, 0) * Time.deltaTime * 50);
-				transform.Rotate(new Vector3(0, x, 0) * Time.deltaTime * 50);
+				transform.Rotate(new Vector3(-y, 0, 0) * Time.deltaTime * 60);
+				transform.Rotate(new Vector3(0, x, 0) * Time.deltaTime * 60);
 			}
 		
 			if (controlType != ControlType.None) {

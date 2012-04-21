@@ -1,10 +1,19 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\SetupScripts\PlayerManager.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\MoneyManager.cs">
     <Files>
-      <File FileName="Assets\Scripts\SetupScripts\SaveTowerLocs.cs" Line="26" Column="63" />
-      <File FileName="Assets\Scripts\SetupScripts\PlayerManager.cs" Line="105" Column="23" />
-      <File FileName="Assets\Scripts\SetupScripts\Player.cs" Line="31" Column="4" />
+      <File FileName="Assets\Scripts\SetupScripts\SaveTowerLocs.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\SetupScripts\PlayerManager.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\SetupScripts\Player.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\resourceRobot.cs" Line="251" Column="4" />
+      <File FileName="Assets\Scripts\ControlledMissile.cs" Line="100" Column="63" />
+      <File FileName="Assets\Scripts\CameraScripts\firstPersonTower.cs" Line="260" Column="5" />
+      <File FileName="Assets\Scripts\CameraScripts\topLevelController.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\AIControlledMissile.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\CameraScripts\homingMissileCamera.cs" Line="140" Column="63" />
+      <File FileName="Assets\Scripts\Money.cs" Line="16" Column="45" />
+      <File FileName="Assets\Scripts\MoneyManager.cs" Line="51" Column="118" />
+      <File FileName="Assets\Scripts\moneycounter.cs" Line="1" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
