@@ -53,6 +53,11 @@ public class firstPersonTower : MonoBehaviour {
 					currentMissile = "AI MISSILE";
 					cost = "Cost: 0";
 				}
+				else if(tLC.currentMissileSelection == 4)
+				{
+					currentMissile = "COLLECTOR";
+					cost = "Cost: 0";
+				}
 				
 				GUI.TextArea(new Rect(0,0,200,50),"\n\t\t" + currentMissile + "\n\t\t\t\t\t\t\t\t\t"+cost);
 			}
@@ -80,6 +85,10 @@ public class firstPersonTower : MonoBehaviour {
 		{
 			Debug.Log("Firing AI missile");
 			mType = missileType.AIControlled;
+		}
+		else if(missileTypeNum == 4)
+		{
+			mType = missileType.Collector;
 		}
 		else
 		{
@@ -174,6 +183,33 @@ public class firstPersonTower : MonoBehaviour {
 			{
 				Destroy(tempMissile);
 				if(tLC.moveToMissile(3))
+				{
+					cleanUpOnExit();
+				}
+			}
+		}
+		else if(mType == missileType.Collector)
+		{
+			prefabNum = 4;
+			tempMissile = (GameObject)Network.Instantiate(missilePrefab[prefabNum],new Vector3(-1000f,-1000f,-1000f),Quaternion.identity,0);
+			if(Network.isServer)
+				tempMissile.tag = "P1";
+			if(Network.isClient)
+				tempMissile.tag = "P2";
+			if(!tLC.moveToMissile(4)&&PlayerPrefs.GetFloat("money")>0)
+			{
+				Debug.Log("Sending message to controller");
+				if(tLC.addNewMissile(tempMissile,mType))
+				{
+					//PlayerPrefs.SetFloat("money", PlayerPrefs.GetFloat("money")-10);
+					tempMissile.transform.rotation = Quaternion.LookRotation(transform.parent.forward,transform.parent.up);
+					tempMissile.transform.position = transform.position+Vector3.up*8 ;
+				}
+			}
+			else
+			{
+				Destroy(tempMissile);
+				if(tLC.moveToMissile(4))
 				{
 					cleanUpOnExit();
 				}

@@ -6,7 +6,8 @@ public enum missileType
 	Homing,
 	Controlled,
 	Static,
-	AIControlled
+	AIControlled,
+	Collector
 };
 
 public class topLevelController : MonoBehaviour
@@ -26,8 +27,10 @@ public class topLevelController : MonoBehaviour
 	public ControlledMissile contMisScript;
 	public GameObject AIContMissileObject;
 	public AIControlledMissile aiContMissileScript;
+	public GameObject ResourceMissile;
+	public resourceRobot resourceMissileScript;
 	public int currentMissileSelection = 0;
-	private int numMissiles = 4;
+	private int numMissiles = 5;
 	private int health = 100;
 	
 	//TODO Arlen: public yourMissileScript 
@@ -151,6 +154,11 @@ public class topLevelController : MonoBehaviour
 			aiContMissileScript.makeActive();
 			return true;
 		}
+		else if(missileNum == 4 && resourceMissileScript != null)
+		{
+			resourceMissileScript.makeActive();
+			return true;
+		}
 		return false;
 	}
 	
@@ -163,6 +171,10 @@ public class topLevelController : MonoBehaviour
 		}
 		else if (missileNum == 3 && aiContMissileScript != null) {
 			aiContMissileScript.openMiniScreen ();
+		}
+		else if(missileNum == 4 && resourceMissileScript != null)
+		{
+			resourceMissileScript.openMiniScreen();
 		}
 	}
 	
@@ -234,6 +246,21 @@ public class topLevelController : MonoBehaviour
 			aicontNav.refresh();
 			aiContMissileScript = missile.GetComponentInChildren<AIControlledMissile>();
 			aiContMissileScript.tLC = this;
+			Debug.Log("Returning true");
+			return true;
+		case(missileType.Collector):
+			Debug.Log("Received fire command");
+			if(ResourceMissile != null) {
+				return false;
+			}
+			Debug.Log("Setting up AI missile");
+			ResourceMissile = missile;
+			navPoint rescontNav = ResourceMissile.GetComponentInChildren<navPoint>();
+			rescontNav.playerColor = playerColor;
+			rescontNav.nameTag = nameTag;
+			rescontNav.refresh();
+			resourceMissileScript = missile.GetComponentInChildren<resourceRobot>();
+			resourceMissileScript.tLC = this;
 			Debug.Log("Returning true");
 			return true;
 		default:
