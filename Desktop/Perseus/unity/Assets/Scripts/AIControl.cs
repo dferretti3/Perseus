@@ -33,18 +33,18 @@ public class AIControl : MonoBehaviour {
 			if(d<=20000)
 			{
 				lead = 10;
-				spread = 2;
+				spread = 5;
 			}
 			if(d>20000)
 			{
 				lead = 40;
-				spread = 5;
+				spread = 8;
 			}
-			transform.LookAt(target.transform.position+target.transform.forward*lead);
+			transform.LookAt(target.transform.position);//+target.transform.forward*lead);
 			if(count%20==0)
 			{
-				transform.LookAt(target.transform.position+target.transform.forward*lead-new Vector3(Random.Range(-spread,spread),Random.Range(-spread,spread),Random.Range(-spread,spread)));
-				Network.Instantiate(b, transform.position+transform.forward*20, transform.rotation, 0);
+				Bullet bul = (Bullet)Network.Instantiate(b, transform.position+transform.forward*20, transform.rotation, 0);
+				bul.transform.LookAt(target.transform.position+target.transform.forward*lead-new Vector3(Random.Range(-spread,spread),Random.Range(-spread,spread),Random.Range(-spread,spread)));
 			}
 		}
 	}

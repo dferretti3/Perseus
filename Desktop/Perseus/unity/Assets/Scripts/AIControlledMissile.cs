@@ -13,7 +13,7 @@ public class AIControlledMissile : MonoBehaviour
 	private Rect viewRect = new Rect (0f, 0f, 0f, 0f);
 	private float rectWidth = 0f;
 	private bool justActivated = false;
-	private int lives = 2;
+	private int lives = 3;
 	public topLevelController tLC;
 	public AudioClip explosion;
 	public GameObject expSource;

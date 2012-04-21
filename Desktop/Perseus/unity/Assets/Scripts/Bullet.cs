@@ -3,7 +3,7 @@ using System.Collections;
 
 public class Bullet : MonoBehaviour {
 	
-	float projectilespeed = 3.0f;
+	float projectilespeed = 2.0f;
 	int count = 0;
 	// Use this for initialization
 	void Start () {
@@ -12,13 +12,16 @@ public class Bullet : MonoBehaviour {
 	// Update is called once per frame
 	void FixedUpdate () {
 		count++;
+		if(ownedByCurrentPlayer())
+		{
+			
 		transform.position += transform.forward * projectilespeed;
-		
 		if(transform.position.y > 200 || transform.position.y < -200 || transform.position.x > 300 || transform.position.x
 				<-300 || transform.position.z > 300 || transform.position.z < -300)
 			{
 				Network.Destroy(this.gameObject);
 			}
+		}
 	}
 	
 	void OnTriggerEnter(Collider col)
@@ -27,5 +30,9 @@ public class Bullet : MonoBehaviour {
 			col.gameObject.name==("homingMissile(Clone)"))
 			Network.Destroy(this.gameObject);
 	}
-
+	
+	private bool ownedByCurrentPlayer ()
+	{
+		return transform.networkView.viewID.owner == Network.player;
+	}
 }
