@@ -134,6 +134,10 @@ public class homingMissileCamera : MonoBehaviour
 		
 		if(camType == ControlType.Full && !hasTarget)
 		{
+			float y = Input.GetAxis("Mouse Y");
+			float x = Input.GetAxis("Mouse X");
+			transform.Rotate(new Vector3(-y, 0, 0) * Time.deltaTime * 20);
+			transform.Rotate(new Vector3(0, x, 0) * Time.deltaTime * 20);
 			if(Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.UpArrow))
 			{
 				Up();

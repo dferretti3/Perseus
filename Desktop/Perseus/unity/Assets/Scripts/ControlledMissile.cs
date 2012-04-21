@@ -94,6 +94,10 @@ public class ControlledMissile : MonoBehaviour
 				if (Input.GetMouseButtonDown (0)) {
 					kill ();
 				}
+				float y = Input.GetAxis("Mouse Y");
+				float x = Input.GetAxis("Mouse X");
+				transform.Rotate(new Vector3(-y, 0, 0) * Time.deltaTime * 60);
+				transform.Rotate(new Vector3(0, x, 0) * Time.deltaTime * 60);
 			}
 		
 			if (controlType != ControlType.None) {
@@ -113,7 +117,7 @@ public class ControlledMissile : MonoBehaviour
 	// Update is called once per frame
 	void FixedUpdate ()
 	{
-		if(networkView.viewID.owner == Network.player)
+		/*if(networkView.viewID.owner == Network.player)
 		{
 			if (controlType == ControlType.Full) {
 				Screen.lockCursor = true;
@@ -123,7 +127,7 @@ public class ControlledMissile : MonoBehaviour
 					invert = -1;
 				if(Input.GetKey(KeyCode.Space))
 					kill();
-				rigidbody.AddRelativeTorque (y * invert * -turnspeed, x * turnspeed, 0);
+				//rigidbody.AddRelativeTorque (y * invert * -turnspeed, x * turnspeed, 0);
 			
 				float rotateAmount = 0.6f;
 				if (Input.GetAxis ("Horizontal") < 0)
@@ -131,7 +135,7 @@ public class ControlledMissile : MonoBehaviour
 				else if (Input.GetAxis ("Horizontal") > 0)
 					transform.Rotate (0, 0, -rotateAmount);
 			}
-		}
+		}*/
 	}
 	
 	void OnTriggerEnter (Collider col)
