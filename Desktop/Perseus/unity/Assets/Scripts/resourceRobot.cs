@@ -147,7 +147,7 @@ public class resourceRobot : MonoBehaviour
 						}
 						blocked = true;
 						RaycastHit LeftHitInfo, RightHitInfo, UpHitInfo, DownHitInfo;
-						Debug.Log("spherecast hit!");
+						//Debug.Log("spherecast hit!");
 						Ray leftTarget, rightTarget, upTarget, downTarget;
 						int direction = 0;
 						float maxHitDist = 9000;
@@ -206,7 +206,7 @@ public class resourceRobot : MonoBehaviour
 					
 					}
 					else{
-						Debug.Log("Spherecast not hit");
+						//Debug.Log("Spherecast not hit");
 					}
 					}
 					Debug.DrawLine(transform.position,realTargetPos,Color.red,.3f);
@@ -217,11 +217,59 @@ public class resourceRobot : MonoBehaviour
 					transform.forward = Vector3.Slerp (transform.forward, realTargetPos - transform.position, Time.deltaTime*.1f);
 		transform.position = transform.position + (realTargetPos - transform.position).normalized* 3 * Time.deltaTime;
 		}
-		else
+		else if(!justActivated)
 		{
+			float y = Input.GetAxis("Mouse Y");
+			float x = Input.GetAxis("Mouse X");
+			transform.Rotate(new Vector3(-y, 0, 0) * Time.deltaTime * 50);
+			transform.Rotate(new Vector3(0, x, 0) * Time.deltaTime * 50);
+			
+			if(Input.GetKeyDown(KeyCode.O) || Input.GetKeyDown(KeyCode.P) || Input.GetAxis ("Mouse ScrollWheel") != 0) {
+					transferControl ();
+			}
+			if(Input.GetMouseButtonDown(0))
+			{
+				kill();
+			}
+			
+			if(Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.UpArrow))
+			{
+				transform.position = transform.position + transform.forward*5*Time.deltaTime;
+			}
+			else if(Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow))
+			{
+				transform.position = transform.position - transform.right*5*Time.deltaTime;
+			}
+			if(Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.DownArrow))
+			{
+				transform.position = transform.position - transform.forward*5*Time.deltaTime;
+			}
+			else if(Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow))
+			{
+				transform.position = transform.position + transform.right*5*Time.deltaTime;
+			}
+			if(Input.GetKey(KeyCode.Q))
+			{
+				transform.position = transform.position - transform.up*5*Time.deltaTime;
+			}
+			else if(Input.GetKey(KeyCode.E))
+			{
+				transform.position = transform.position + transform.up*5*Time.deltaTime;
+			}
+			
+			
+			
+			
 			
 		}
 		
+		
+		if (controlType != ControlType.None) {
+				if (Input.GetKey (KeyCode.Space)) {
+					kill ();
+				}
+		}
+		justActivated = false;
 	
 	}
 	
@@ -250,7 +298,7 @@ public class resourceRobot : MonoBehaviour
 		cameraView.rect = new Rect (0f, 0f, 1f, 1f);
 		AudioListener aL = cameraView.gameObject.GetComponent<AudioListener> ();
 		aL.enabled = true;
-		
+		moneyTarget = null;
 	}
 	
 	public void transferControl ()
@@ -284,8 +332,6 @@ public class resourceRobot : MonoBehaviour
 			PlayAudioClip(explosion,transform.position,4f);
 			transferControl();
 			ParticleSystem engine = GetComponentInChildren<ParticleSystem>();
-			engine.transform.parent = null;
-			engine.enableEmission = false;
 			float explosionRad = 10;
 			int halfHit = 10;
 			Collider[] hitTurretts = Physics.OverlapSphere(transform.position,explosionRad,1<<10);

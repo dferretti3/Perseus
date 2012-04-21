@@ -108,7 +108,7 @@ public class AIControlledMissile : MonoBehaviour
 							}
 							blocked = true;
 						RaycastHit LeftHitInfo, RightHitInfo, UpHitInfo, DownHitInfo;
-						Debug.Log("spherecast hit!");
+						//Debug.Log("spherecast hit!");
 						Ray leftTarget, rightTarget, upTarget, downTarget;
 						int direction = 0;
 						float maxHitDist = 9000;
