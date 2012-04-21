@@ -3,8 +3,10 @@ using System.Collections;
 
 public class PlayerManager : MonoBehaviour {
 	
+	public GameObject PlayerPrefab;
+	
 	public Player[] players;
-	int index;
+	int index,playernum;
 	int next_b;
 	
 	public float offset;
@@ -18,21 +20,33 @@ public class PlayerManager : MonoBehaviour {
 	GameObject[] objects;
 	Quaternion[] tower_rots;
 	
+	GUIStyle myStyle;
+	public Font warning;
+	
+	int timeLeft = 1259;
+	RaycastHit lastHit;
+	
+	Vector3[] comp_p,comp_n;
+	GameObject[] comp_o;
+	Player[] computers;
+	public int num_computers;
 	
 	bool netsetup = false;
+	bool isready = false;
+	bool began = false;
 	void OnGUI(){
 		if(!netsetup)
 		{
 			if(GUI.Button(new Rect(10,10,100,20), "Create Server"))
 			{
 				Network.InitializeServer(2, 25000);
-				PlayerPrefs.SetInt("playerNum",0);
+				PlayerPrefs.SetInt("playerNum",playernum=0);
 			}
 			ip = GUI.TextArea(new Rect(10,30,200,20), ip);
 			if(GUI.Button(new Rect(10, 50, 100, 20), "Connect"))
 			{
 				Network.Connect(ip, 25000);
-				PlayerPrefs.SetInt("playerNum",1);
+				PlayerPrefs.SetInt("playerNum",playernum=1);
 			}
 			if(Network.isClient || Network.isServer)
 				netsetup=true;
@@ -43,6 +57,14 @@ public class PlayerManager : MonoBehaviour {
 			GUI.Label(new Rect(10, 10, 100, 30), "Server");
 			if(Network.isClient)
 			GUI.Label(new Rect(10, 10, 100, 30), "Client");
+			
+			string turnLabel = (index==playernum)?"Place a tower":"Opponent is placing a tower";
+			GUI.Label(new Rect(200,30,400,50),turnLabel,myStyle);
+			
+			if (index==playernum)
+			{
+				GUI.Label(new Rect(300,90,100,50),""+timeLeft/60,myStyle);	
+			}
 		}
 	}
 	// Use this for initialization
@@ -51,6 +73,15 @@ public class PlayerManager : MonoBehaviour {
 		tower_rots = new Quaternion[2*max_towers];
 		normals = new Vector3[2*max_towers];
 		objects = new GameObject[2*max_towers];
+		computers = new Player[num_computers];
+		for (int i = 0; i < num_computers; i++)
+		{
+			computers[i] = (GameObject.Instantiate(PlayerPrefab) as GameObject).GetComponent<Player>();
+			computers[i].color = new Color(Random.Range(0.0f,1.0f),Random.Range(0.0f,1.0f),Random.Range(0.0f,1.0f));
+		}
+		comp_p = new Vector3[computers.Length];
+		comp_n = new Vector3[computers.Length];
+		comp_o = new GameObject[computers.Length];
 		num_towers = 0;
 		max_towers = 1;
 		next_b = 0;
@@ -59,10 +90,21 @@ public class PlayerManager : MonoBehaviour {
 			p.my_turn = false;
 			p.manager = this;
 		}
-		players[0].my_turn = true;
+		foreach (Player p in computers) {
+			p.my_turn = false;
+			p.manager = this;
+		}
+		//players[0].my_turn = true;
 		
 		GameObject cam = GameObject.Find("Main Camera");
 		my_camera = cam.GetComponent<freeFlyCamera>();
+		
+		myStyle = new GUIStyle();
+		myStyle.font = warning;
+		myStyle.alignment = TextAnchor.MiddleCenter;
+		myStyle.fontSize = 40;
+		myStyle.normal.textColor = Color.red;
+		myStyle.normal.background = null;
 	}
 	
 	void OnServerInitialized() { 
@@ -71,7 +113,7 @@ public class PlayerManager : MonoBehaviour {
 	
 	void OnConnectedToServer() { 
 		print("CONNECTED");
-
+		isready = true;
 	}
 	
 	void OnFailedToConnect(NetworkConnectionError e){
@@ -84,6 +126,17 @@ public class PlayerManager : MonoBehaviour {
 			//Application.LoadLevel("testScene");
 		}
 		
+		if (Network.isServer && Network.connections.Length>0) isready = true;
+		
+		if (!began && isready)
+		{
+			print(players);
+			print(players[0]);
+			players[0].my_turn = true;
+			began = true;
+			print("STARTING - Server and Client are ready");
+		}
+		
 		if(netsetup){
 			if (num_towers>=max_towers) {
 				renderer.enabled = false;
@@ -92,11 +145,14 @@ public class PlayerManager : MonoBehaviour {
 				
 				
 				GameObject.Find("SavedData").GetComponent<SaveTowerLocs>().saveLocs(tower_pos[0],tower_pos[1],tower_rots[0],tower_rots[1],normals[0],normals[1]);
+				GameObject.Find("SavedData").GetComponent<SaveTowerLocs>().saveComp(comp_p,comp_n);
 				//Application.LoadLevel("testScene");
 				enabled = false;
 				my_camera.GetComponent<AudioListener>().enabled = false;
 				GameObject.Destroy(objects[0]);
 				GameObject.Destroy(objects[1]);
+				foreach (GameObject o in comp_o)
+					GameObject.Destroy(o);
 				//controlTowers();
 				return;
 			}
@@ -111,9 +167,26 @@ public class PlayerManager : MonoBehaviour {
 			Color c = players[index].color;
 			renderer.material.color = new Color(c.r,c.g,c.b,0.5f);
 			RaycastHit hitInfo = new RaycastHit();
-			renderer.enabled = Terrain.activeTerrain.collider.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition),out hitInfo,5000.0f);
+			bool rayHit = Terrain.activeTerrain.collider.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition),out hitInfo,5000.0f);
+			renderer.enabled = rayHit;
+			if (rayHit)
+				lastHit = hitInfo;
 			transform.position = pos(hitInfo);
 			transform.rotation = rot();
+			if (began && index==playernum)
+			{
+				timeLeft--;	
+				if (timeLeft<=0) players[index].forcePlacement(lastHit);
+			}
+			
+			if (began && comp_o[0]==null)
+			{
+				float rr = 150;
+				for (int i = 0; i < computers.Length; i++)
+				{
+					computers[i].comp_createTower(Random.Range(-rr,rr),Random.Range(-rr,rr),i,computers[i].color);	
+				}
+			}
 		}
 	}
 	
@@ -157,5 +230,12 @@ public class PlayerManager : MonoBehaviour {
 	
 	public Quaternion rot() {
 		return Quaternion.Euler(0,my_camera.mr_x-90,0);
+	}
+	
+	public void setComp(Vector3 n, Vector3 p, GameObject obj, int i)
+	{
+		comp_n[i] = n;
+		comp_p[i] = p;
+		comp_o[i] = obj;
 	}
 }

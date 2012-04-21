@@ -10,6 +10,9 @@ public class Player : MonoBehaviour {
 	
 	public PlayerManager manager;
 	
+	bool forceFlag = false;
+	RaycastHit forceHit;
+	
 	public GameObject plane;
 	RaycastHit hitInfo;
 	// Use this for initialization
@@ -28,8 +31,12 @@ public class Player : MonoBehaviour {
 		}
 	}
 	void createTower(){
-		hitInfo = new RaycastHit();
-		if (!Terrain.activeTerrain.collider.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition),out hitInfo,5000.0f)) return;
+		if (!forceFlag) {
+			hitInfo = new RaycastHit();
+			if (!Terrain.activeTerrain.collider.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition),out hitInfo,5000.0f)) return;
+		} else {
+			hitInfo = forceHit;
+		}
 		//GameObject obj = GameObject.Instantiate(turret,manager.pos(hitInfo),manager.rot()) as GameObject;
 		GameObject obj = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
 		obj.transform.localScale*=5;
@@ -56,5 +63,38 @@ public class Player : MonoBehaviour {
 		my_turn = false;
 		manager.mark(normal, obj.transform.position,obj);
 		manager.next();
+	}
+	
+	[RPC]
+	void createTower2_comp(Vector3 pos, Vector3 normal, Quaternion rot, int i,Vector3 color) {
+		GameObject obj = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
+		obj.transform.localScale = new Vector3(5,5,5);
+		obj.transform.position = pos;
+		obj.transform.rotation = rot;
+		obj.renderer.material.color = new Color(color.x,color.y,color.z);
+		my_turn = false;
+		manager.setComp(normal,pos,obj, i);
+	}
+	
+	public void forcePlacement(RaycastHit hi)
+	{
+		forceHit = hi;
+		forceFlag = true;
+	}
+	
+	public void comp_createTower(float x, float z, int i, Color color)
+	{
+		if (!Network.isServer) return;
+		float y = Terrain.activeTerrain.SampleHeight(new Vector3(x,0,z));
+		float r = Random.Range(0,2*Mathf.PI);
+		GameObject obj = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
+		obj.transform.localScale*=5;
+		Vector3 normal,pos;
+		Quaternion rot;
+		obj.transform.position = pos=new Vector3(x,y,z);
+		obj.transform.rotation = rot=Quaternion.Euler(0,r,0);
+		obj.renderer.material.color = color;
+		networkView.RPC("createTower2_comp",RPCMode.Others, obj.transform.position, normal=Vector3.up,rot, i, new Vector3(color.r,color.g,color.b));
+		manager.setComp(normal,pos,obj,i);
 	}
 }
