@@ -59,7 +59,7 @@ public class PlayerManager : MonoBehaviour {
 			GUI.Label(new Rect(10, 10, 100, 30), "Client");
 			
 			string turnLabel = (index==playernum)?"Place a tower":"Opponent is placing a tower";
-			GUI.Label(new Rect(200,30,400,50),turnLabel,myStyle);
+			GUI.Label(new Rect(50,30,500,50),turnLabel,myStyle);
 			
 			if (index==playernum)
 			{
@@ -102,7 +102,7 @@ public class PlayerManager : MonoBehaviour {
 		myStyle = new GUIStyle();
 		myStyle.font = warning;
 		myStyle.alignment = TextAnchor.MiddleCenter;
-		myStyle.fontSize = 40;
+		myStyle.fontSize = 20;
 		myStyle.normal.textColor = Color.red;
 		myStyle.normal.background = null;
 	}
@@ -179,7 +179,7 @@ public class PlayerManager : MonoBehaviour {
 				if (timeLeft<=0) players[index].forcePlacement(lastHit);
 			}
 			
-			if (began && comp_o[0]==null)
+			if (began && num_computers>0 && comp_o[0]==null)
 			{
 				float rr = 150;
 				for (int i = 0; i < computers.Length; i++)
