@@ -3,6 +3,7 @@ using System.Collections;
 
 public class SaveTowerLocs : MonoBehaviour {
 	public GameObject towerPrefab;
+	public GameObject AIPrefab;
 	// Use this for initialization
 	float money = 20;
 	bool income = false;
@@ -22,7 +23,7 @@ public class SaveTowerLocs : MonoBehaviour {
 		float d = 4;
 		for (int i = 0; i < p.Length; i++)
 		{
-			GameObject tower = (GameObject)Network.Instantiate(towerPrefab,p[i]+d*n[i],Quaternion.identity,0);	
+			GameObject tower = (GameObject)Network.Instantiate(AIPrefab,p[i]+d*n[i],Quaternion.identity,0);	
 		}
 	}
 	
