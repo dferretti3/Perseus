@@ -19,6 +19,8 @@ public class ControlledMissile : MonoBehaviour
 	public Font warning;
 	public Texture2D videoBorder;
 	int lives = 2;
+	public AudioClip explosion;
+	public GameObject expSource;
 	// Use this for initialization
 	void Start ()
 	{
@@ -186,11 +188,12 @@ public class ControlledMissile : MonoBehaviour
 	{
 		if(networkView.viewID.owner == Network.player)
 		{
+			networkView.RPC("died",RPCMode.Others,transform.position);
+			PlayAudioClip(explosion,transform.position,4f);
 			transferControl();
 			ParticleSystem engine = GetComponentInChildren<ParticleSystem>();
 			engine.transform.parent = null;
 			engine.enableEmission = false;
-			engine.GetComponent<ParticleAnimator>().autodestruct = true;
 			float explosionRad = 10;
 			int halfHit = 10;
 			Collider[] hitTurretts = Physics.OverlapSphere(transform.position,explosionRad,1<<10);
@@ -204,9 +207,29 @@ public class ControlledMissile : MonoBehaviour
 		}
 	}
 	
+	AudioSource PlayAudioClip(AudioClip clip, Vector3 position, float volume) {
+        GameObject go = (GameObject)Instantiate(expSource);
+        go.transform.position = position;
+        AudioSource source = go.AddComponent<AudioSource>();
+        source.clip = clip;
+        source.volume = volume;
+        source.Play();
+        Destroy(go, clip.length);
+        return source;
+    }
+	
 	[RPC]
 	void setNavColor (Vector3 pColor, string nTag)
 	{
 		GetComponentInChildren<navPoint> ().subRefresh (new Color (pColor.x, pColor.y, pColor.z, 1f), nTag);
+	}
+	
+	[RPC]
+	void died(Vector3 pos)
+	{
+		PlayAudioClip(explosion,pos,4f);
+		ParticleSystem engine = GetComponentInChildren<ParticleSystem>();
+		engine.transform.parent = null;
+		engine.enableEmission = false;
 	}
 }

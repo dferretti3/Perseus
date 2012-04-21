@@ -91,7 +91,6 @@ public class homingMissileScript : MonoBehaviour
 			ParticleSystem engine = GetComponentInChildren<ParticleSystem>();
 			engine.transform.parent = null;
 			engine.enableEmission = false;
-			engine.GetComponent<ParticleAnimator>().autodestruct = true;
 			float explosionRad = 10;
 			int halfHit = 10;
 			Collider[] hitTurretts = Physics.OverlapSphere(transform.position,explosionRad,1<<10);
@@ -128,6 +127,9 @@ public class homingMissileScript : MonoBehaviour
 	void died(Vector3 pos)
 	{
 		PlayAudioClip(explosion,pos,4f);
+		ParticleSystem engine = GetComponentInChildren<ParticleSystem>();
+		engine.transform.parent = null;
+		engine.enableEmission = false;
 	}
 	
 	

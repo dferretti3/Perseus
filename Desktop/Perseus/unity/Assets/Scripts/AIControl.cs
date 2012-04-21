@@ -8,6 +8,7 @@ public class AIControl : MonoBehaviour {
 	int lead;
 	int spread;
 	GameObject target;
+	private int health = 100;
 	// Use this for initialization
 	void Start () {
 	
@@ -46,6 +47,25 @@ public class AIControl : MonoBehaviour {
 				Network.Instantiate(b, transform.position+transform.forward*20, transform.rotation, 0);
 			}
 		}
+	}
+	
+	[RPC]
+	void setNavColor(Vector3 pColor, string nTag)
+	{
+		GetComponentInChildren<navPoint>().subRefresh(new Color(pColor.x,pColor.y,pColor.z,1f),nTag);
+	}
+	
+	[RPC]
+	void hitTower(int damage)
+	{
+		health -= damage;
+		transform.networkView.RPC("updateHealth",RPCMode.OthersBuffered,health);
+	}
+	
+	[RPC]
+	void updateHealth(int currentHealth)
+	{
+		health = currentHealth;
 	}
 }
 

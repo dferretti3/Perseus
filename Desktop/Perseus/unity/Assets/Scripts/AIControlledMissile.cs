@@ -15,6 +15,8 @@ public class AIControlledMissile : MonoBehaviour
 	private bool justActivated = false;
 	private int lives = 2;
 	public topLevelController tLC;
+	public AudioClip explosion;
+	public GameObject expSource;
 	// Use this for initialization
 	void Start ()
 	{
@@ -83,10 +85,27 @@ public class AIControlledMissile : MonoBehaviour
 				}
 				if (target != null) {
 					Vector3 realTargetPos = target.transform.position;
-					Vector3 toTarget = target.transform.position - toMove.position;
+					float bigDistance = (realTargetPos - transform.position).magnitude;
+					bool blocked = true;
+					float offset = 0;
+					while(blocked && offset < 100)
+					{
+						offset += 10;
+						blocked = false;
+					Vector3 toTarget = realTargetPos - toMove.position;
 					Ray rToTarget = new Ray (toMove.position, toTarget);
 					RaycastHit hitInfo;
-					if (Physics.SphereCast (rToTarget, 2.2f, out hitInfo, toTarget.magnitude-6f, 1 << 8)) {
+						float rayDist = toTarget.magnitude + 3f;
+						if(rayDist > 50)
+						{
+							rayDist = 50f;
+						}
+					if (Physics.SphereCast (rToTarget, 2.2f, out hitInfo, rayDist, 5 << 8)) {
+							if(hitInfo.transform.tag == "turrett")
+							{
+								break;
+							}
+							blocked = true;
 						RaycastHit LeftHitInfo, RightHitInfo, UpHitInfo, DownHitInfo;
 						Debug.Log("spherecast hit!");
 						Ray leftTarget, rightTarget, upTarget, downTarget;
@@ -94,25 +113,25 @@ public class AIControlledMissile : MonoBehaviour
 						float maxHitDist = 9000;
 						leftTarget = new Ray (toMove.transform.position - Vector3.Cross (toTarget.normalized, Vector3.up) * 5, toTarget);
 						rightTarget = new Ray (toMove.transform.position + Vector3.Cross (toTarget.normalized, Vector3.up) * 5, toTarget);
-						upTarget = new Ray (toMove.transform.position + new Vector3 (0, 3, 0), toTarget);
+						upTarget = new Ray (toMove.transform.position + new Vector3 (0, 5, 0), toTarget);
 						downTarget = new Ray (toMove.transform.position - new Vector3 (0, 3, 0), toTarget);
 					
-						if (Physics.Raycast (leftTarget, out LeftHitInfo, toTarget.magnitude, 1 << 8)) {
+						if (Physics.Raycast (leftTarget, out LeftHitInfo, bigDistance, 1 << 8)) {
 							maxHitDist = LeftHitInfo.distance;
 							//Debug.DrawRay(leftTarget.origin,leftTarget.direction,Color.red,.5);
-							if (Physics.Raycast (rightTarget, out RightHitInfo, toTarget.magnitude, 1 << 8)) {
+							if (Physics.Raycast (rightTarget, out RightHitInfo, bigDistance, 1 << 8)) {
 								if (maxHitDist < RightHitInfo.distance) {
 									direction = 1;
 									maxHitDist = RightHitInfo.distance;
 								}
 							
-								if (Physics.Raycast (upTarget, out UpHitInfo, toTarget.magnitude, 1 << 8)) {
+								if (Physics.Raycast (upTarget, out UpHitInfo, bigDistance, 1 << 8)) {
 									if (maxHitDist < UpHitInfo.distance) {
 										direction = 2;
 										maxHitDist = UpHitInfo.distance;
 									}
 								
-									if (Physics.Raycast (downTarget, out DownHitInfo, toTarget.magnitude, 1 << 8)) {
+									if (Physics.Raycast (downTarget, out DownHitInfo, bigDistance, 1 << 8)) {
 										if (maxHitDist < DownHitInfo.distance) {
 											direction = 3;
 											maxHitDist = DownHitInfo.distance;
@@ -120,35 +139,37 @@ public class AIControlledMissile : MonoBehaviour
 									
 									
 										if (direction == 0) {
-											realTargetPos = target.transform.position + Vector3.Cross (toTarget.normalized, Vector3.up) * 500;
+											realTargetPos = hitInfo.point + Vector3.Cross (toTarget.normalized, Vector3.up) * offset;
 										} else if (direction == 1) {
-											realTargetPos = target.transform.position + Vector3.Cross (toTarget.normalized, Vector3.up) * 500;
+											realTargetPos = hitInfo.point + Vector3.Cross (toTarget.normalized, Vector3.up) * offset;
 										} else if (direction == 2) {
-											realTargetPos = target.transform.position + new Vector3 (0, 500, 0);
+											realTargetPos = hitInfo.point + new Vector3 (0, offset, 0);
 										} else if (direction == 3) {
-											realTargetPos = target.transform.position - new Vector3 (0, 500, 0);
+											realTargetPos = hitInfo.point - new Vector3 (0, offset, 0);
 										}
 									
 									
 									} else {
-										realTargetPos = target.transform.position - new Vector3 (0, 500, 0);
+										realTargetPos = hitInfo.point - new Vector3 (0, offset, 0);
 									}
 								
 								} else {
-									realTargetPos = target.transform.position + new Vector3 (0, 500, 0);
+									realTargetPos = hitInfo.point + new Vector3 (0, offset, 0);
 								}
 							
 							} else {
-								realTargetPos = target.transform.position + Vector3.Cross (toTarget.normalized, Vector3.up) * 500;
+								realTargetPos = hitInfo.point + Vector3.Cross (toTarget.normalized, Vector3.up) * offset;
 							}
 						} else {
-							realTargetPos = target.transform.position - Vector3.Cross (toTarget.normalized, Vector3.up) * 500;
+							realTargetPos = hitInfo.point - Vector3.Cross (toTarget.normalized, Vector3.up) * offset;
 						}
 					
 					}
 					else{
 						Debug.Log("Spherecast not hit");
 					}
+					}
+					Debug.DrawLine(transform.position,realTargetPos,Color.red,.3f);
 					transform.forward = Vector3.Slerp (transform.forward, realTargetPos - transform.position, Time.deltaTime);
 				}
 			}
@@ -212,11 +233,12 @@ public class AIControlledMissile : MonoBehaviour
 	private void kill ()
 	{
 		if (networkView.viewID.owner == Network.player) {
+			networkView.RPC("died",RPCMode.Others,transform.position);
+			PlayAudioClip(explosion,transform.position,4f);
 			transferControl ();
 			ParticleSystem engine = GetComponentInChildren<ParticleSystem>();
 			engine.transform.parent = null;
 			engine.enableEmission = false;
-			engine.GetComponent<ParticleAnimator>().autodestruct = true;
 			float explosionRad = 10;
 			int halfHit = 10;
 			Collider[] hitTurretts = Physics.OverlapSphere(transform.position,explosionRad,1<<10);
@@ -230,9 +252,29 @@ public class AIControlledMissile : MonoBehaviour
 		}
 	}
 	
+	AudioSource PlayAudioClip(AudioClip clip, Vector3 position, float volume) {
+        GameObject go = (GameObject)Instantiate(expSource);
+        go.transform.position = position;
+        AudioSource source = go.AddComponent<AudioSource>();
+        source.clip = clip;
+        source.volume = volume;
+        source.Play();
+        Destroy(go, clip.length);
+        return source;
+    }
+	
 	[RPC]
 	void setNavColor (Vector3 pColor, string nTag)
 	{
 		GetComponentInChildren<navPoint> ().subRefresh (new Color (pColor.x, pColor.y, pColor.z, 1f), nTag);
+	}
+	
+	[RPC]
+	void died(Vector3 pos)
+	{
+		PlayAudioClip(explosion,pos,4f);
+		ParticleSystem engine = GetComponentInChildren<ParticleSystem>();
+		engine.transform.parent = null;
+		engine.enableEmission = false;
 	}
 }

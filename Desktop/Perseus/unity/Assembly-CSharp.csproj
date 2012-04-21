@@ -62,11 +62,13 @@
      <Compile Include="Assets\Scripts\SetupScripts\SaveTowerLocs.cs" />
      <Compile Include="Assets\Scripts\asteroidField.cs" />
      <Compile Include="Assets\Scripts\asteroidScript.cs" />
+     <Compile Include="Assets\Scripts\engineDriver.cs" />
      <Compile Include="Assets\Scripts\homingMissileScript.cs" />
      <Compile Include="Assets\Scripts\lightScripts\sunLight.cs" />
      <Compile Include="Assets\Scripts\missileScript.cs" />
      <Compile Include="Assets\Scripts\moneycounter.cs" />
      <Compile Include="Assets\Scripts\networkCatcher.cs" />
+     <Compile Include="Assets\Scripts\resourceRobot.cs" />
      <Compile Include="Assets\Scripts\sceneSelectionGUI.cs" />
      <Compile Include="Assets\Scripts\spaceSetupScript.cs" />
      <None Include="Assets\testing.txt" />

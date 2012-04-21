@@ -222,6 +222,14 @@ public class firstPersonTower : MonoBehaviour {
 			{
 				tLC.scrollMissileSelection(Mathf.RoundToInt(scrollValue));
 			}
+			else if(Input.GetKeyDown(KeyCode.P))
+			{
+				tLC.scrollMissileSelection(1);
+			}
+			else if(Input.GetKeyDown(KeyCode.O))
+			{
+				tLC.scrollMissileSelection(-1);
+			}
 			
 			
 			
