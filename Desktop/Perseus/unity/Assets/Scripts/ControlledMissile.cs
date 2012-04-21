@@ -18,7 +18,7 @@ public class ControlledMissile : MonoBehaviour
 	GUIStyle myStyle;
 	public Font warning;
 	public Texture2D videoBorder;
-	int lives = 2;
+	int lives = 3;
 	public AudioClip explosion;
 	public GameObject expSource;
 	// Use this for initialization

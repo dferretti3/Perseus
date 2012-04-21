@@ -12,7 +12,7 @@ public class homingMissileScript : MonoBehaviour
 	private bool hasTarget = false;
 	private float normalSpeed = 15;
 	private float targetSpeed = 45;
-	int lives = 2;
+	int lives = 3;
 	// Use this for initialization
 	void Start ()
 	{
