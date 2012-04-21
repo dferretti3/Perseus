@@ -60,6 +60,7 @@
      <Compile Include="Assets\Scripts\SetupScripts\Player.cs" />
      <Compile Include="Assets\Scripts\SetupScripts\PlayerManager.cs" />
      <Compile Include="Assets\Scripts\SetupScripts\SaveTowerLocs.cs" />
+     <Compile Include="Assets\Scripts\TurrettManager.cs" />
      <Compile Include="Assets\Scripts\asteroidField.cs" />
      <Compile Include="Assets\Scripts\asteroidScript.cs" />
      <Compile Include="Assets\Scripts\engineDriver.cs" />

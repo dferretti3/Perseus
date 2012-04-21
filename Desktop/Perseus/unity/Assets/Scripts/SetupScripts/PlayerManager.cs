@@ -11,14 +11,15 @@ public class PlayerManager : MonoBehaviour {
 	
 	public float offset;
 	public int max_towers;
+	public static int MAX_TOWERS;
 	int num_towers;
 	string ip = "127.0.0.1";
 	freeFlyCamera my_camera;
 	
 	public GameObject plane;
-	Vector3[] tower_pos,normals;
-	GameObject[] objects;
-	Quaternion[] tower_rots;
+	Vector3[][] tower_pos,normals;
+	GameObject[][] objects;
+	Quaternion[][] tower_rots;
 	
 	GUIStyle myStyle;
 	public Font warning;
@@ -69,10 +70,22 @@ public class PlayerManager : MonoBehaviour {
 	}
 	// Use this for initialization
 	void Start () {
-		tower_pos = new Vector3[2*max_towers];
-		tower_rots = new Quaternion[2*max_towers];
-		normals = new Vector3[2*max_towers];
-		objects = new GameObject[2*max_towers];
+		num_towers = 0;
+		max_towers = 5;
+		
+		tower_pos = new Vector3[2][];//,2*max_towers];
+		tower_rots = new Quaternion[2][];//,2*max_towers];
+		normals = new Vector3[2][];//,2*max_towers];
+		objects = new GameObject[2][];//,2*max_towers];
+		
+		for (int i = 0; i < 2; i++)
+		{
+			tower_pos[i] = new Vector3[2*max_towers];
+			tower_rots[i] = new Quaternion[2*max_towers];
+			normals[i] = new Vector3[2*max_towers];
+			objects[i] = new GameObject[2*max_towers];
+		}
+		
 		computers = new Player[num_computers];
 		for (int i = 0; i < num_computers; i++)
 		{
@@ -82,8 +95,8 @@ public class PlayerManager : MonoBehaviour {
 		comp_p = new Vector3[computers.Length];
 		comp_n = new Vector3[computers.Length];
 		comp_o = new GameObject[computers.Length];
-		num_towers = 0;
-		max_towers = 1;
+		
+		MAX_TOWERS = max_towers;
 		next_b = 0;
 		index = 0;
 		foreach (Player p in players) {
@@ -130,8 +143,6 @@ public class PlayerManager : MonoBehaviour {
 		
 		if (!began && isready)
 		{
-			print(players);
-			print(players[0]);
 			players[0].my_turn = true;
 			began = true;
 			print("STARTING - Server and Client are ready");
@@ -144,13 +155,17 @@ public class PlayerManager : MonoBehaviour {
 				
 				
 				
+				//GameObject.Find("SavedData").GetComponent<SaveTowerLocs>().saveLocs(tower_pos[0,0],tower_pos[1,0],tower_rots[0,0],tower_rots[1,0],normals[0,0],normals[1,0]);
 				GameObject.Find("SavedData").GetComponent<SaveTowerLocs>().saveLocs(tower_pos[0],tower_pos[1],tower_rots[0],tower_rots[1],normals[0],normals[1]);
 				GameObject.Find("SavedData").GetComponent<SaveTowerLocs>().saveComp(comp_p,comp_n);
 				//Application.LoadLevel("testScene");
 				enabled = false;
 				my_camera.GetComponent<AudioListener>().enabled = false;
-				GameObject.Destroy(objects[0]);
-				GameObject.Destroy(objects[1]);
+				for (int i = 0; i < max_towers; i++)
+				{
+					GameObject.Destroy(objects[0][i]);
+					GameObject.Destroy(objects[1][i]);
+				}
 				foreach (GameObject o in comp_o)
 					GameObject.Destroy(o);
 				//controlTowers();
@@ -192,24 +207,24 @@ public class PlayerManager : MonoBehaviour {
 	
 	public void mark(Vector3 hitInfo, Vector3 posit, GameObject obj) {
 		//if (index!=0) return;
-		tower_pos[index] = posit;
-		objects[index] = obj;
-		tower_rots[index] = Quaternion.Euler(0,90,0)*Quaternion.RotateTowards(rot(),Quaternion.LookRotation(Vector3.up),15);
-		normals[index] = hitInfo.normalized;
-		tower_rots[index] = Quaternion.LookRotation(Vector3.Cross(Camera.main.transform.right,hitInfo),hitInfo);
+		tower_pos[index][num_towers] = posit;
+		objects[index][num_towers] = obj;
+		tower_rots[index][num_towers] = Quaternion.Euler(0,90,0)*Quaternion.RotateTowards(rot(),Quaternion.LookRotation(Vector3.up),15);
+		normals[index][num_towers] = hitInfo.normalized;
+		tower_rots[index][num_towers] = Quaternion.LookRotation(Vector3.Cross(Camera.main.transform.right,hitInfo),hitInfo);
 	}
 	
-	int cont = 0;
-	
-	void controlTowers() {
-		bool over;
-		if (over=Input.GetKeyDown("tab"))
-			cont += Input.GetKey("left shift") ? (max_towers-1) : 1;
-		cont %= max_towers;
-		my_camera.transform.position = tower_pos[cont];
-		my_camera.transform.rotation = tower_rots[cont];
-		my_camera.changeMode(over);
-	}
+//	int cont = 0;
+//	
+//	void controlTowers() {
+//		bool over;
+//		if (over=Input.GetKeyDown("tab"))
+//			cont += Input.GetKey("left shift") ? (max_towers-1) : 1;
+//		cont %= max_towers;
+//		my_camera.transform.position = tower_pos[cont];
+//		my_camera.transform.rotation = tower_rots[cont];
+//		my_camera.changeMode(over);
+//	}
 	
 	public void next() {
 		next_b = 1;

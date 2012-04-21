@@ -32,6 +32,7 @@ public class topLevelController : MonoBehaviour
 	public int currentMissileSelection = 0;
 	private int numMissiles = 5;
 	private int health = 100;
+	public TurrettManager manager;
 	
 	//TODO Arlen: public yourMissileScript 
 	/*
@@ -266,5 +267,16 @@ public class topLevelController : MonoBehaviour
 		default:
 			return false;
 		}
+	}
+	
+	public void setInactive()
+	{
+		tPT.shutDownControl();
+		fPT.cleanUpOnExit();
+	}
+	
+	public void setActive()
+	{
+		tPT.makeActive();
 	}
 }

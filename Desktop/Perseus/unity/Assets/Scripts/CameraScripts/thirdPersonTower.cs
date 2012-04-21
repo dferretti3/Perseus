@@ -147,6 +147,12 @@ public class thirdPersonTower : MonoBehaviour {
 				}
 				//TODO implement the rest of switching to the other camera
 			}
+			int scroll = Mathf.RoundToInt(Input.GetAxis("Mouse ScrollWheel") * 10.0f);
+			if (scroll!=0)
+			{
+				print("scrolling "+scroll);
+				tLC.manager.scroll(scroll);
+			}
 		}
 		else if(justActivated)
 		{
