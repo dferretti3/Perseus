@@ -82,6 +82,7 @@ public class AIControlledMissile : MonoBehaviour
 							break;
 						}
 					}
+					target = GameObject.Find("turrettSystem(Clone)");
 				}
 				if (target != null) {
 					Vector3 realTargetPos = target.transform.position;
@@ -166,7 +167,7 @@ public class AIControlledMissile : MonoBehaviour
 					
 					}
 					else{
-						Debug.Log("Spherecast not hit");
+						//Debug.Log("Spherecast not hit");
 					}
 					}
 					Debug.DrawLine(transform.position,realTargetPos,Color.red,.3f);
