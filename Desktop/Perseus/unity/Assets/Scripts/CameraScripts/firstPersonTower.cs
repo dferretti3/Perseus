@@ -52,11 +52,6 @@ public class firstPersonTower : MonoBehaviour {
 				}
 				else if(tLC.currentMissileSelection == 3)
 				{
-					currentMissile = "AI MISSILE";
-					cost = "Cost: 0";
-				}
-				else if(tLC.currentMissileSelection == 4)
-				{
 					currentMissile = "COLLECTOR";
 					cost = "Cost: 0";
 				}
@@ -84,11 +79,6 @@ public class firstPersonTower : MonoBehaviour {
 			mType = missileType.Static;
 		}
 		else if(missileTypeNum == 3)
-		{
-			Debug.Log("Firing AI missile");
-			mType = missileType.AIControlled;
-		}
-		else if(missileTypeNum == 4)
 		{
 			mType = missileType.Collector;
 		}
@@ -160,7 +150,7 @@ public class firstPersonTower : MonoBehaviour {
 			prefabNum = 2;
 			tempMissile = (GameObject)Network.Instantiate(missilePrefab[prefabNum],transform.parent.position+transform.forward*20,Quaternion.LookRotation(transform.parent.forward,transform.parent.up),0);
 		}
-		else if(mType == missileType.AIControlled)
+		else if(mType == missileType.Collector)
 		{
 			prefabNum = 3;
 			tempMissile = (GameObject)Network.Instantiate(missilePrefab[prefabNum],new Vector3(-1000f,-1000f,-1000f),Quaternion.identity,0);
@@ -168,37 +158,7 @@ public class firstPersonTower : MonoBehaviour {
 				tempMissile.tag = "P1";
 			if(Network.isClient)
 				tempMissile.tag = "P2";
-			Debug.Log("Attempting missile-prechecks");
 			if(!tLC.moveToMissile(3)&&PlayerPrefs.GetFloat("money")>0)
-			{
-				Debug.Log("Sending message to controller");
-				if(tLC.addNewMissile(tempMissile,mType))
-				{
-					//PlayerPrefs.SetFloat("money", PlayerPrefs.GetFloat("money")-10);
-					tempMissile.transform.rotation = Quaternion.LookRotation(transform.parent.forward,transform.parent.up);
-					tempMissile.transform.position = transform.position+transform.forward*20 ;
-					AIControlledMissile msS = tempMissile.GetComponent<AIControlledMissile>();
-					msS.init();
-				}
-			}
-			else
-			{
-				Destroy(tempMissile);
-				if(tLC.moveToMissile(3))
-				{
-					cleanUpOnExit();
-				}
-			}
-		}
-		else if(mType == missileType.Collector)
-		{
-			prefabNum = 4;
-			tempMissile = (GameObject)Network.Instantiate(missilePrefab[prefabNum],new Vector3(-1000f,-1000f,-1000f),Quaternion.identity,0);
-			if(Network.isServer)
-				tempMissile.tag = "P1";
-			if(Network.isClient)
-				tempMissile.tag = "P2";
-			if(!tLC.moveToMissile(4)&&PlayerPrefs.GetFloat("money")>0)
 			{
 				Debug.Log("Sending message to controller");
 				if(tLC.addNewMissile(tempMissile,mType))

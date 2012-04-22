@@ -6,7 +6,6 @@ public enum missileType
 	Homing,
 	Controlled,
 	Static,
-	AIControlled,
 	Collector
 };
 
@@ -25,12 +24,10 @@ public class topLevelController : MonoBehaviour
 	public homingMissileScript mC;
 	public GameObject controlledMissileOjbect;
 	public ControlledMissile contMisScript;
-	public GameObject AIContMissileObject;
-	public AIControlledMissile aiContMissileScript;
 	public GameObject ResourceMissile;
 	public resourceRobot resourceMissileScript;
 	public int currentMissileSelection = 0;
-	private int numMissiles = 5;
+	private int numMissiles = 4;
 	private int health = 100;
 	public TurrettManager manager;
 	
@@ -143,11 +140,7 @@ public class topLevelController : MonoBehaviour
 			contMisScript.makeActive ();
 			return true;
 		}
-		else if(missileNum == 3 && aiContMissileScript != null) {
-			aiContMissileScript.makeActive();
-			return true;
-		}
-		else if(missileNum == 4 && resourceMissileScript != null)
+		else if(missileNum == 3 && resourceMissileScript != null)
 		{
 			resourceMissileScript.makeActive();
 			return true;
@@ -163,10 +156,6 @@ public class topLevelController : MonoBehaviour
 			{
 				contMisScript.openMiniScreen();
 			}
-			if(aiContMissileScript != null && aiContMissileScript.isMiniScreenOpen())
-			{
-				aiContMissileScript.openMiniScreen();
-			}
 			if(resourceMissileScript != null && resourceMissileScript.isMiniScreenOpen())
 			{
 				resourceMissileScript.openMiniScreen();
@@ -176,32 +165,13 @@ public class topLevelController : MonoBehaviour
 			{
 				mC.openMiniScreen();
 			}
-			if(aiContMissileScript != null && aiContMissileScript.isMiniScreenOpen())
-			{
-				aiContMissileScript.openMiniScreen();
-			}
 			if(resourceMissileScript != null && resourceMissileScript.isMiniScreenOpen())
 			{
 				resourceMissileScript.openMiniScreen();
 			}
 			contMisScript.openMiniScreen ();
 		}
-		else if (missileNum == 3 && aiContMissileScript != null) {
-			if(mC != null && mC.isMiniScreenOpen())
-			{
-				mC.openMiniScreen();
-			}
-			if(contMisScript != null && contMisScript.isMiniScreenOpen())
-			{
-				contMisScript.openMiniScreen();
-			}
-			if(resourceMissileScript != null && resourceMissileScript.isMiniScreenOpen())
-			{
-				resourceMissileScript.openMiniScreen();
-			}
-			aiContMissileScript.openMiniScreen ();
-		}
-		else if(missileNum == 4 && resourceMissileScript != null)
+		else if(missileNum == 3 && resourceMissileScript != null)
 		{
 			if(mC != null && mC.isMiniScreenOpen())
 			{
@@ -210,10 +180,6 @@ public class topLevelController : MonoBehaviour
 			if(contMisScript != null && contMisScript.isMiniScreenOpen())
 			{
 				contMisScript.openMiniScreen();
-			}
-			if(aiContMissileScript != null && aiContMissileScript.isMiniScreenOpen())
-			{
-				aiContMissileScript.openMiniScreen();
 			}
 			resourceMissileScript.openMiniScreen();
 		}
@@ -248,21 +214,6 @@ public class topLevelController : MonoBehaviour
 			contMisScript = missile.GetComponentInChildren<ControlledMissile> ();
 			contMisScript.tLC = this;
 			return true;
-		case(missileType.AIControlled):
-			Debug.Log("Received fire command");
-			if(AIContMissileObject != null) {
-				return false;
-			}
-			Debug.Log("Setting up AI missile");
-			AIContMissileObject = missile;
-			navPoint aicontNav = AIContMissileObject.GetComponentInChildren<navPoint>();
-			aicontNav.playerColor = playerColor;
-			aicontNav.nameTag = nameTag;
-			aicontNav.refresh();
-			aiContMissileScript = missile.GetComponentInChildren<AIControlledMissile>();
-			aiContMissileScript.tLC = this;
-			Debug.Log("Returning true");
-			return true;
 		case(missileType.Collector):
 			Debug.Log("Received fire command");
 			if(ResourceMissile != null) {
@@ -292,10 +243,6 @@ public class topLevelController : MonoBehaviour
 		if(contMisScript != null && contMisScript.isMiniScreenOpen())
 		{
 			contMisScript.openMiniScreen();
-		}
-		if(aiContMissileScript != null && aiContMissileScript.isMiniScreenOpen())
-		{
-			aiContMissileScript.openMiniScreen();
 		}
 		if(resourceMissileScript != null && resourceMissileScript.isMiniScreenOpen())
 		{
