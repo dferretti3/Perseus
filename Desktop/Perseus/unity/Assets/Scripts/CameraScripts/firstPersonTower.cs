@@ -12,6 +12,8 @@ public class firstPersonTower : MonoBehaviour {
 	private float missileButtonWidth;
 	private float missileButtonHeight;
 	public GameObject[] missilePrefab;
+	public AudioClip commandcodes;
+	public GameObject expSource;
 		float turnspeed = 2.0f;
 	string cost;
 	
@@ -204,6 +206,7 @@ public class firstPersonTower : MonoBehaviour {
 					//PlayerPrefs.SetFloat("money", PlayerPrefs.GetFloat("money")-10);
 					tempMissile.transform.rotation = Quaternion.LookRotation(transform.parent.forward,transform.parent.up);
 					tempMissile.transform.position = transform.position+Vector3.up*8 ;
+					PlayAudioClip(commandcodes,transform.position,4f);
 				}
 			}
 			else
@@ -328,4 +331,15 @@ public class firstPersonTower : MonoBehaviour {
 		aL.enabled = false;
 		Screen.lockCursor = false;
 	}
+	
+	AudioSource PlayAudioClip(AudioClip clip, Vector3 position, float volume) {
+        GameObject go = (GameObject)Instantiate(expSource);
+        go.transform.position = position;
+        AudioSource source = go.AddComponent<AudioSource>();
+        source.clip = clip;
+        source.volume = volume;
+        source.Play();
+        Destroy(go, clip.length);
+        return source;
+    }
 }

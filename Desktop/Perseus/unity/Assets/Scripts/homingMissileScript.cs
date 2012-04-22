@@ -23,6 +23,7 @@ public class homingMissileScript : MonoBehaviour
 	private float normalSpeed = 15;
 	private float targetSpeed = 45;
 	public AudioClip explosion;
+	public AudioClip linkestablished;
 	public GameObject expSource;
 	private GameObject target;
 	// Use this for initialization
@@ -173,6 +174,7 @@ public class homingMissileScript : MonoBehaviour
 				else
 				{
 					aquireTarget();
+						
 				}
 			}
 			if(Input.GetAxis("Mouse ScrollWheel") != 0)
@@ -236,6 +238,7 @@ public class homingMissileScript : MonoBehaviour
 		{
 			hasTarget = true;
 			target = found[foundAt];
+			PlayAudioClip(linkestablished,transform.position,6f);
 		}
 		
 		
