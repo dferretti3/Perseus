@@ -82,7 +82,7 @@ public class resourceRobot : MonoBehaviour
 		{
 		if(moneyTarget == null)
 		{
-			Collider[] coins = Physics.OverlapSphere(transform.position,100f,1<<11);
+			Collider[] coins = Physics.OverlapSphere(transform.position,200f,1<<11);
 			int foundAt = -1;
 			float minDist = 200;
 			for(int x = 0; x < coins.Length; x++)
@@ -92,7 +92,7 @@ public class resourceRobot : MonoBehaviour
 				{
 					Ray toMoney = new Ray(transform.position,toMoneyVec);
 					RaycastHit outHit;
-					if(Physics.Raycast(toMoney,out outHit,toMoneyVec.magnitude,1<<8))
+					if(!Physics.Raycast(toMoney,out outHit,toMoneyVec.magnitude,1<<8))
 					{
 						minDist = toMoneyVec.magnitude;
 						foundAt = x;
@@ -221,8 +221,8 @@ public class resourceRobot : MonoBehaviour
 		{
 			float y = Input.GetAxis("Mouse Y");
 			float x = Input.GetAxis("Mouse X");
-			transform.Rotate(new Vector3(-y, 0, 0) * Time.deltaTime * 50);
-			transform.Rotate(new Vector3(0, x, 0) * Time.deltaTime * 50);
+			transform.Rotate(new Vector3(-y, x, 0) * Time.deltaTime * 50);
+			transform.rotation = Quaternion.Euler(new Vector3(transform.rotation.eulerAngles.x,transform.rotation.eulerAngles.y,0));
 			
 			if(Input.GetKeyDown(KeyCode.O) || Input.GetKeyDown(KeyCode.P) || Input.GetAxis ("Mouse ScrollWheel") != 0) {
 					transferControl ();
@@ -324,6 +324,11 @@ public class resourceRobot : MonoBehaviour
 		}
 	}
 	
+	public bool isMiniScreenOpen()
+	{
+		return controlType == ControlType.Inset;
+	}
+	
 	private void kill ()
 	{
 		if(networkView.viewID.owner == Network.player)
@@ -333,13 +338,13 @@ public class resourceRobot : MonoBehaviour
 			transferControl();
 			ParticleSystem engine = GetComponentInChildren<ParticleSystem>();
 			float explosionRad = 10;
-			int halfHit = 10;
+			int halfHit = 40;
 			Collider[] hitTurretts = Physics.OverlapSphere(transform.position,explosionRad,1<<10);
 			foreach(Collider turrett in hitTurretts)
 			{
 				topLevelController ttlc = turrett.transform.GetComponentInChildren<topLevelController>();
 				int hitFor = (int)(explosionRad - (turrett.transform.position - transform.position).magnitude)*halfHit + halfHit;
-				transform.networkView.RPC("hitTower",turrett.networkView.owner,hitFor);
+				turrett.networkView.RPC("hitTower",turrett.networkView.owner,hitFor);
 			}
         	Network.Destroy(gameObject);
 		}
@@ -367,8 +372,6 @@ public class resourceRobot : MonoBehaviour
 	{
 		PlayAudioClip(explosion,pos,4f);
 		ParticleSystem engine = GetComponentInChildren<ParticleSystem>();
-		engine.transform.parent = null;
-		engine.enableEmission = false;
 	}
 }
 

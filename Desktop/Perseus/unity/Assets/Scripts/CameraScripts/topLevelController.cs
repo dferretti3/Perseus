@@ -34,22 +34,6 @@ public class topLevelController : MonoBehaviour
 	private int health = 100;
 	public TurrettManager manager;
 	
-	//TODO Arlen: public yourMissileScript 
-	/*
-	 * Your script will need the following function calls:
-	 * 
-	 * 		openMiniScreen()  - you can check out homingMissileCamera to see how I open it or I can copy and paste once you add
-	 * 		makeActive()   -  this means that the tower is losing camera control and the missile will handle all camera and inputs
-	 * 
-	 * 
-	 * 
-	 * 		Your script will need a way to invoke this topLevelController.moveToFirstPerson or third person
-	 * 		I would recommend adding a public topLevelController variable so that upon creation we can just assign from here
-	 * 
-	 * 		We can discuss control schemes for selecting different cameras later as well
-	 * 			I've removed my selection so that you can test with yours
-	 */
-	
 	
 	
 	// Use this for initialization
@@ -67,6 +51,10 @@ public class topLevelController : MonoBehaviour
 		if (tPT != null && !isActive) {
 			tPT.shutDownControl ();
 		}
+		if(fPT != null && !isActive)
+		{
+			fPT.cleanUpOnExit();
+		}
 		if (isActive) {
 			tPT.shutDownControl ();
 			fPT.makeActive ();
@@ -78,9 +66,16 @@ public class topLevelController : MonoBehaviour
 		health -= damage;
 		if(health <= 0)
 		{
+			if(isActive)
+			{
+				manager.scroll(1);
+			}
 			Network.Destroy(transform.parent.gameObject);
 		}
-		transform.parent.networkView.RPC("updateHealth",RPCMode.OthersBuffered,health);
+		else
+		{
+			transform.parent.networkView.RPC("updateHealth",RPCMode.OthersBuffered,health);
+		}
 	}
 	
 	public void setHealth(int currentVal)
@@ -167,42 +162,64 @@ public class topLevelController : MonoBehaviour
 	{
 		if (missileNum == 0 && mC != null) {
 			mC.openMiniScreen ();
+			if(contMisScript != null && contMisScript.isMiniScreenOpen())
+			{
+				contMisScript.openMiniScreen();
+			}
+			if(aiContMissileScript != null && aiContMissileScript.isMiniScreenOpen())
+			{
+				aiContMissileScript.openMiniScreen();
+			}
+			if(resourceMissileScript != null && resourceMissileScript.isMiniScreenOpen())
+			{
+				resourceMissileScript.openMiniScreen();
+			}
 		} else if (missileNum == 1 && contMisScript != null) {
+			if(mC != null && mC.isMiniScreenOpen())
+			{
+				mC.openMiniScreen();
+			}
+			if(aiContMissileScript != null && aiContMissileScript.isMiniScreenOpen())
+			{
+				aiContMissileScript.openMiniScreen();
+			}
+			if(resourceMissileScript != null && resourceMissileScript.isMiniScreenOpen())
+			{
+				resourceMissileScript.openMiniScreen();
+			}
 			contMisScript.openMiniScreen ();
 		}
 		else if (missileNum == 3 && aiContMissileScript != null) {
+			if(mC != null && mC.isMiniScreenOpen())
+			{
+				mC.openMiniScreen();
+			}
+			if(contMisScript != null && contMisScript.isMiniScreenOpen())
+			{
+				contMisScript.openMiniScreen();
+			}
+			if(resourceMissileScript != null && resourceMissileScript.isMiniScreenOpen())
+			{
+				resourceMissileScript.openMiniScreen();
+			}
 			aiContMissileScript.openMiniScreen ();
 		}
 		else if(missileNum == 4 && resourceMissileScript != null)
 		{
+			if(mC != null && mC.isMiniScreenOpen())
+			{
+				mC.openMiniScreen();
+			}
+			if(contMisScript != null && contMisScript.isMiniScreenOpen())
+			{
+				contMisScript.openMiniScreen();
+			}
+			if(aiContMissileScript != null && aiContMissileScript.isMiniScreenOpen())
+			{
+				aiContMissileScript.openMiniScreen();
+			}
 			resourceMissileScript.openMiniScreen();
 		}
-	}
-	
-	public bool moveToMissile ()
-	{
-		if (contMisScript != null) {
-			contMisScript.makeActive ();
-			return true;
-		}
-		return false;
-		/*if(mC != null)
-		{
-			mC.makeActive();
-			return true;
-		}
-		return false;*/
-	}
-	
-	public void openMiniScreen ()
-	{
-		if (contMisScript != null) {
-			contMisScript.openMiniScreen ();
-		}
-		/*if(mC != null)
-		{
-			mC.openMiniScreen();
-		}*/
 	}
 	
 	public bool addNewMissile (GameObject missile, missileType mType)
@@ -271,6 +288,23 @@ public class topLevelController : MonoBehaviour
 	
 	public void setInactive()
 	{
+		if(mC != null && mC.isMiniScreenOpen())
+		{	
+			mC.openMiniScreen();
+		}
+		if(contMisScript != null && contMisScript.isMiniScreenOpen())
+		{
+			contMisScript.openMiniScreen();
+		}
+		if(aiContMissileScript != null && aiContMissileScript.isMiniScreenOpen())
+		{
+			aiContMissileScript.openMiniScreen();
+		}
+		if(resourceMissileScript != null && resourceMissileScript.isMiniScreenOpen())
+		{
+			resourceMissileScript.openMiniScreen();
+		}
+		isActive = false;
 		tPT.shutDownControl();
 		fPT.cleanUpOnExit();
 	}

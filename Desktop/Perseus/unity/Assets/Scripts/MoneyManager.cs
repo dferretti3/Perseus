@@ -41,7 +41,7 @@ public class MoneyManager : MonoBehaviour {
 		{
 			generateNewCoin();
 		}
-		nextDrop = Random.value*30;
+		nextDrop = Random.value*60f + 90f;
 	}
 	
 	void generateNewCoin()

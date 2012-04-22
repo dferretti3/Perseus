@@ -136,8 +136,8 @@ public class homingMissileCamera : MonoBehaviour
 		{
 			float y = Input.GetAxis("Mouse Y");
 			float x = Input.GetAxis("Mouse X");
-			transform.Rotate(new Vector3(-y, 0, 0) * Time.deltaTime * 20);
-			transform.Rotate(new Vector3(0, x, 0) * Time.deltaTime * 20);
+			transform.parent.Rotate(new Vector3(-y, x, 0) * Time.deltaTime * 20);
+			transform.rotation = Quaternion.Euler(new Vector3(transform.rotation.eulerAngles.x,transform.rotation.eulerAngles.y,0));
 			if(Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.UpArrow))
 			{
 				Up();
@@ -292,6 +292,11 @@ public class homingMissileCamera : MonoBehaviour
 		{
 			camType = ControlType.None;
 		}
+	}
+	
+	public bool isMiniScreenOpen()
+	{
+		return camType == ControlType.Inset;
 	}
 	
 	public void makeActive()

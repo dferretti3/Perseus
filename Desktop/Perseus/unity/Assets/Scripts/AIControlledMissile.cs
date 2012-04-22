@@ -231,6 +231,11 @@ public class AIControlledMissile : MonoBehaviour
 		}
 	}
 	
+	public bool isMiniScreenOpen()
+	{
+		return controlType == ControlType.Inset;
+	}
+	
 	private void kill ()
 	{
 		if (networkView.viewID.owner == Network.player) {
@@ -247,7 +252,7 @@ public class AIControlledMissile : MonoBehaviour
 			{
 				topLevelController ttlc = turrett.transform.GetComponentInChildren<topLevelController>();
 				int hitFor = (int)(explosionRad - (turrett.transform.position - transform.position).magnitude)*halfHit + halfHit;
-				transform.networkView.RPC("hitTower",turrett.networkView.owner,hitFor);
+				turrett.networkView.RPC("hitTower",turrett.networkView.owner,hitFor);
 			}
 			Network.Destroy (gameObject);
 		}

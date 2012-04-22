@@ -44,7 +44,7 @@ public class ControlledMissile : MonoBehaviour
 
 			if(controlType == ControlType.Inset)
 			{
-				Rect currentScreen = camera.rect;
+				Rect currentScreen = cameraView.rect;
 				currentScreen.x = currentScreen.x*Screen.width;
 				currentScreen.width = currentScreen.width*Screen.width + 2;
 				currentScreen.height = currentScreen.height*Screen.height + 2;
@@ -96,8 +96,8 @@ public class ControlledMissile : MonoBehaviour
 				}
 				float y = Input.GetAxis("Mouse Y");
 				float x = Input.GetAxis("Mouse X");
-				transform.Rotate(new Vector3(-y, 0, 0) * Time.deltaTime * 60);
-				transform.Rotate(new Vector3(0, x, 0) * Time.deltaTime * 60);
+				transform.Rotate(new Vector3(-y, x, 0) * Time.deltaTime * 60);
+				transform.rotation = Quaternion.Euler(new Vector3(transform.rotation.eulerAngles.x,transform.rotation.eulerAngles.y,0));
 			}
 		
 			if (controlType != ControlType.None) {
@@ -117,25 +117,6 @@ public class ControlledMissile : MonoBehaviour
 	// Update is called once per frame
 	void FixedUpdate ()
 	{
-		/*if(networkView.viewID.owner == Network.player)
-		{
-			if (controlType == ControlType.Full) {
-				Screen.lockCursor = true;
-				float x = Input.GetAxis ("Mouse X");
-				float y = Input.GetAxis ("Mouse Y");
-				if (Input.GetKeyDown (KeyCode.I))
-					invert = -1;
-				if(Input.GetKey(KeyCode.Space))
-					kill();
-				//rigidbody.AddRelativeTorque (y * invert * -turnspeed, x * turnspeed, 0);
-			
-				float rotateAmount = 0.6f;
-				if (Input.GetAxis ("Horizontal") < 0)
-					transform.Rotate (0, 0, rotateAmount);
-				else if (Input.GetAxis ("Horizontal") > 0)
-					transform.Rotate (0, 0, -rotateAmount);
-			}
-		}*/
 	}
 	
 	void OnTriggerEnter (Collider col)
@@ -188,6 +169,11 @@ public class ControlledMissile : MonoBehaviour
 		}
 	}
 	
+	public bool isMiniScreenOpen()
+	{
+		return controlType == ControlType.Inset;
+	}
+	
 	private void kill ()
 	{
 		if(networkView.viewID.owner == Network.player)
@@ -205,7 +191,7 @@ public class ControlledMissile : MonoBehaviour
 			{
 				topLevelController ttlc = turrett.transform.GetComponentInChildren<topLevelController>();
 				int hitFor = (int)(explosionRad - (turrett.transform.position - transform.position).magnitude)*halfHit + halfHit;
-				transform.networkView.RPC("hitTower",turrett.networkView.owner,hitFor);
+				turrett.networkView.RPC("hitTower",turrett.networkView.owner,hitFor);
 			}
         	Network.Destroy(gameObject);
 		}

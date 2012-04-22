@@ -71,7 +71,7 @@ public class PlayerManager : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		num_towers = 0;
-		max_towers = 5;
+		max_towers = 2;
 		
 		tower_pos = new Vector3[2][];//,2*max_towers];
 		tower_rots = new Quaternion[2][];//,2*max_towers];
