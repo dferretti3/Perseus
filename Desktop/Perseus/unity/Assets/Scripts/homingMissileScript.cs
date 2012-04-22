@@ -4,7 +4,398 @@ using System.Collections;
 public class homingMissileScript : MonoBehaviour
 {
 	
-	private bool leftTower = false;
+	public topLevelController tLC;
+	private ControlType controlType = ControlType.None;
+	private Rect viewRect = new Rect (0f, 0f, 0f, 0f);
+	private float rectWidth = 0f;
+	private bool justActivated = false;
+	float turnspeed = 2.0f;
+	float flyspeed = 1.0f;
+	public Camera cameraView;
+	int view = -1;
+	int invert = 1;
+	private bool begin = false;
+	GUIStyle myStyle;
+	public Font warning;
+	public Texture2D videoBorder;
+	int lives = 3;
+	private bool hasTarget = false;
+	private float normalSpeed = 15;
+	private float targetSpeed = 45;
+	public AudioClip explosion;
+	public GameObject expSource;
+	private GameObject target;
+	// Use this for initialization
+	void Start ()
+	{
+		myStyle = new GUIStyle();
+		myStyle.font = warning;
+		myStyle.alignment = TextAnchor.MiddleCenter;
+		myStyle.fontSize = 50;
+		myStyle.normal.textColor = Color.red;
+		myStyle.normal.background = null;
+	}
+	
+	public void init ()
+	{
+		begin = true;
+	}
+	
+	void OnGUI(){
+
+		if(networkView.viewID.owner == Network.player)
+		{
+
+			if(controlType == ControlType.Inset)
+			{
+				Rect currentScreen = cameraView.rect;
+				currentScreen.x = currentScreen.x*Screen.width;
+				currentScreen.width = currentScreen.width*Screen.width + 2;
+				currentScreen.height = currentScreen.height*Screen.height + 2;
+				currentScreen.y = Screen.height - currentScreen.y*Screen.height - currentScreen.height;
+				GUI.DrawTexture(currentScreen,videoBorder);
+			}
+			else if(controlType == ControlType.Full)
+			{
+				if(transform.position.y > 150 || transform.position.y < -150 || transform.position.x > 250 || transform.position.x
+				<-250 || transform.position.z > 250 || transform.position.z < -250)
+				{
+					GUI.TextArea(new Rect(Screen.width/2 - 125,Screen.height*3/4,250,60),"WARNING",myStyle);
+				}
+			}
+		}
+	}
+	
+	private bool ownedByCurrentPlayer ()
+	{
+		return networkView.viewID.owner == Network.player;
+	}
+	
+	void Update ()
+	{
+		
+		if(ownedByCurrentPlayer())
+		{
+		
+		
+		if(transform.position.y > 200 || transform.position.y < -200 || transform.position.x > 300 || transform.position.x
+				<-300 || transform.position.z > 300 || transform.position.z < -300)
+			{
+			kill();
+		}
+		
+		if(hasTarget)
+		{
+			//transform.parent.up = Vector3.Slerp(transform.forward,target.transform.position - transform.parent.position,Time.time/10000f);
+			Vector3 direction = target.transform.position - transform.position;
+			Vector3 currDirection = transform.forward;
+			transform.forward = Vector3.Slerp(currDirection,direction,Time.deltaTime*.5f);
+			transform.rotation = Quaternion.Euler(new Vector3(transform.eulerAngles.x,transform.eulerAngles.y,0));
+			/*if((direction - currDirection + transform.right).magnitude < (direction - currDirection).magnitude)
+			{
+				Left();
+			}
+			else if((direction - currDirection - transform.right).magnitude < (direction - currDirection).magnitude)
+			{
+				Right();
+			}
+			
+			if((direction - currDirection + transform.up).magnitude < (direction - currDirection).magnitude)
+			{
+				Down();
+			}
+			else if((direction - currDirection - transform.up).magnitude < (direction - currDirection).magnitude)
+			{
+				Up();
+			}*/
+			
+		}
+		
+		
+		if(controlType == ControlType.Inset && rectWidth < .2)
+		{
+			rectWidth += .4f*Time.deltaTime;
+			if(rectWidth >= .2f)
+			{
+				rectWidth = .2f;
+			}
+			viewRect = new Rect(.85f - rectWidth/2f,.15f - rectWidth/2f,rectWidth,rectWidth);
+			cameraView.rect = viewRect;
+		}
+		else if(controlType == ControlType.None && rectWidth > 0)
+		{
+			rectWidth -= .4f*Time.deltaTime;
+			if(rectWidth <= 0f)
+			{
+				rectWidth = 0f;
+				cameraView.enabled = false;
+			}
+			viewRect = new Rect(.85f - rectWidth/2f,.15f - rectWidth/2f,rectWidth,rectWidth);
+			cameraView.rect = viewRect;
+			
+		}
+		
+		if(controlType == ControlType.Full && !hasTarget)
+		{
+			float y = Input.GetAxis("Mouse Y");
+			float x = Input.GetAxis("Mouse X");
+			transform.Rotate(new Vector3(-y, x, 0) * Time.deltaTime * 20);
+			transform.rotation = Quaternion.Euler(new Vector3(transform.rotation.eulerAngles.x,transform.rotation.eulerAngles.y,0));
+			//transform.parent.rotation = Quaternion.Euler(new Vector3(transform.parent.eulerAngles.x,0,-transform.parent.eulerAngles.z));
+			/*if(Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.UpArrow))
+			{
+				Up();
+			}
+			else if(Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.DownArrow))
+			{
+				Down();
+			}
+			
+			if(Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow))
+			{
+				Left();
+			}
+			else if(Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow))
+			{
+				Right();
+			}*/
+		}
+		
+		if(controlType == ControlType.Full && !justActivated)
+		{
+			if(Input.GetMouseButtonDown(1))
+			{
+				if(hasTarget)
+				{
+					hasTarget = false;
+					target = null;
+				}
+				else
+				{
+					aquireTarget();
+				}
+			}
+			if(Input.GetAxis("Mouse ScrollWheel") != 0)
+			{
+				transferControl();
+			}
+			if(Input.GetMouseButtonDown(0))
+			{
+				kill();
+			}
+		}
+		
+		if(controlType != ControlType.None)
+		{
+			if(Input.GetKey(KeyCode.Space))
+			{
+				kill();
+			}
+		}
+			if(begin)
+			{
+				if(hasTarget)
+				{
+					transform.position = transform.position + transform.forward*targetSpeed*Time.deltaTime;
+				}
+				else
+				{
+					transform.position = transform.position + transform.forward*normalSpeed*Time.deltaTime;
+				}
+			}
+		justActivated = false;
+		}
+	}
+	
+	// Update is called once per frame
+	void FixedUpdate ()
+	{
+	}
+	
+	void aquireTarget()
+	{
+		GameObject[] found = GameObject.FindGameObjectsWithTag("targetable");
+		int foundAt = -1;
+		float minMag = .2f;
+		for(int x = 0; x < found.Length; x++)
+		{
+			Vector3 zCheck = cameraView.WorldToScreenPoint(found[x].transform.position);
+			Vector3 tempCheck = cameraView.WorldToNormalizedViewportPoint(found[x].transform.position);
+			if(zCheck.z >= 0)
+			{
+				Vector2 magCheck = new Vector2(tempCheck.x - .5f,tempCheck.y - .5f);
+				if(magCheck.magnitude < minMag)
+				{
+					foundAt = x;
+					minMag = magCheck.magnitude;
+				}
+			}
+		}
+		
+		if(foundAt >= 0)
+		{
+			hasTarget = true;
+			target = found[foundAt];
+		}
+		
+		
+	}
+	
+	/*void Left()
+	{
+		float currentDampener = dampener;
+		if(hasTarget)
+		{
+			currentDampener = homingDampener;
+		}
+		Vector3 up = transform.parent.up - transform.parent.right*Time.deltaTime/currentDampener;
+		Vector3 forward = transform.parent.forward;
+		transform.parent.rotation = Quaternion.LookRotation(forward,up);
+	}
+	
+	void Right()
+	{
+		float currentDampener = dampener;
+		if(hasTarget)
+		{
+			currentDampener = homingDampener;
+		}
+		Vector3 up = transform.parent.up + transform.parent.right*Time.deltaTime/currentDampener;
+		Vector3 forward = transform.parent.forward;
+		transform.parent.rotation = Quaternion.LookRotation(forward,up);
+	}
+	
+	void Up()
+	{
+		float currentDampener = dampener;
+		if(hasTarget)
+		{
+			currentDampener = homingDampener;
+		}
+		Vector3 up = transform.parent.up - transform.parent.forward*Time.deltaTime/currentDampener;
+		Vector3 forward = transform.parent.forward + transform.parent.up*Time.deltaTime/currentDampener;
+		transform.parent.rotation = Quaternion.LookRotation(forward,up);
+		
+	}
+	
+	void Down()
+	{
+		float currentDampener = dampener;
+		if(hasTarget)
+		{
+			currentDampener = homingDampener;
+		}
+		Vector3 up = transform.parent.up + transform.parent.forward*Time.deltaTime/currentDampener;
+		Vector3 forward = transform.parent.forward - transform.parent.up*Time.deltaTime/currentDampener;
+		transform.parent.rotation = Quaternion.LookRotation(forward,up);
+	}*/
+	
+	void OnTriggerEnter (Collider col)
+	{	
+		if(col.gameObject.name == "Bullet(Clone)")
+		{
+			lives--;
+			if(lives<=0)
+				kill();
+		}
+		else if(col.gameObject.name != "Money(Clone)")
+		{
+			kill();
+		}
+
+	}
+
+	public void makeActive ()
+	{
+		Screen.lockCursor = true;
+		cameraView.enabled = true;
+		controlType = ControlType.Full;
+		justActivated = true;
+		cameraView.rect = new Rect (0f, 0f, 1f, 1f);
+		AudioListener aL = cameraView.gameObject.GetComponent<AudioListener> ();
+		aL.enabled = true;
+		
+	}
+	
+	public void transferControl ()
+	{ 
+		if (controlType == ControlType.Full) {
+			Screen.lockCursor = false;
+			AudioListener aL = cameraView.gameObject.GetComponent<AudioListener> ();
+			aL.enabled = false;
+			tLC.moveToFirstPerson ();
+			cameraView.enabled = false;
+			controlType = ControlType.None;
+			cameraView.rect = new Rect (.85f, .15f, 0f, 0f);
+		}
+	}
+	
+	public void openMiniScreen ()
+	{
+		if (controlType == ControlType.None) {
+			cameraView.enabled = true;
+			controlType = ControlType.Inset;
+		} else {
+			controlType = ControlType.None;
+		}
+	}
+	
+	public bool isMiniScreenOpen()
+	{
+		return controlType == ControlType.Inset;
+	}
+	
+	public void kill ()
+	{
+		if(networkView.viewID.owner == Network.player)
+		{
+			networkView.RPC("died",RPCMode.Others,transform.position);
+			PlayAudioClip(explosion,transform.position,4f);
+			transferControl();
+			ParticleSystem engine = GetComponentInChildren<ParticleSystem>();
+			engine.transform.parent = null;
+			engine.enableEmission = false;
+			float explosionRad = 10;
+			int halfHit = 10;
+			Collider[] hitTurretts = Physics.OverlapSphere(transform.position,explosionRad,1<<10);
+			foreach(Collider turrett in hitTurretts)
+			{
+				topLevelController ttlc = turrett.transform.GetComponentInChildren<topLevelController>();
+				int hitFor = (int)(explosionRad - (turrett.transform.position - transform.position).magnitude)*halfHit + halfHit;
+				turrett.networkView.RPC("hitTower",turrett.networkView.owner,hitFor);
+			}
+        	Network.Destroy(gameObject);
+		}
+	}
+	
+	AudioSource PlayAudioClip(AudioClip clip, Vector3 position, float volume) {
+        GameObject go = (GameObject)Instantiate(expSource);
+        go.transform.position = position;
+        AudioSource source = go.AddComponent<AudioSource>();
+        source.clip = clip;
+        source.volume = volume;
+        source.Play();
+        Destroy(go, clip.length);
+        return source;
+    }
+	
+	[RPC]
+	void setNavColor (Vector3 pColor, string nTag)
+	{
+		GetComponentInChildren<navPoint> ().subRefresh (new Color (pColor.x, pColor.y, pColor.z, 1f), nTag);
+	}
+	
+	[RPC]
+	void died(Vector3 pos)
+	{
+		PlayAudioClip(explosion,pos,4f);
+		ParticleSystem engine = GetComponentInChildren<ParticleSystem>();
+		engine.transform.parent = null;
+		engine.enableEmission = false;
+	}
+}
+	
+	/*private bool leftTower = false;
 	private homingMissileCamera mC;
 	public AudioClip explosion;
 	public GameObject expSource;
@@ -130,9 +521,5 @@ public class homingMissileScript : MonoBehaviour
 		ParticleSystem engine = GetComponentInChildren<ParticleSystem>();
 		engine.transform.parent = null;
 		engine.enableEmission = false;
-	}
-	
-	
-	
-}
+	}*/
 

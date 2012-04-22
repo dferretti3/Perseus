@@ -22,7 +22,7 @@ public class topLevelController : MonoBehaviour
 	public GameObject firstPerson;
 	public firstPersonTower fPT;
 	public GameObject homingMissileObject;
-	public homingMissileCamera mC;
+	public homingMissileScript mC;
 	public GameObject controlledMissileOjbect;
 	public ControlledMissile contMisScript;
 	public GameObject AIContMissileObject;
@@ -43,9 +43,6 @@ public class topLevelController : MonoBehaviour
 			isActive = false;
 		}
 		
-		if (homingMissileObject != null) {
-			mC = homingMissileObject.GetComponent<homingMissileCamera> ();
-		}
 		tPT = thirdPerson.GetComponent<thirdPersonTower> ();
 		fPT = firstPerson.GetComponent<firstPersonTower> ();
 		if (tPT != null && !isActive) {
@@ -113,7 +110,7 @@ public class topLevelController : MonoBehaviour
 		
 		
 			if (mC == null && homingMissileObject != null) {
-				mC = homingMissileObject.GetComponent<homingMissileCamera> ();
+				mC = homingMissileObject.GetComponent<homingMissileScript> ();
 			}
 			if (tPT == null) {
 				tPT = thirdPerson.GetComponent<thirdPersonTower> ();
@@ -235,7 +232,7 @@ public class topLevelController : MonoBehaviour
 			homingNav.playerColor = playerColor;
 			homingNav.nameTag = nameTag;
 			homingNav.refresh();
-			mC = homingMissileObject.GetComponentInChildren<homingMissileCamera> ();
+			mC = homingMissileObject.GetComponentInChildren<homingMissileScript> ();
 			mC.tLC = this;
 			return true;
 		case(missileType.Controlled):

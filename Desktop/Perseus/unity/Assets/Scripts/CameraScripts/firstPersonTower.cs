@@ -110,8 +110,8 @@ public class firstPersonTower : MonoBehaviour {
 				if(tLC.addNewMissile(tempMissile,mType))
 				{
 					PlayerPrefs.SetFloat("money", PlayerPrefs.GetFloat("money")-10);
-					tempMissile.transform.rotation = Quaternion.LookRotation(-transform.parent.up,transform.parent.forward);
-					tempMissile.transform.position = transform.parent.position;
+					tempMissile.transform.rotation = Quaternion.LookRotation(transform.parent.forward,transform.parent.up);
+					tempMissile.transform.position = transform.parent.position + transform.parent.forward*20;
 					homingMissileScript msS = tempMissile.GetComponent<homingMissileScript>();
 					msS.init();
 				}

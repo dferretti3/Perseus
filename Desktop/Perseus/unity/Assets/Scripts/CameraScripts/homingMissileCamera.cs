@@ -88,7 +88,9 @@ public class homingMissileCamera : MonoBehaviour
 			//transform.parent.up = Vector3.Slerp(transform.forward,target.transform.position - transform.parent.position,Time.time/10000f);
 			Vector3 direction = target.transform.position - transform.parent.position;
 			Vector3 currDirection = transform.forward;
-			if((direction - currDirection + transform.right).magnitude < (direction - currDirection).magnitude)
+			transform.parent.up = Vector3.Slerp(currDirection,direction,Time.deltaTime*.5f);
+			transform.parent.rotation = Quaternion.Euler(new Vector3(transform.parent.eulerAngles.x,0,transform.parent.eulerAngles.z));
+			/*if((direction - currDirection + transform.right).magnitude < (direction - currDirection).magnitude)
 			{
 				Left();
 			}
@@ -104,7 +106,7 @@ public class homingMissileCamera : MonoBehaviour
 			else if((direction - currDirection - transform.up).magnitude < (direction - currDirection).magnitude)
 			{
 				Up();
-			}
+			}*/
 			
 		}
 		
@@ -136,8 +138,11 @@ public class homingMissileCamera : MonoBehaviour
 		{
 			float y = Input.GetAxis("Mouse Y");
 			float x = Input.GetAxis("Mouse X");
-			transform.parent.Rotate(new Vector3(-y, x, 0) * Time.deltaTime * 20);
-			transform.rotation = Quaternion.Euler(new Vector3(transform.rotation.eulerAngles.x,transform.rotation.eulerAngles.y,0));
+			transform.parent.Rotate(new Vector3(-y, 0, x) * Time.deltaTime * 20,Space.Self);
+			Debug.Log("Euler Angles pre fix: " + transform.parent.eulerAngles);
+			transform.parent.eulerAngles = new Vector3(transform.parent.eulerAngles.x,transform.eulerAngles.y,0);
+			Debug.Log("Euler Angles post fix: " + transform.parent.eulerAngles);
+			//transform.parent.rotation = Quaternion.Euler(new Vector3(transform.parent.eulerAngles.x,0,-transform.parent.eulerAngles.z));
 			if(Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.UpArrow))
 			{
 				Up();
@@ -164,7 +169,7 @@ public class homingMissileCamera : MonoBehaviour
 				if(hasTarget)
 				{
 					hasTarget = false;
-					missile.toggleTarget();
+					//missile.toggleTarget();
 					target = null;
 				}
 				else
@@ -224,7 +229,7 @@ public class homingMissileCamera : MonoBehaviour
 		
 		if(foundAt >= 0)
 		{
-			missile.toggleTarget();
+			//missile.toggleTarget();
 			hasTarget = true;
 			target = found[foundAt];
 		}
