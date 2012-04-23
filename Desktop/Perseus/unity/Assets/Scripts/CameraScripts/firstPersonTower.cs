@@ -9,14 +9,24 @@ public class firstPersonTower : MonoBehaviour {
 	private bool justActivated = false;
 	private float targetSize;
 	public Texture2D target;
+	public Texture2D homing;
+	public Texture2D controlled;
+	public Texture2D gatherer;
+	public Texture2D machinegun;
+	public Texture2D white;
 	private float missileButtonWidth;
 	private float missileButtonHeight;
 	public GameObject[] missilePrefab;
 	public AudioClip commandcodes;
+	public AudioClip warning;
 	public GameObject expSource;
 		float turnspeed = 2.0f;
 	string cost;
 	
+	int highlightx=8;
+	int highlighty;
+	bool warn=false;
+	int playcount=0;
 	// Use this for initialization
 	void Start () {
 		targetSize = Screen.width/10;
@@ -39,22 +49,32 @@ public class firstPersonTower : MonoBehaviour {
 				{
 					currentMissile = "HOMING MISSILE";
 					cost = "Cost: 10";
+					highlighty = 195;
 				}
 				else if(tLC.currentMissileSelection == 1)
 				{
 					currentMissile = "CONTROLLED MISSILE";
 					cost = "Cost: 10";
+					highlighty = 255;
 				}
 				else if(tLC.currentMissileSelection == 2)
 				{
 					currentMissile = "MACHINE GUN";
 					cost = "Cost: 0";
+					highlighty = 315;
 				}
 				else if(tLC.currentMissileSelection == 3)
 				{
 					currentMissile = "COLLECTOR";
 					cost = "Cost: 30";
+					highlighty = 375;
 				}
+				
+				GUI.Label(new Rect(highlightx,highlighty,60,60), white);
+				GUI.DrawTexture(new Rect(10,200,50,50), homing);
+				GUI.DrawTexture(new Rect(10,260,50,50), controlled);
+				GUI.DrawTexture(new Rect(10,320,50,50), machinegun);
+				GUI.DrawTexture(new Rect(10,380,50,50), gatherer);
 				
 				GUI.TextArea(new Rect(0,0,200,50),"\n\t\t" + currentMissile + "\n\t\t\t\t\t\t\t\t\t"+cost);
 			}
@@ -280,6 +300,31 @@ public class firstPersonTower : MonoBehaviour {
 		{
 			justActivated = false;
 		}
+		
+		Collider[] cols = Physics.OverlapSphere(transform.position, 100);
+		foreach (Collider hit in cols){
+			if((hit.gameObject.name == "AIContMissile(Clone)" || hit.gameObject.name == "homingMissileRedo(Clone)" || hit.gameObject
+				.name == "ControlledMissile(Clone)"))
+			{
+				if(hit.gameObject.transform.networkView.viewID.owner != Network.player)
+				{
+					if(!warn)
+						PlayAudioClip(warning, transform.position, 6f);
+					warn = true;
+					break;
+				}
+			}	
+		}
+		if(warn)
+		{
+			playcount++;
+			print(playcount);
+			if(playcount>=200)
+			{
+				warn=false;
+				playcount=0;
+			}
+		}
 	
 	}
 	
@@ -302,4 +347,9 @@ public class firstPersonTower : MonoBehaviour {
         Destroy(go, clip.length);
         return source;
     }
+	
+	private bool ownedByCurrentPlayer ()
+	{
+		return transform.networkView.viewID.owner == Network.player;
+	}
 }

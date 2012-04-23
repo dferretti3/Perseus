@@ -84,7 +84,7 @@ public class topLevelController : MonoBehaviour
 	
 	public void scrollMissileSelection (int direction)
 	{
-		currentMissileSelection += direction;
+		currentMissileSelection += -direction;
 		if(currentMissileSelection<0)
 			currentMissileSelection=numMissiles-1;
 		if(currentMissileSelection>numMissiles-1)
