@@ -5,6 +5,9 @@ public class AIControl : MonoBehaviour {
 	public AIControlledMissile missile;
 	public Bullet b;
 	AIControlledMissile m;
+	public AIresourceRobot rrobot;
+	AIresourceRobot rr;
+	
 	int count;
 	int lead;
 	int spread;
@@ -14,9 +17,14 @@ public class AIControl : MonoBehaviour {
 	Vector3 randomangle;
 	bool slerping = false;
 	int slerpcount = 0;
+	
+	int numfired = 0;
+	int numbeforesave;
+	bool saving = false;
 	// Use this for initialization
 	void Start () {
 		money = 20;
+		numbeforesave = Random.Range(0,3);
 	}
 	
 	// Update is called once per frame
@@ -25,7 +33,7 @@ public class AIControl : MonoBehaviour {
 		if(ownedByCurrentPlayer())
 		{
 			count++;
-			money += Time.deltaTime*0.33f;
+			money += Time.deltaTime*0.66f;
 			
 			
 			Collider[] cols = Physics.OverlapSphere(transform.position, 200);
@@ -36,30 +44,48 @@ public class AIControl : MonoBehaviour {
 						break;
 					}	
 				}
-			
-			if(GameObject.Find("turrettSystem(Clone)")!=null && money >= 10 && m==null && !slerping && target==null)
+			if(rr==null && money<=30 && numfired==numbeforesave)
 			{
-				randomangle = new Vector3(Random.Range(0,360), 30, 0);
-				slerping = true;
+				saving=true;
 			}
 			
-			transform.forward = Vector3.Slerp (transform.forward, randomangle, Time.deltaTime);
-
-			if(slerping)
-				slerpcount++;
-
-			if(slerpcount>=50)
-			{
-				m = (AIControlledMissile) Network.Instantiate(missile, transform.position+transform.forward*20, transform.rotation, 0);
-				m.init();
-				money -= 10;
-				slerpcount=0;
-				slerping=false;
-			}						
 			
+			if(rr==null && money>=30)
+			{
+				rr = (AIresourceRobot)Network.Instantiate(rrobot, transform.position+transform.up*8, Quaternion.identity, 0);
+				saving=false;
+				money += -30;
+			}
+			
+					
+			if(!saving)
+			{
+				if(GameObject.Find("turrettSystem(Clone)")!=null && money >= 10 && m==null && !slerping && target==null)
+				{
+					randomangle = new Vector3(Random.Range(0,360), 50, 0);
+					slerping = true;
+				}
+				
+				transform.forward = Vector3.Slerp (transform.forward, randomangle, Time.deltaTime);
+	
+				if(slerping)
+					slerpcount++;
+	
+				if(slerpcount>=50)
+				{
+					m = (AIControlledMissile) Network.Instantiate(missile, transform.position+transform.forward*20, transform.rotation, 0);
+					m.init();
+					money -= 10;
+					slerpcount=0;
+					slerping=false;
+					if(rr==null)
+						numfired++;
+					else
+						numfired=0;
+				}						
+			}
 			if(m==null)
 			{
-				
 				if(target!=null)
 				{
 					Vector3 distance = transform.position - target.transform.position;
@@ -75,8 +101,8 @@ public class AIControl : MonoBehaviour {
 						spread = 8;
 					}
 					
-					transform.forward = Vector3.Slerp(transform.forward, target.transform.position+target.transform.forward*lead, 0.5f);
-					//transform.LookAt(target.transform.position);
+					//transform.forward = Vector3.Slerp(transform.forward, target.transform.position+target.transform.forward*lead, 0.5f);
+					transform.LookAt(target.transform.position);
 					if(count%40==0)
 					{
 						Bullet bul = (Bullet)Network.Instantiate(b, transform.position+transform.forward*10, transform.rotation, 0);
