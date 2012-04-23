@@ -53,7 +53,7 @@ public class firstPersonTower : MonoBehaviour {
 				else if(tLC.currentMissileSelection == 3)
 				{
 					currentMissile = "COLLECTOR";
-					cost = "Cost: 0";
+					cost = "Cost: 30";
 				}
 				
 				GUI.TextArea(new Rect(0,0,200,50),"\n\t\t" + currentMissile + "\n\t\t\t\t\t\t\t\t\t"+cost);
@@ -158,12 +158,12 @@ public class firstPersonTower : MonoBehaviour {
 				tempMissile.tag = "P1";
 			if(Network.isClient)
 				tempMissile.tag = "P2";
-			if(!tLC.moveToMissile(3)&&PlayerPrefs.GetFloat("money")>0)
+			if(!tLC.moveToMissile(3)&&PlayerPrefs.GetFloat("money")>30)
 			{
 				Debug.Log("Sending message to controller");
 				if(tLC.addNewMissile(tempMissile,mType))
 				{
-					//PlayerPrefs.SetFloat("money", PlayerPrefs.GetFloat("money")-10);
+					PlayerPrefs.SetFloat("money", PlayerPrefs.GetFloat("money")-30);
 					tempMissile.transform.rotation = Quaternion.LookRotation(transform.parent.forward,transform.parent.up);
 					tempMissile.transform.position = transform.position+Vector3.up*8 ;
 					PlayAudioClip(commandcodes,transform.position,4f);

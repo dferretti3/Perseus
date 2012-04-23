@@ -140,7 +140,7 @@ public class homingMissileScript : MonoBehaviour
 		{
 			float y = Input.GetAxis("Mouse Y");
 			float x = Input.GetAxis("Mouse X");
-			transform.Rotate(new Vector3(-y, x, 0) * Time.deltaTime * 20);
+			transform.Rotate(new Vector3(-y, x, 0) * Time.deltaTime * 40);
 			transform.rotation = Quaternion.Euler(new Vector3(transform.rotation.eulerAngles.x,transform.rotation.eulerAngles.y,0));
 			//transform.parent.rotation = Quaternion.Euler(new Vector3(transform.parent.eulerAngles.x,0,-transform.parent.eulerAngles.z));
 			/*if(Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.UpArrow))

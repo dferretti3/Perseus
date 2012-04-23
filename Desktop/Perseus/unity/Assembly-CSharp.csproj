@@ -47,6 +47,7 @@
      <Compile Include="Assets\MainCam.cs" />
      <Compile Include="Assets\Scripts\AIControl.cs" />
      <Compile Include="Assets\Scripts\AIControlledMissile.cs" />
+     <Compile Include="Assets\Scripts\AIresourceRobot.cs" />
      <Compile Include="Assets\Scripts\BillboardScripts\navPoint.cs" />
      <Compile Include="Assets\Scripts\Bullet.cs" />
      <Compile Include="Assets\Scripts\CameraScripts\firstPersonTower.cs" />
