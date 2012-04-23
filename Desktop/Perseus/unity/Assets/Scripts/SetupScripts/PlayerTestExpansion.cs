@@ -39,8 +39,7 @@ public class PlayerTestExpansion : MonoBehaviour {
 		//GameObject obj = GameObject.Instantiate(turret,manager.pos(hitInfo),manager.rot()) as GameObject;
 		GameObject obj = (GameObject)Network.Instantiate(networkedMarker,manager.pos(hitInfo),manager.rot(),0);
 		networkMarkerScript nMS = obj.GetComponent<networkMarkerScript>();
-		nMS.c = color;
-		nMS.pushColor();
+		nMS.pushColor(color);
 		my_turn = false;
 		forceFlag = false;
 		manager.mark(hitInfo.normal, obj.transform.position, obj);
@@ -63,8 +62,7 @@ public class PlayerTestExpansion : MonoBehaviour {
 		rot=Quaternion.Euler(0,r,0);
 		GameObject obj = (GameObject)Network.Instantiate(networkedMarker,pos,rot,0);
 		networkMarkerScript nMS = obj.GetComponent<networkMarkerScript>();
-		nMS.c = color;
-		nMS.pushColor();
+		nMS.pushColor(color);
 		manager.setComp(Vector3.up,pos,obj,i);
 	}
 }

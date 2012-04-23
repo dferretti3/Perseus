@@ -51,6 +51,7 @@ public class PlayerManagerTestExpansion : MonoBehaviour {
 				Network.InitializeServer(2, 25000);
 				PlayerPrefs.SetInt("playerNum",playernum=0);
 				currentColor = 0;
+				player.color = teams[currentColor];
 				callSign = "PLR1";
 			}
 			ip = GUI.TextArea(new Rect(10,30,200,20), ip);
@@ -59,6 +60,7 @@ public class PlayerManagerTestExpansion : MonoBehaviour {
 				Network.Connect(ip, 25000);
 				PlayerPrefs.SetInt("playerNum",playernum=1);
 				currentColor = 1;
+				player.color = teams[currentColor];
 				callSign = "PLR2";
 			}
 			if(Network.isClient || Network.isServer)
@@ -76,7 +78,7 @@ public class PlayerManagerTestExpansion : MonoBehaviour {
 			
 			if (index==playernum)
 			{
-				GUI.Label(new Rect(300,90,100,50),""+Mathf.FloorToInt(timeLeft),myStyle);	
+				GUI.Label(new Rect(300,90,100,50)," "+Mathf.FloorToInt(timeLeft),myStyle);	
 			}
 		}
 	}
@@ -103,6 +105,9 @@ public class PlayerManagerTestExpansion : MonoBehaviour {
 		MAX_TOWERS = max_towers;
 		next_b = 0;
 		index = 0;
+		GameObject tempObj = (GameObject)(GameObject.Instantiate(PlayerPrefab));
+		player = tempObj.GetComponent<PlayerTestExpansion>();
+		player.color = teams[currentColor];
 		player.my_turn = false;
 		player.manager = this;
 		foreach (PlayerTestExpansion p in computers) {

@@ -3,14 +3,13 @@ using System.Collections;
 
 public class networkMarkerScript : MonoBehaviour
 {
-	public Color c;
 	// Use this for initialization
 	void Start ()
 	{
 	
 	}
 	
-	public void pushColor()
+	public void pushColor(Color c)
 	{
 		networkView.RPC("setColor",RPCMode.All,new Vector3(c.r,c.g,c.b));
 	}

@@ -3,7 +3,7 @@ using System.Collections;
 
 public class TurrettManager {
 	
-	int max = PlayerManager.MAX_TOWERS;
+	int max = PlayerManagerTestExpansion.MAX_TOWERS;
 	topLevelController[] conts;
 	int current_index;
 	
