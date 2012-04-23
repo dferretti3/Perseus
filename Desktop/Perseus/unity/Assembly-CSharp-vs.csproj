@@ -71,6 +71,7 @@
      <Compile Include="Assets\Scripts\engineDriver.cs" />
      <Compile Include="Assets\Scripts\homingMissileScript.cs" />
      <Compile Include="Assets\Scripts\lightScripts\sunLight.cs" />
+     <Compile Include="Assets\Scripts\lobbyScript.cs" />
      <Compile Include="Assets\Scripts\missileScript.cs" />
      <Compile Include="Assets\Scripts\moneycounter.cs" />
      <Compile Include="Assets\Scripts\networkCatcher.cs" />
