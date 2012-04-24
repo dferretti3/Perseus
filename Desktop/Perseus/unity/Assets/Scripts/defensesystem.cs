@@ -30,7 +30,7 @@ public class defensesystem : MonoBehaviour {
 		.name == "ControlledMissile(Clone)"))
 		{
 			GameObject closeobject = hit.gameObject;	
-			if(closeobject.transform.networkView.viewID.owner != Network.player)
+			if(closeobject.transform.networkView.viewID.owner != Network.player || closeobject.tag=="ai")
 			{
 				Vector3 distance = transform.position - closeobject.transform.position;
 				float d = distance.sqrMagnitude;

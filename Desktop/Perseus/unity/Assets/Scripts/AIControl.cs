@@ -33,12 +33,12 @@ public class AIControl : MonoBehaviour {
 		if(ownedByCurrentPlayer())
 		{
 			count++;
-			money += Time.deltaTime*0.66f;
+			money += Time.deltaTime*0.33f;
 			
 			
 			Collider[] cols = Physics.OverlapSphere(transform.position, 200);
 				foreach (Collider hit in cols){
-					if((hit.tag == "P1" || hit.tag == "P2"))
+					if(hit.gameObject.name != "AIResourceGatherer(Clone)" && hit.gameObject.name != "ResourceGatherer(Clone)" && (hit.tag == "P1" || hit.tag == "P2"))
 					{
 						target = hit.gameObject;
 						break;
