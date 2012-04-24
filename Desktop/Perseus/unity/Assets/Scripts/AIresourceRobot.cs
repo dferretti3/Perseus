@@ -20,6 +20,14 @@ public class AIresourceRobot : MonoBehaviour {
 	
 	}
 	
+	public void pushNavPointInfo(int teamNum, string call)
+	{
+		navPoint np = GetComponentInChildren<navPoint>();
+		np.playerColor = PlayerManagerTestExpansion.teams[teamNum];
+		np.nameTag = call;
+		np.refresh();
+	}
+	
 	// Update is called once per frame
 	void Update () {
 		

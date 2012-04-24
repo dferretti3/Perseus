@@ -94,9 +94,14 @@ public class homingMissileScript : MonoBehaviour
 		if(hasTarget)
 		{
 			//transform.parent.up = Vector3.Slerp(transform.forward,target.transform.position - transform.parent.position,Time.time/10000f);
+			if(target==null)
+			{
+				hasTarget = false;
+				return;
+			}
 			Vector3 direction = target.transform.position - transform.position;
 			Vector3 currDirection = transform.forward;
-			transform.forward = Vector3.Slerp(currDirection,direction,Time.deltaTime*.5f);
+			transform.forward = Vector3.Slerp(currDirection,direction,Time.deltaTime);
 			transform.rotation = Quaternion.Euler(new Vector3(transform.eulerAngles.x,transform.eulerAngles.y,0));
 			/*if((direction - currDirection + transform.right).magnitude < (direction - currDirection).magnitude)
 			{

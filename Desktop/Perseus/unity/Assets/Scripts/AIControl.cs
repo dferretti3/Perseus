@@ -37,6 +37,11 @@ public class AIControl : MonoBehaviour {
 	{
 		team = teamNum;
 		callSign = call;
+		
+		navPoint np = GetComponentInChildren<navPoint>();
+		np.playerColor = PlayerManagerTestExpansion.teams[teamNum];
+		np.nameTag = call;
+		np.refresh();
 	}
 	
 	public int getHealth()
@@ -73,6 +78,7 @@ public class AIControl : MonoBehaviour {
 			if(rr==null && money>=30)
 			{
 				rr = (AIresourceRobot)Network.Instantiate(rrobot, transform.position+transform.up*8, Quaternion.identity,0);
+				rr.pushNavPointInfo(team, callSign);
 				saving=false;
 				money += -30;
 				income = 0.66f;
@@ -84,7 +90,7 @@ public class AIControl : MonoBehaviour {
 				missiletarget = sm.randomTargetFromTeam(sm.highestTeamNot(team));
 				if(GameObject.Find("turrettSystem(Clone)")!=null && money >= 10 && m==null && !slerping && target==null)
 				{
-					randomangle = new Vector3(Random.Range(0,360), 80, 0);
+					randomangle = new Vector3(Random.Range(0,360), 120, 0);
 					slerping = true;
 				}
 				
@@ -99,6 +105,8 @@ public class AIControl : MonoBehaviour {
 					m.init();
 					m.giveTarget(missiletarget);
 					m.tag = ""+team;
+					m.pushNavPointInfo(team, callSign);
+					
 					money -= 10;
 					slerpcount=0;
 					slerping=false;
@@ -112,16 +120,17 @@ public class AIControl : MonoBehaviour {
 				if(target!=null)
 				{
 					Vector3 distance = transform.position - target.transform.position;
-					float d = distance.sqrMagnitude;
-					if(d<=20000)
+					float d = distance.magnitude;
+					print(d);
+					if(d>150)
+					{
+						target=null;
+						return;
+					}
+					if(d<=120)
 					{
 						lead = 10;
 						spread = 5;
-					}
-					if(d>20000)
-					{
-						lead = 40;
-						spread = 8;
 					}
 					
 					//transform.forward = Vector3.Slerp(transform.forward, target.transform.position+target.transform.forward*lead, 0.5f);
@@ -147,8 +156,15 @@ public class AIControl : MonoBehaviour {
 	{
 		if(networkView.owner == Network.player)
 		{
-		health -= damage;
-		transform.networkView.RPC("updateHealth",RPCMode.OthersBuffered,health);
+			health -= damage;
+			if(health<=0)
+			{
+				transform.networkView.RPC("updateHealth",RPCMode.OthersBuffered,0);	
+				Network.Destroy(gameObject);
+			}
+			else
+				transform.networkView.RPC("updateHealth",RPCMode.OthersBuffered,health);	
+
 		}
 	}
 	

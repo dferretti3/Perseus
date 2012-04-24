@@ -46,19 +46,22 @@ public class scoreManager : MonoBehaviour {
 								topLevelController tlC = (topLevelController)(playerTurrets[y]);
 								health = tlC.getHealth();
 							}
-							if(health >= 66)
+							if(health>0)
 							{
-								GUI.color = Color.green;
+								if(health >= 66)
+								{
+									GUI.color = Color.green;
+								}
+								else if(health >= 33)
+								{
+									GUI.color = Color.yellow;
+								}
+								else
+								{
+									GUI.color = Color.red;
+								}
+								GUI.DrawTexture(new Rect(170,70 + (currentRow *25),health,20),coloredLine);
 							}
-							else if(health >= 33)
-							{
-								GUI.color = Color.yellow;
-							}
-							else
-							{
-								GUI.color = Color.red;
-							}
-							GUI.DrawTexture(new Rect(170,70 + (currentRow *25),health,20),coloredLine);
 							currentRow++;
 						}
 					}
@@ -74,19 +77,22 @@ public class scoreManager : MonoBehaviour {
 								AIControl aiC = (AIControl)(aiTurrets[y]);
 								health = aiC.getHealth();
 							}
-							if(health >= 66)
+							if(health>0)
 							{
-								GUI.color = Color.green;
+								if(health >= 66)
+								{
+									GUI.color = Color.green;
+								}
+								else if(health >= 33)
+								{
+									GUI.color = Color.yellow;
+								}
+								else
+								{
+									GUI.color = Color.red;
+								}
+								GUI.DrawTexture(new Rect(170,70 + (currentRow *25),health,20),coloredLine);
 							}
-							else if(health >= 33)
-							{
-								GUI.color = Color.yellow;
-							}
-							else
-							{
-								GUI.color = Color.red;
-							}
-							GUI.DrawTexture(new Rect(170,70 + (currentRow *25),health,20),coloredLine);
 							currentRow++;
 						}
 					}

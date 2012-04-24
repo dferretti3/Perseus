@@ -32,6 +32,13 @@ public class AIControlledMissile : MonoBehaviour
 		started = true;
 	}
 	
+	public void pushNavPointInfo(int teamNum, string call)
+	{
+		navPoint np = GetComponentInChildren<navPoint>();
+		np.playerColor = PlayerManagerTestExpansion.teams[teamNum];
+		np.nameTag = call;
+		np.refresh();
+	}
 	public void giveTarget (GameObject bullseye)
 	{
 		target = bullseye;
