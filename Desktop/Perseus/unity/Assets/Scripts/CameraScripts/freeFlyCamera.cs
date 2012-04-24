@@ -70,5 +70,10 @@ public class freeFlyCamera : MonoBehaviour {
 			transform.RotateAround(Vector3.zero,Vector3.up,rot);
 			mr_x += rot;
 		}
+		
+		if (Input.GetKeyDown(KeyCode.K))
+		{
+			if (TurrettManager.instance!=null) TurrettManager.instance.scrollFromTab();
+		}
 	}
 }

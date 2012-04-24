@@ -7,6 +7,8 @@ public class TurrettManager {
 	topLevelController[] conts;
 	int current_index;
 	
+	public static TurrettManager instance;
+	
 	public TurrettManager(GameObject towerPrefab,Vector3[] p, Vector3[] n, Quaternion[] r, Color c, string tag, int teamnum)
 	{
 		float d = 4;
@@ -33,6 +35,7 @@ public class TurrettManager {
 	
 	public void scroll(int scroll)
 	{
+		instance = this;
 		int y = 0;
 		int x = 0;
 		for(x = 0; x < conts.Length; x++)
