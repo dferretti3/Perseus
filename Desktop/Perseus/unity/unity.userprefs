@@ -1,8 +1,9 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\CameraScripts\firstPersonTower.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\CameraScripts\thirdPersonTower.cs">
     <Files>
-      <File FileName="Assets\Scripts\CameraScripts\firstPersonTower.cs" Line="83" Column="9" />
+      <File FileName="Assets\Scripts\CameraScripts\firstPersonTower.cs" Line="92" Column="53" />
+      <File FileName="Assets\Scripts\CameraScripts\thirdPersonTower.cs" Line="78" Column="51" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

@@ -80,7 +80,6 @@ public class firstPersonTower : MonoBehaviour {
 				else if (tLC.currentMissileSelection == 5)
 				{
 					currentMissile = "BOMB";	
-					cost = "Cost: 0";
 					highlighty = 435;
 				}
 				

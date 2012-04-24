@@ -66,7 +66,7 @@ public class thirdPersonTower : MonoBehaviour {
 				else if (tLC.currentMissileSelection == 5)
 				{
 					currentMissile = "BOMB";	
-					cost = "Cost: 0";
+					highlighty = 435;
 				}
 				
 				GUI.Label(new Rect(highlightx,highlighty,60,60), white);
@@ -75,6 +75,7 @@ public class thirdPersonTower : MonoBehaviour {
 				GUI.DrawTexture(new Rect(10,260,50,50), machinegun);
 				GUI.DrawTexture(new Rect(10,320,50,50), gatherer);
 				GUI.DrawTexture(new Rect(10,380,50,50), defense);
+				GUI.DrawTexture(new Rect(10,380,50,50), homing);
 				GUI.Label(new Rect(0,0,300,50),"\n\t\t" + currentMissile, myStyle);
 			}
 		}
