@@ -4,7 +4,7 @@ using System.Collections;
 
 public class PlayerManagerTestExpansion : MonoBehaviour {
 	
-	public static Color[] teams = new Color[] {Color.red,Color.blue,Color.black,Color.magenta,Color.green};
+	public static Color[] teams = new Color[] {Color.red,Color.blue,Color.black,Color.magenta,new Color(1, 0.5f,0,1)};
 	private int currentMaxPlayers = 2;
 	private int currentColor;
 	private string callSign;

@@ -17,8 +17,13 @@ public class Money : MonoBehaviour {
 		{
 			if(col.gameObject.networkView.owner == Network.player)
 			{
-				PlayerPrefs.SetFloat("money", PlayerPrefs.GetFloat("money")+ 6 - transform.localScale.x);
-				Network.Destroy(gameObject);
+				if(col.gameObject.name == "AIResourceGatherer(Clone)" || col.gameObject.name == "AIContMissile(Clone)")
+					Network.Destroy(gameObject);
+				else
+				{
+					PlayerPrefs.SetFloat("money", PlayerPrefs.GetFloat("money")+ 6 - transform.localScale.x);
+					Network.Destroy(gameObject);
+				}
 			}
 		}
 	}

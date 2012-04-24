@@ -11,7 +11,7 @@ public class AIControl : MonoBehaviour {
 	public int team = -1;
 	string callSign = "";
 	
-	
+	float income = 0.33f;
 	int count;
 	int lead;
 	int spread;
@@ -50,7 +50,7 @@ public class AIControl : MonoBehaviour {
 		if(ownedByCurrentPlayer())
 		{
 			count++;
-			money += Time.deltaTime*0.33f;
+			money += Time.deltaTime*income;
 			
 			
 			Collider[] cols = Physics.OverlapSphere(transform.position, 200);
@@ -58,7 +58,6 @@ public class AIControl : MonoBehaviour {
 					if(hit.gameObject.name == "AIContMissile(Clone)" || hit.gameObject.name == "ControlledMissile(Clone)" || hit.gameObject.name == "homingMissileRedo(Clone)" || 
 						hit.gameObject.name == "Bomb(Clone)")
 					{
-						Debug.Log(hit.tag + "AISEE");
 						if(hit.tag.CompareTo(""+team)!=0){
 						target = hit.gameObject;
 						break;
@@ -67,6 +66,7 @@ public class AIControl : MonoBehaviour {
 				}
 			if(rr==null && money<=30 && numfired==numbeforesave)
 			{
+				income = 0.33f;
 				saving=true;
 			}
 			
@@ -76,6 +76,7 @@ public class AIControl : MonoBehaviour {
 				rr = (AIresourceRobot)Network.Instantiate(rrobot, transform.position+transform.up*8, Quaternion.identity,0);
 				saving=false;
 				money += -30;
+				income = 0.66f;
 			}
 			
 					
