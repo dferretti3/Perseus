@@ -433,7 +433,7 @@ public class firstPersonTower : MonoBehaviour {
 		AudioListener aL = gameObject.GetComponent<AudioListener>();
 		aL.enabled = false;
 		Screen.lockCursor = false;
-		lineRenderer.enabled = false;
+		if (lineRenderer!=null) lineRenderer.enabled = false;
 	}
 	
 	AudioSource PlayAudioClip(AudioClip clip, Vector3 position, float volume) {
