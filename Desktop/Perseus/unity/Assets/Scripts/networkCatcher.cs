@@ -3,17 +3,17 @@ using System.Collections;
 
 public class networkCatcher : MonoBehaviour
 {
-
+	public static Color[] teams = new Color[] {Color.red,Color.blue,Color.black,Color.magenta,new Color(1, 0.5f,0,1)};
+	int c;
 	// Use this for initialization
 	void Start ()
 	{
-	
 	}
 	
 	// Update is called once per frame
 	void Update ()
 	{
-	
+
 	}
 	
 	[RPC]

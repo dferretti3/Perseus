@@ -210,4 +210,10 @@ public class AIresourceRobot : MonoBehaviour {
 		PlayAudioClip(explosion,pos,4f);
 		ParticleSystem engine = GetComponentInChildren<ParticleSystem>();
 	}
+	
+	[RPC]
+	void setNavColor(Vector3 pColor, string nTag)
+	{
+		GetComponentInChildren<navPoint>().subRefresh(new Color(pColor.x,pColor.y,pColor.z,1f),nTag);
+	}
 }

@@ -93,7 +93,6 @@ public class lobbyScript : MonoBehaviour {
 					int scroll = Mathf.RoundToInt(Input.GetAxis("Mouse ScrollWheel") * 10.0f);
 					if (scroll!=0)
 					{
-						scroll = scroll/4;
 						networkView.RPC("setTimeout",RPCMode.All,timeout + scroll);
 					}
 				}

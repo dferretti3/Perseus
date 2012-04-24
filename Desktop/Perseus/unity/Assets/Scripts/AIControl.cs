@@ -23,14 +23,13 @@ public class AIControl : MonoBehaviour {
 	bool slerping = false;
 	int slerpcount = 0;
 	
-	int numfired = 0;
-	int numbeforesave;
+	float waitTime;
 	bool saving = false;
 	private scoreManager sm;
 	// Use this for initialization
 	void Start () {
 		money = 20;
-		numbeforesave = Random.Range(0,3);
+		waitTime = Random.Range(5,30);
 		sm = GameObject.FindGameObjectWithTag("scoreManagerTag").GetComponent<scoreManager>();
 	}
 	
@@ -51,7 +50,7 @@ public class AIControl : MonoBehaviour {
 		{
 			count++;
 			money += Time.deltaTime*income;
-			
+			waitTime -= Time.deltaTime;
 			
 			Collider[] cols = Physics.OverlapSphere(transform.position, 200);
 				foreach (Collider hit in cols){
@@ -64,7 +63,7 @@ public class AIControl : MonoBehaviour {
 						}
 					}	
 				}
-			if(rr==null && money<=30 && numfired==numbeforesave)
+			if(rr==null && money<=30)
 			{
 				income = 0.33f;
 				saving=true;
@@ -80,12 +79,12 @@ public class AIControl : MonoBehaviour {
 			}
 			
 					
-			if(!saving)
+			if(waitTime <= 0)
 			{
 				missiletarget = sm.randomTargetFromTeam(sm.highestTeamNot(team));
 				if(GameObject.Find("turrettSystem(Clone)")!=null && money >= 10 && m==null && !slerping && target==null)
 				{
-					randomangle = new Vector3(Random.Range(0,360), 50, 0);
+					randomangle = new Vector3(Random.Range(0,360), 80, 0);
 					slerping = true;
 				}
 				
@@ -104,9 +103,8 @@ public class AIControl : MonoBehaviour {
 					slerpcount=0;
 					slerping=false;
 					if(rr==null)
-						numfired++;
-					else
-						numfired=0;
+						waitTime = Random.Range(5,30);
+
 				}						
 			}
 			if(m==null)
@@ -128,7 +126,7 @@ public class AIControl : MonoBehaviour {
 					
 					//transform.forward = Vector3.Slerp(transform.forward, target.transform.position+target.transform.forward*lead, 0.5f);
 					transform.LookAt(target.transform.position);
-					if(count%40==0)
+					if(count%50==0)
 					{
 						Bullet bul = (Bullet)Network.Instantiate(b, transform.position+transform.forward*10, transform.rotation, 0);
 						bul.transform.LookAt(target.transform.position+target.transform.forward*lead-new Vector3(Random.Range(-spread,spread),Random.Range(-spread,spread),Random.Range(-spread,spread)));

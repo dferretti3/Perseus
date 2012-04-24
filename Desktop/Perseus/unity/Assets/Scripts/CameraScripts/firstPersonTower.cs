@@ -279,7 +279,7 @@ public class firstPersonTower : MonoBehaviour {
 		{
 			float yAngle = Mathf.Asin(transform.parent.forward.y/Mathf.Abs(transform.parent.forward.magnitude));
 			
-			Collider[] cols = Physics.OverlapSphere(transform.position, 200);
+			Collider[] cols = Physics.OverlapSphere(transform.position, 150);
 			foreach (Collider hit in cols){
 				if((hit.gameObject.name == "AIContMissile(Clone)" || hit.gameObject.name == "homingMissileRedo(Clone)" || hit.gameObject
 				.name == "ControlledMissile(Clone)"))
@@ -297,7 +297,7 @@ public class firstPersonTower : MonoBehaviour {
 		if(warn)
 		{
 			playcount++;
-			if(playcount>=200)
+			if(playcount>=400)
 			{
 				warn=false;
 				playcount=0;

@@ -279,4 +279,5 @@ public class AIControlledMissile : MonoBehaviour
 		engine.transform.parent = null;
 		engine.enableEmission = false;
 	}
+
 }
