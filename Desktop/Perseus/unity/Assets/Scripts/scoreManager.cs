@@ -18,10 +18,17 @@ public class scoreManager : MonoBehaviour {
 	public Texture2D coloredLine;
 	
 	private bool isVisible = false;
+	private bool gameDone = false;
 	
 	void OnGUI()
 	{
-		if(isVisible)
+		if(false)//gameDone)
+		{
+			GUI.Button(new Rect(50,50,Screen.width-100,Screen.height-100),"");
+			
+			//GUI.Label(
+		}
+		else if(isVisible)
 		{
 			GUI.Button(new Rect(50,50,Screen.width-100,Screen.height-100),"");
 			
@@ -123,6 +130,35 @@ public class scoreManager : MonoBehaviour {
 		return false;
 	}
 	
+	bool teamHasLivePlayer(int teamNum)
+	{
+		for(int x = 0; x < teams.Count; x++)
+		{
+			if((int)teams[x] == teamNum)
+			{
+				topLevelController tlC = (topLevelController)playerTurrets[x];
+				if(tlC != null && tlC.getHealth() > 0)
+				{
+					return true;
+				}
+			}
+		}
+		
+		for(int x = 0; x < aiTeams.Count; x++)
+		{
+			if((int)aiTeams[x] == teamNum)
+			{
+				AIControl aiC = (AIControl)aiTurrets[x];
+				if(aiC != null && aiC.getHealth() > 0)
+				{
+					return true;
+				}
+			}
+		}
+		
+		return false;
+	}
+	
 	// Use this for initialization
 	void Start () {
 		playerNames = new ArrayList();
@@ -143,6 +179,19 @@ public class scoreManager : MonoBehaviour {
 		if(1 != 1)
 		{
 			Debug.Log("..... really????");
+		}
+		
+		int living = 0;
+		for(int x = 0; x < PlayerManagerTestExpansion.teams.Length; x++)
+		{
+			if(teamHasLivePlayer(x))
+			{
+				living++;
+			}
+		}
+		if(living < 2)
+		{
+			gameDone = true;
 		}
 		
 		if(Input.GetKey(KeyCode.LeftShift))
