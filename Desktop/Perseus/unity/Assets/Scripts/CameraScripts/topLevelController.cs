@@ -6,7 +6,8 @@ public enum missileType
 	Homing,
 	Controlled,
 	Static,
-	Collector
+	Collector, 
+	DefenseSystem
 };
 
 public class topLevelController : MonoBehaviour
@@ -26,8 +27,10 @@ public class topLevelController : MonoBehaviour
 	public ControlledMissile contMisScript;
 	public GameObject ResourceMissile;
 	public resourceRobot resourceMissileScript;
+	public GameObject DefenseSystem;
+	public defensesystem DefenseSystemScript;
 	public int currentMissileSelection = 0;
-	private int numMissiles = 4;
+	private int numMissiles = 5;
 	private int health = 100;
 	public TurrettManager manager;
 	
@@ -228,6 +231,14 @@ public class topLevelController : MonoBehaviour
 			resourceMissileScript = missile.GetComponentInChildren<resourceRobot>();
 			resourceMissileScript.tLC = this;
 			Debug.Log("Returning true");
+			return true;
+		case(missileType.DefenseSystem):
+			if(DefenseSystem != null){
+				return false;
+			}
+			DefenseSystem = missile;
+			DefenseSystemScript = missile.GetComponentInChildren<defensesystem>();
+			DefenseSystemScript.tLC = this;
 			return true;
 		default:
 			return false;

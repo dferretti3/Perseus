@@ -14,11 +14,13 @@ public class firstPersonTower : MonoBehaviour {
 	public Texture2D gatherer;
 	public Texture2D machinegun;
 	public Texture2D white;
+	public Texture2D defense;
 	private float missileButtonWidth;
 	private float missileButtonHeight;
 	public GameObject[] missilePrefab;
 	public AudioClip commandcodes;
 	public AudioClip warning;
+	public AudioClip dsystem;
 	public GameObject expSource;
 		float turnspeed = 2.0f;
 	string cost;
@@ -49,32 +51,39 @@ public class firstPersonTower : MonoBehaviour {
 				{
 					currentMissile = "HOMING MISSILE";
 					cost = "Cost: 10";
-					highlighty = 195;
+					highlighty = 135;
 				}
 				else if(tLC.currentMissileSelection == 1)
 				{
 					currentMissile = "CONTROLLED MISSILE";
 					cost = "Cost: 10";
-					highlighty = 255;
+					highlighty = 195;
 				}
 				else if(tLC.currentMissileSelection == 2)
 				{
 					currentMissile = "MACHINE GUN";
 					cost = "Cost: 0";
-					highlighty = 315;
+					highlighty = 255;
 				}
 				else if(tLC.currentMissileSelection == 3)
 				{
 					currentMissile = "COLLECTOR";
 					cost = "Cost: 30";
+					highlighty = 315;
+				}
+				else if(tLC.currentMissileSelection == 4)
+				{
+					currentMissile = "DEFENSE SYSTEM";
+					cost = "Cost: 50";
 					highlighty = 375;
 				}
 				
 				GUI.Label(new Rect(highlightx,highlighty,60,60), white);
-				GUI.DrawTexture(new Rect(10,200,50,50), homing);
-				GUI.DrawTexture(new Rect(10,260,50,50), controlled);
-				GUI.DrawTexture(new Rect(10,320,50,50), machinegun);
-				GUI.DrawTexture(new Rect(10,380,50,50), gatherer);
+				GUI.DrawTexture(new Rect(10,140,50,50), homing);
+				GUI.DrawTexture(new Rect(10,200,50,50), controlled);
+				GUI.DrawTexture(new Rect(10,260,50,50), machinegun);
+				GUI.DrawTexture(new Rect(10,320,50,50), gatherer);
+				GUI.DrawTexture(new Rect(10,380,50,50), defense);
 				
 				GUI.TextArea(new Rect(0,0,200,50),"\n\t\t" + currentMissile + "\n\t\t\t\t\t\t\t\t\t"+cost);
 			}
@@ -101,6 +110,10 @@ public class firstPersonTower : MonoBehaviour {
 		else if(missileTypeNum == 3)
 		{
 			mType = missileType.Collector;
+		}
+		else if(missileTypeNum == 4)
+		{
+			mType = missileType.DefenseSystem;
 		}
 		else
 		{
@@ -186,19 +199,34 @@ public class firstPersonTower : MonoBehaviour {
 					PlayerPrefs.SetFloat("money", PlayerPrefs.GetFloat("money")-30);
 					tempMissile.transform.rotation = Quaternion.LookRotation(transform.parent.forward,transform.parent.up);
 					tempMissile.transform.position = transform.position+Vector3.up*8 ;
-					PlayAudioClip(commandcodes,transform.position,4f);
+					PlayAudioClip(commandcodes,transform.position,2f);
 				}
 			}
 			else
 			{
 				Destroy(tempMissile);
-				if(tLC.moveToMissile(4))
+				if(tLC.moveToMissile(3))
 				{
 					cleanUpOnExit();
 				}
 			}
 		}
-		
+		else if(mType == missileType.DefenseSystem)
+		{
+			prefabNum = 4;
+			tempMissile = (GameObject)Network.Instantiate(missilePrefab[prefabNum], transform.parent.position, Quaternion.identity, 0);
+			if(tLC.addNewMissile(tempMissile,mType) && PlayerPrefs.GetFloat("money")>=0)
+			{
+				tempMissile.transform.position = transform.parent.position;
+				tempMissile.transform.parent = transform.parent;
+				tempMissile.transform.localRotation = Quaternion.identity;
+				PlayAudioClip(dsystem,transform.position,2f);
+			}
+			else
+			{
+				Destroy(tempMissile);
+			}
+		}
 		if(missilePrefab.Length <= prefabNum || prefabNum < 0)
 		{
 			return;
@@ -218,6 +246,7 @@ public class firstPersonTower : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+			
 		if(tLC == null)
 		{
 			tLC = transform.parent.GetComponentInChildren<topLevelController>();
@@ -226,6 +255,36 @@ public class firstPersonTower : MonoBehaviour {
 		if(controlType == ControlType.Full && !justActivated)
 		{
 			float yAngle = Mathf.Asin(transform.parent.forward.y/Mathf.Abs(transform.parent.forward.magnitude));
+			
+			Collider[] cols = Physics.OverlapSphere(transform.position, 200);
+			foreach (Collider hit in cols){
+				if((hit.gameObject.name == "AIContMissile(Clone)" || hit.gameObject.name == "homingMissileRedo(Clone)" || hit.gameObject
+				.name == "ControlledMissile(Clone)"))
+				{
+					GameObject closeobject = hit.gameObject;	
+					if(closeobject.transform.networkView.viewID.owner != Network.player)
+					{
+						if(!warn)
+						PlayAudioClip(warning, transform.position, 2f);
+						warn = true;
+						break;
+					}
+				}	
+		}
+		if(warn)
+		{
+			playcount++;
+			if(playcount>=200)
+			{
+				warn=false;
+				playcount=0;
+			}
+		}
+			
+			
+			
+			
+			
 			
 			if(Input.GetMouseButtonDown(0))
 			{
@@ -300,32 +359,6 @@ public class firstPersonTower : MonoBehaviour {
 		{
 			justActivated = false;
 		}
-		
-		Collider[] cols = Physics.OverlapSphere(transform.position, 100);
-		foreach (Collider hit in cols){
-			if((hit.gameObject.name == "AIContMissile(Clone)" || hit.gameObject.name == "homingMissileRedo(Clone)" || hit.gameObject
-				.name == "ControlledMissile(Clone)"))
-			{
-				if(hit.gameObject.transform.networkView.viewID.owner != Network.player)
-				{
-					if(!warn)
-						PlayAudioClip(warning, transform.position, 6f);
-					warn = true;
-					break;
-				}
-			}	
-		}
-		if(warn)
-		{
-			playcount++;
-			print(playcount);
-			if(playcount>=200)
-			{
-				warn=false;
-				playcount=0;
-			}
-		}
-	
 	}
 	
 	public void cleanUpOnExit()
