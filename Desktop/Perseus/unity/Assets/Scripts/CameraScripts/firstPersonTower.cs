@@ -285,7 +285,7 @@ public class firstPersonTower : MonoBehaviour {
 				.name == "ControlledMissile(Clone)"))
 				{
 					GameObject closeobject = hit.gameObject;	
-					if(closeobject.transform.networkView.viewID.owner != Network.player)
+					if(closeobject.tag.CompareTo(""+tLC.teamNum)!=0)
 					{
 						if(!warn)
 						PlayAudioClip(warning, transform.position, 2f);
