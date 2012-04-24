@@ -21,7 +21,7 @@ public class Money : MonoBehaviour {
 					Network.Destroy(gameObject);
 				else
 				{
-					PlayerPrefs.SetFloat("money", PlayerPrefs.GetFloat("money")+ 6 - transform.localScale.x);
+					PlayerPrefs.SetFloat("money", PlayerPrefs.GetFloat("money")+ 8 - transform.localScale.x);
 					Network.Destroy(gameObject);
 				}
 			}

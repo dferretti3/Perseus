@@ -11,7 +11,7 @@ public class AIControl : MonoBehaviour {
 	public int team = -1;
 	string callSign = "";
 	
-	float income = 0.33f;
+	float income = 1.33f;
 	int count;
 	int lead;
 	int spread;

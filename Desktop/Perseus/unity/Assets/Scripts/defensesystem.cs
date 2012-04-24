@@ -47,7 +47,7 @@ public class defensesystem : MonoBehaviour {
 					lead = 10;
 					spread = 5;
 				}
-				if(count%40==0)
+				if(count%25==0)
 				{
 					PlayAudioClip(shot,transform.position,4f);
 

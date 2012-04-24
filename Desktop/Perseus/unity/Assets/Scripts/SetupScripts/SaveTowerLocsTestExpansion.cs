@@ -12,13 +12,13 @@ public class SaveTowerLocsTestExpansion : MonoBehaviour {
 	float money;
 	bool income = false;
 	void Start () {
-		PlayerPrefs.SetFloat("money", PlayerPrefs.GetInt("numTowers")*25f);
+		PlayerPrefs.SetFloat("money", PlayerPrefs.GetInt("numTowers")*35f);
 	}
 	
 	// Update is called once per frame
 	void Update () {
 		if(income){
-			PlayerPrefs.SetFloat("money", PlayerPrefs.GetFloat("money")+Time.deltaTime*0.33f);
+			PlayerPrefs.SetFloat("money", PlayerPrefs.GetFloat("money")+Time.deltaTime);
 		}
 		
 		if(scoreMan == null)
