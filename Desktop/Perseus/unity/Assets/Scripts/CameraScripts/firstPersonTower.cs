@@ -23,7 +23,6 @@ public class firstPersonTower : MonoBehaviour {
 	public AudioClip dsystem;
 	public GameObject expSource;
 		float turnspeed = 2.0f;
-	string cost;
 	public AudioClip shot;
 	int highlightx=8;
 	int highlighty;
@@ -31,6 +30,7 @@ public class firstPersonTower : MonoBehaviour {
 	int playcount=0;
 	bool delaying = false;
 	float delaycount = 0.33f;
+	public Font myFont;
 	// Use this for initialization
 	void Start () {
 		targetSize = Screen.width/10;
@@ -45,6 +45,9 @@ public class firstPersonTower : MonoBehaviour {
 	{
 		if(controlType == ControlType.Full)
 		{
+			GUIStyle myStyle = new GUIStyle();
+			myStyle.font = myFont;
+			myStyle.normal.textColor = Color.white;
 			GUI.DrawTexture(new Rect(Screen.width/2 - targetSize/2,Screen.height/2 - targetSize/2,targetSize,targetSize),target);
 			string currentMissile = "";
 			if(tLC != null)
@@ -52,31 +55,26 @@ public class firstPersonTower : MonoBehaviour {
 				if(tLC.currentMissileSelection == 0)
 				{
 					currentMissile = "HOMING MISSILE";
-					cost = "Cost: 10";
 					highlighty = 135;
 				}
 				else if(tLC.currentMissileSelection == 1)
 				{
 					currentMissile = "CONTROLLED MISSILE";
-					cost = "Cost: 10";
 					highlighty = 195;
 				}
 				else if(tLC.currentMissileSelection == 2)
 				{
 					currentMissile = "MACHINE GUN";
-					cost = "Cost: 0";
 					highlighty = 255;
 				}
 				else if(tLC.currentMissileSelection == 3)
 				{
 					currentMissile = "COLLECTOR";
-					cost = "Cost: 30";
 					highlighty = 315;
 				}
 				else if(tLC.currentMissileSelection == 4)
 				{
 					currentMissile = "DEFENSE SYSTEM";
-					cost = "Cost: 50";
 					highlighty = 375;
 				}
 				
@@ -86,7 +84,7 @@ public class firstPersonTower : MonoBehaviour {
 				GUI.DrawTexture(new Rect(10,260,50,50), machinegun);
 				GUI.DrawTexture(new Rect(10,320,50,50), gatherer);
 				GUI.DrawTexture(new Rect(10,380,50,50), defense);
-				GUI.Label(new Rect(0,0,200,50),"\n\t\t" + currentMissile + "\n\t\t\t\t\t\t\t\t\t"+cost);
+				GUI.Label(new Rect(0,0,300,50),"\n\t\t" + currentMissile, myStyle);
 			}
 		}
 	}
