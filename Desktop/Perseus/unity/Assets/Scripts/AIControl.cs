@@ -8,6 +8,10 @@ public class AIControl : MonoBehaviour {
 	public AIresourceRobot rrobot;
 	AIresourceRobot rr;
 	
+	int team = -1;
+	string callSign = "";
+	
+	
 	int count;
 	int lead;
 	int spread;
@@ -25,6 +29,17 @@ public class AIControl : MonoBehaviour {
 	void Start () {
 		money = 20;
 		numbeforesave = Random.Range(0,3);
+	}
+	
+	public void pushNavPointInfo(int teamNum, string call)
+	{
+		team = teamNum;
+		callSign = call;
+	}
+	
+	public int getHealth()
+	{
+		return health;
 	}
 	
 	// Update is called once per frame
