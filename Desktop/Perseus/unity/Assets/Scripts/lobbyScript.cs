@@ -5,6 +5,7 @@ public class lobbyScript : MonoBehaviour {
 	
 	
 	private string[] sampleNames = new string[] {"PLYR","YOYO","DUCK","BONE","CRAB","FIDO","SPOT","BOND","GRIM","HACK","MOON"};
+	private string[] sampleAINames = new string[] {"TINY", "BIGS", "HART", "NOOB", "NEMO", "SOLO", "TOBY", "BOOT", "TIRE", "FISH", "WHAM", "MOON", "WEST", "RAIN", "ARTI"};
 	private bool connected = false;
 	private bool isHost = false;
 	private int plyrNum = -1;
@@ -12,8 +13,13 @@ public class lobbyScript : MonoBehaviour {
 	private string callSign = "";
 	private int currentColor = 0;
 	private string ip = "127.0.0.1";
+	
+	
 	private ArrayList names;
 	private ArrayList colors;
+	private ArrayList aiNames;
+	private ArrayList aiColors;
+	
 	public Texture2D colorPicker;
 	
 	
@@ -50,27 +56,92 @@ public class lobbyScript : MonoBehaviour {
 		}
 		else
 		{
+			if(isHost)
+			{
+				if(GUI.Button(new Rect(10,10,100,20),"Add AI"))
+				{
+					networkView.RPC("distributeAICallSign",RPCMode.All,randomColor(),randomAIName(),aiNames.Count);
+				}
+				if(GUI.Button(new Rect(120,10,100,20),"Remove AI"))
+				{
+					networkView.RPC("eraseLastAI",RPCMode.All);
+				}
+				
+				if(GUI.Button(new Rect(Screen.width-110,10,100,20),"Start Game"))
+				{
+					networkView.RPC("beginGame",RPCMode.All);
+				}
+			}
+			
 			for(int x = 0; x < names.Count; x++)
 			{
-				GUIContent gC = new GUIContent(colorPicker,"Scroll");
-				GUI.Label(new Rect(10,100 + 20*x,70,20),"" + (x+1) + ". " + (string)names[x]);
+				GUI.Label(new Rect(10,100 + 25*x,70,20),"" + (x+1) + ". " + (string)names[x]);
 				GUI.color = PlayerManagerTestExpansion.teams[(int)colors[x]];
-				GUI.Label(new Rect(100,100 + 20*x,80,20),gC);
+				Rect sampleRect = new Rect(100,100 + 25*x,80,20);
+				GUI.DrawTexture(sampleRect,colorPicker,ScaleMode.StretchToFill);
 				GUI.color = Color.white;
+				if(x == plyrNum && sampleRect.Contains(Event.current.mousePosition))
+				{
+					GUI.Label(new Rect(10,Screen.height-20,150,20),"Scroll to change color");
+					int scroll = Mathf.RoundToInt(Input.GetAxis("Mouse ScrollWheel") * 10.0f);
+					if (scroll!=0)
+					{
+						int maxColors = PlayerManagerTestExpansion.teams.Length;
+						currentColor += scroll;
+						if(currentColor < 0)
+						{
+							currentColor += maxColors;
+						}
+						currentColor = currentColor%maxColors;
+						networkView.RPC("distributeColorChange",RPCMode.All,currentColor,plyrNum);
+					}
+				}
 			}
+			int currentPlayerCount = names.Count;
+			for(int x = 0; x < aiNames.Count; x++)
+			{
+				GUI.Label(new Rect(10,100 + 25*(x+currentPlayerCount),70,20),"" + ((x+currentPlayerCount)+1) + ". " + (string)aiNames[x]);
+				GUI.color = PlayerManagerTestExpansion.teams[(int)aiColors[x]];
+				Rect sampleRect = new Rect(100,100 + 25*(x+currentPlayerCount),80,20);
+				GUI.DrawTexture(sampleRect,colorPicker,ScaleMode.StretchToFill);
+				GUI.color = Color.white;
+				if(isHost && sampleRect.Contains(Event.current.mousePosition))
+				{
+					GUI.Label(new Rect(10,Screen.height-20,150,20),"Scroll to change color");
+					int scroll = Mathf.RoundToInt(Input.GetAxis("Mouse ScrollWheel") * 10.0f);
+					if (scroll!=0)
+					{
+						int maxColors = PlayerManagerTestExpansion.teams.Length;
+						int tempCurColor = (int)aiColors[x];
+						tempCurColor += scroll;
+						if(tempCurColor < 0)
+						{
+							tempCurColor += maxColors;
+						}
+						aiColors[x] = tempCurColor%maxColors;
+						networkView.RPC("distributeAIColorChange",RPCMode.All,(int)aiColors[x],x);
+					}
+				}
+			}
+			
+			
 		}
 	}
 	
 	void OnPlayerConnected(NetworkPlayer player) {
         Debug.Log("Player " + maxPlayers + " connected from " + player.ipAddress + ":" + player.port);
-		networkView.RPC("distributeCallSign",player,currentColor,callSign,plyrNum);
-		if(isHost)
+		for(int x = 0; x < names.Count; x++)
 		{
-			Debug.Log("Giving player their number");
-			networkView.RPC("tellNumber",player,maxPlayers);
-			Debug.Log("Increasing player count");
-			networkView.RPC("increaseMaxNum",RPCMode.All,maxPlayers+1);
-			Debug.Log("Done");
+			networkView.RPC("distributeCallSign",player,colors[x],names[x],x);
+		}
+		Debug.Log("Giving player their number");
+		networkView.RPC("tellNumber",player,maxPlayers);
+		Debug.Log("Increasing player count");
+		networkView.RPC("increaseMaxNum",RPCMode.All,maxPlayers+1);
+		Debug.Log("Done");
+		for(int x = 0; x < aiNames.Count; x++)
+		{
+			networkView.RPC("distributeAICallSign",player,(int)aiColors[x],(int)aiNames[x],x);
 		}
     }
 	
@@ -96,11 +167,23 @@ public class lobbyScript : MonoBehaviour {
 		selectRandomName();
 		names = new ArrayList();
 		colors = new ArrayList();
+		aiNames = new ArrayList();
+		aiColors = new ArrayList();
 	}
 	
 	private void selectRandomName()
 	{
 		callSign = sampleNames[Mathf.FloorToInt(Random.value*sampleNames.Length)];
+	}
+	
+	private string randomAIName()
+	{
+		return sampleAINames[Mathf.FloorToInt(Random.value*sampleAINames.Length)];
+	}
+	
+	private int randomColor()
+	{
+		return Mathf.FloorToInt(Random.value*PlayerManagerTestExpansion.teams.Length);
 	}
 	
 	// Update is called once per frame
@@ -154,5 +237,61 @@ public class lobbyScript : MonoBehaviour {
 			colors.Add(0);
 		}
 		colors[player] = color;
+	}
+	
+	[RPC]
+	void distributeAIColorChange(int color, int aiPlayer)
+	{
+		while(aiColors.Count <= aiPlayer)
+		{
+			aiColors.Add(0);
+		}
+		aiColors[aiPlayer] = color;
+	}
+	
+	[RPC]
+	void distributeAICallSign(int initColor,string name, int aiPlayer)
+	{
+		Debug.Log("Receiving init for AI " + aiPlayer);
+		while(aiNames.Count <= aiPlayer)
+		{
+			aiNames.Add("");
+		}
+		aiNames[aiPlayer] = name;
+		while(aiColors.Count <= aiPlayer)
+		{
+			aiColors.Add(0);
+		}
+		aiColors[aiPlayer] = initColor;
+	}
+	
+	[RPC]
+	void eraseLastAI()
+	{
+		aiNames.RemoveAt(aiNames.Count-1);
+		aiColors.RemoveAt(aiColors.Count-1);
+	}
+	
+	[RPC]
+	void beginGame()
+	{
+		PlayerPrefs.SetInt("myNum",plyrNum);
+		PlayerPrefs.SetInt("connectedPlayers",names.Count);
+		PlayerPrefs.SetString("currentCall",callSign);
+		PlayerPrefs.SetInt("currentTeam",currentColor);
+		PlayerPrefs.SetInt("numTowers",2);
+		PlayerPrefs.SetInt("timeout",30);
+		
+		if(isHost)
+		{
+			PlayerPrefs.SetInt("numAIs",aiNames.Count);
+			for(int x = 0; x < aiNames.Count; x++)
+			{
+				PlayerPrefs.SetString("ai"+x+"name",(string)aiNames[x]);
+				PlayerPrefs.SetInt("ai"+x+"team",(int)aiColors[x]);
+			}
+		}
+		
+		Application.LoadLevel(1);
 	}
 }

@@ -44,30 +44,6 @@ public class PlayerManagerTestExpansion : MonoBehaviour {
 	bool isready = false;
 	bool began = false;
 	void OnGUI(){
-		if(!netsetup)
-		{
-			if(GUI.Button(new Rect(10,10,100,20), "Create Server"))
-			{
-				Network.InitializeServer(2, 25000);
-				PlayerPrefs.SetInt("playerNum",playernum=0);
-				currentColor = 0;
-				player.color = teams[currentColor];
-				callSign = "PLR1";
-			}
-			ip = GUI.TextArea(new Rect(10,30,200,20), ip);
-			if(GUI.Button(new Rect(10, 50, 100, 20), "Connect"))
-			{
-				Network.Connect(ip, 25000);
-				PlayerPrefs.SetInt("playerNum",playernum=1);
-				currentColor = 1;
-				player.color = teams[currentColor];
-				callSign = "PLR2";
-			}
-			if(Network.isClient || Network.isServer)
-				netsetup=true;
-		}
-		if(netsetup)
-		{
 			if(Network.isServer)
 			GUI.Label(new Rect(10, 10, 100, 30), "Server");
 			if(Network.isClient)
@@ -80,12 +56,16 @@ public class PlayerManagerTestExpansion : MonoBehaviour {
 			{
 				GUI.Label(new Rect(300,90,100,50)," "+Mathf.FloorToInt(timeLeft),myStyle);	
 			}
-		}
 	}
 	// Use this for initialization
 	void Start () {
 		num_towers = 0;
-		max_towers = 2;
+		playernum = PlayerPrefs.GetInt("myNum");
+		currentMaxPlayers = PlayerPrefs.GetInt("connectedPlayers");
+		max_towers = PlayerPrefs.GetInt("numTowers");
+		num_computers = PlayerPrefs.GetInt("numAIs");
+		startingTime = (float)PlayerPrefs.GetInt("timeout");
+		timeLeft = startingTime;
 		
 		tower_pos = new Vector3[2*max_towers];
 		tower_rots = new Quaternion[2*max_towers];
@@ -96,7 +76,8 @@ public class PlayerManagerTestExpansion : MonoBehaviour {
 		for (int i = 0; i < num_computers; i++)
 		{
 			computers[i] = (GameObject.Instantiate(PlayerPrefab) as GameObject).GetComponent<PlayerTestExpansion>();
-			computers[i].color = new Color(Random.Range(0.0f,1.0f),Random.Range(0.0f,1.0f),Random.Range(0.0f,1.0f));
+			computers[i].color = teams[PlayerPrefs.GetInt("ai"+i+"team")];
+			computers[i].callSign = PlayerPrefs.GetString("ai"+i+"name");
 		}
 		comp_p = new Vector3[computers.Length];
 		comp_n = new Vector3[computers.Length];
@@ -107,9 +88,12 @@ public class PlayerManagerTestExpansion : MonoBehaviour {
 		index = 0;
 		GameObject tempObj = (GameObject)(GameObject.Instantiate(PlayerPrefab));
 		player = tempObj.GetComponent<PlayerTestExpansion>();
+		currentColor = PlayerPrefs.GetInt("currentTeam");
 		player.color = teams[currentColor];
+		player.callSign = PlayerPrefs.GetString("currentCall");
 		player.my_turn = false;
 		player.manager = this;
+		callSign = player.callSign;
 		foreach (PlayerTestExpansion p in computers) {
 			p.my_turn = false;
 			p.manager = this;
@@ -125,33 +109,23 @@ public class PlayerManagerTestExpansion : MonoBehaviour {
 		myStyle.fontSize = 20;
 		myStyle.normal.textColor = Color.red;
 		myStyle.normal.background = null;
-	}
-	
-	void OnServerInitialized() { 
-		print("STARTED");
-	}
-	
-	void OnConnectedToServer() { 
-		print("CONNECTED");
-		isready = true;
-	}
-	
-	void OnFailedToConnect(NetworkConnectionError e){
-		print("X " + e);
-	}
-	// Update is called once per frame
-	void Update () {
 		
-		if (Network.isServer && Network.connections.Length>0) isready = true;
-		
-		if (!began && isready)
+		if(Network.isServer)
 		{
 			networkView.RPC("setStartIndex",RPCMode.All,Mathf.FloorToInt(Random.value*currentMaxPlayers));
-			began = true;
-			print("STARTING - Server and Client are ready");
+			if (num_computers>0 && comp_o[0]==null)
+			{
+				float rr = 150;
+				for (int i = 0; i < computers.Length; i++)
+				{
+					computers[i].comp_createTower(Random.Range(-rr,rr),Random.Range(-rr,rr),i,computers[i].color);	
+				}
+			}
 		}
-		
-		if(netsetup){
+	}
+	
+	// Update is called once per frame
+	void Update () {
 			if(index == playernum && num_towers < max_towers)
 			{
 				Color c = teams[currentColor];
@@ -164,7 +138,7 @@ public class PlayerManagerTestExpansion : MonoBehaviour {
 				transform.position = pos(hitInfo);
 				transform.rotation = rot();
 			}
-			if (began && index == playernum)
+			if (index == playernum)
 			{
 				timeLeft-= Time.deltaTime;	
 				if (timeLeft<=0) 
@@ -179,16 +153,6 @@ public class PlayerManagerTestExpansion : MonoBehaviour {
 					}
 				}
 			}
-			
-			if (began && num_computers>0 && comp_o[0]==null)
-			{
-				float rr = 150;
-				for (int i = 0; i < computers.Length; i++)
-				{
-					computers[i].comp_createTower(Random.Range(-rr,rr),Random.Range(-rr,rr),i,computers[i].color);	
-				}
-			}
-		}
 	}
 	
 	public void mark(Vector3 hitInfo, Vector3 posit, GameObject obj) {
@@ -229,9 +193,11 @@ public class PlayerManagerTestExpansion : MonoBehaviour {
 	[RPC]
 	void setStartIndex(int startAt)
 	{
+		Debug.Log("Starting at index: " + startAt);
 		index = startAt;
 		if(index == playernum && num_towers < max_towers)
 		{
+			Debug.Log("starting with me");
 			player.my_turn = true;
 			timeLeft = startingTime;
 		}
@@ -246,6 +212,10 @@ public class PlayerManagerTestExpansion : MonoBehaviour {
 		{
 			player.my_turn = true;
 			timeLeft = startingTime;
+		}
+		else if(index == playerNum)
+		{
+			timeLeft = 10f;
 		}
 	}
 	
