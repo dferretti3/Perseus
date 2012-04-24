@@ -11,6 +11,9 @@ public class navPoint : MonoBehaviour
 	public int playerTeam;
 	public GameObject nameDisplayPref;
 	private GameObject nameDisplay;
+	
+	public GameObject navPref;
+	private GameObject navPrefFree;
 
 	void Start ()
 	{
@@ -30,10 +33,16 @@ public class navPoint : MonoBehaviour
 	void OnDisable()
 	{
 		Destroy(nameDisplay);
+		Destroy(navPrefFree);
+		
 	}
 	
 	public void refresh()
 	{
+		if(navPrefFree != null)
+		{
+			Destroy(navPrefFree);
+		}
 		Destroy(nameDisplay);
 		renderer.material.SetColor("_TintColor",playerColor);
 		nameDisplay = (GameObject)Instantiate(nameDisplayPref);
@@ -41,12 +50,18 @@ public class navPoint : MonoBehaviour
 		TextMesh displayMesh = nameDisplay.GetComponent<TextMesh>();
 		displayMesh.text = nameTag;
 		displayMesh.renderer.material.color = playerColor;
+		navPrefFree = (GameObject)GameObject.Instantiate(navPref);
+		navPrefFree.renderer.material.SetColor("_TintColor",playerColor);
 		//Debug.Log("Sending RPC to change nav color...");
 		transform.parent.networkView.RPC("setNavColor",RPCMode.OthersBuffered,new Vector3(playerColor.r,playerColor.g,playerColor.b),nameTag);
 	}
 	
 	public void subRefresh(Color pCol, string nTag)
 	{
+		if(navPrefFree != null)
+		{
+			Destroy(navPrefFree);
+		}
 		//Debug.Log("Attempting to update a networked nav point...");
 		playerColor = pCol;
 		nameTag = nTag;
@@ -62,35 +77,39 @@ public class navPoint : MonoBehaviour
 		TextMesh displayMesh = nameDisplay.GetComponent<TextMesh>();
 		displayMesh.text = nameTag;
 		displayMesh.renderer.material.color = playerColor;
+		navPrefFree = (GameObject)GameObject.Instantiate(navPref);
+		navPrefFree.renderer.material.SetColor("_TintColor",playerColor);
 	}
 
 
 	void OnWillRenderObject ()
 	{
+		transform.localScale = Vector3.zero;
 		Vector3 vectorTo = transform.position - Camera.current.transform.position;
 		float depth = Vector3.Cross(vectorTo,Camera.current.transform.forward).magnitude;
 		if ((vectorTo).magnitude < 25) {
 			transform.localScale = Vector3.zero;
 			nameDisplay.transform.localScale = Vector3.zero;
+			navPrefFree.transform.localScale = Vector3.zero;
 			return;
 		}
 		//Debug.Log("Camera: " + Camera.current.name + " OnWillRenderObject()");
 		//transform.position = Camera.current.NormalizedViewportToWorldPoint(pos);
-		transform.localScale = ( depth* new Vector3 (.003f, .0f, .003f));/*(transform.position - Camera.current.transform.position).magnitude)*/
+		navPrefFree.transform.localScale = ((transform.position - Camera.current.transform.position).magnitude* new Vector3 (.003f, .0f, .003f));/*(transform.position - Camera.current.transform.position).magnitude)*/
 		Vector3 fwd = Camera.current.transform.up;
 		
 		//then calc the player's new rotation quat
 		
-		transform.localPosition = localPos;
-		transform.position = transform.position + Camera.current.transform.up * transform.renderer.bounds.size.y;
-		transform.rotation = Quaternion.LookRotation (fwd, vectorTo.normalized);
+		//transform.localPosition = localPos;
+		navPrefFree.transform.position = transform.position + Camera.current.transform.up * (transform.renderer.bounds.size.y + 2f);
+		navPrefFree.transform.rotation = Quaternion.LookRotation (fwd, Camera.current.transform.forward);//vectorTo.normalized);
 		
 		Vector3 screenPos = Camera.current.WorldToNormalizedViewportPoint(transform.parent.position);
 		Vector2 xY = new Vector2(screenPos.x - .5f,screenPos.y - .5f);
 		if(xY.magnitude < .1)
 		{
-			nameDisplay.transform.localScale = (depth) * new Vector3 (.01f, .01f, .01f);
-			nameDisplay.transform.position = transform.position + Camera.current.transform.up * nameDisplay.transform.renderer.bounds.size.y;
+			nameDisplay.transform.localScale = ((transform.position - Camera.current.transform.position).magnitude) * new Vector3 (.01f, .01f, .01f);
+			nameDisplay.transform.position = navPrefFree.transform.position + Camera.current.transform.up * nameDisplay.transform.renderer.bounds.size.y;
 			nameDisplay.transform.rotation = Quaternion.LookRotation(Camera.current.transform.forward,Camera.current.transform.up);
 		}
 		else
