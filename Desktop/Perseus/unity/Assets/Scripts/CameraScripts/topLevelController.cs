@@ -144,6 +144,11 @@ public class topLevelController : MonoBehaviour
 				fPT = firstPerson.GetComponent<firstPersonTower> ();
 			}
 		}
+		
+		if (Input.GetKeyDown("m"))
+		{
+			manager.scrollFromTab();	
+		}
 	}
 	
 	public void moveToThirdPerson ()
