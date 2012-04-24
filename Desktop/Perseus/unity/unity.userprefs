@@ -1,8 +1,8 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\defensesystem.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\AIControl.cs">
     <Files>
-      <File FileName="Assets\Scripts\AIControl.cs" Line="58" Column="4" />
+      <File FileName="Assets\Scripts\AIControl.cs" Line="83" Column="15" />
       <File FileName="Assets\Scripts\Bomb.cs" Line="1" Column="1" />
       <File FileName="Assets\Scripts\AIControlledMissile.cs" Line="1" Column="1" />
       <File FileName="Assets\Scripts\ControlledMissile.cs" Line="1" Column="1" />
@@ -15,10 +15,10 @@
       <File FileName="Assets\Scripts\lobbyScript.cs" Line="1" Column="1" />
       <File FileName="Assets\Scripts\CameraScripts\freeFlyCamera.cs" Line="1" Column="1" />
       <File FileName="Assets\Scripts\TurrettManager.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\SetupScripts\SaveTowerLocsTestExpansion.cs" Line="24" Column="23" />
-      <File FileName="Assets\Scripts\CameraScripts\topLevelController.cs" Line="152" Column="4" />
-      <File FileName="Assets\Scripts\Money.cs" Line="24" Column="68" />
-      <File FileName="Assets\Scripts\defensesystem.cs" Line="41" Column="7" />
+      <File FileName="Assets\Scripts\SetupScripts\SaveTowerLocsTestExpansion.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\CameraScripts\topLevelController.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\Money.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\defensesystem.cs" Line="1" Column="7" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

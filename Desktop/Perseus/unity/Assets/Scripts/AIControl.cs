@@ -80,7 +80,7 @@ public class AIControl : MonoBehaviour {
 				rr.pushNavPointInfo(team, callSign);
 				saving=false;
 				money += -30;
-				income = 0.66f;
+				income = 1.66f;
 			}
 			
 					
