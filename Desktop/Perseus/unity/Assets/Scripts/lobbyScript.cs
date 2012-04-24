@@ -58,6 +58,7 @@ public class lobbyScript : MonoBehaviour {
 		}
 		else
 		{
+			Rect towerCountRect = new Rect(230,10,100,20);
 			if(isHost)
 			{
 				if(GUI.Button(new Rect(10,10,100,20),"Add AI"))
@@ -74,8 +75,7 @@ public class lobbyScript : MonoBehaviour {
 					networkView.RPC("beginGame",RPCMode.All);
 				}
 				
-				Rect towerCountRect = new Rect(230,10,100,20);
-				GUI.Button(towerCountRect,"Num Towers: " + numTowers);
+				
 				if(towerCountRect.Contains(Event.current.mousePosition))
 				{
 					int scroll = Mathf.RoundToInt(Input.GetAxis("Mouse ScrollWheel") * 10.0f);
@@ -97,6 +97,8 @@ public class lobbyScript : MonoBehaviour {
 					}
 				}
 			}
+			
+			GUI.Button(towerCountRect,"Num Towers: " + numTowers);
 			
 			for(int x = 0; x < names.Count; x++)
 			{

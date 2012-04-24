@@ -228,6 +228,7 @@ public class firstPersonTower : MonoBehaviour {
 			tempMissile = (GameObject)Network.Instantiate(missilePrefab[prefabNum], transform.parent.position, Quaternion.identity,0);
 			if(tLC.addNewMissile(tempMissile,mType) && PlayerPrefs.GetFloat("money")>=50)
 			{
+				PlayerPrefs.SetFloat("money", PlayerPrefs.GetFloat("money")-50f);
 				tempMissile.transform.position = transform.parent.position;
 				tempMissile.transform.parent = transform.parent;
 				tempMissile.transform.localRotation = Quaternion.identity;
