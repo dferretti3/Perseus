@@ -71,6 +71,7 @@ public class topLevelController : MonoBehaviour
 			transform.parent.networkView.RPC("updateHealth",RPCMode.OthersBuffered,0);
 			if(isActive)
 			{
+				Debug.Log("it is active");
 				if(mC != null)
 				{
 					mC.transferControl();
@@ -83,7 +84,9 @@ public class topLevelController : MonoBehaviour
 				{
 					resourceMissileScript.transferControl();
 				}
+				Debug.Log("about to scroll");
 				manager.scroll(1);
+				Debug.Log("scrolled");
 			}
 			Network.Destroy(transform.parent.gameObject);
 		}
