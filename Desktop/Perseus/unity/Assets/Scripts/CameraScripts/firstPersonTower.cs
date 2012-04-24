@@ -32,12 +32,14 @@ public class firstPersonTower : MonoBehaviour {
 	bool delaying = false;
 	float delaycount = 0.33f;
 	public Font myFont;
+	LineRenderer lineRenderer;
 	// Use this for initialization
 	void Start () {
 		targetSize = Screen.width/10;
 		missileButtonWidth = Screen.width/10;
 		missileButtonHeight = Screen.height/10;
 		Screen.lockCursor = true;
+		lineRenderer = transform.parent.GetComponentInChildren<LineRenderer>();
 	}
 	
 	
@@ -241,7 +243,7 @@ public class firstPersonTower : MonoBehaviour {
 			prefabNum = 5;
 			if(PlayerPrefs.GetFloat("money")>=20f)
 			{
-				PlayerPrefs.SetFloat("money", PlayerPrefs.GetFloat("money")-20f);
+//				PlayerPrefs.SetFloat("money", PlayerPrefs.GetFloat("money")-20f);
 				tempMissile = (GameObject)Network.Instantiate(missilePrefab[prefabNum],transform.parent.position+transform.forward*20,Quaternion.LookRotation(transform.parent.forward,transform.parent.up),0);
 				tempMissile.networkView.RPC("setTag", RPCMode.All, ""+tLC.teamNum);
 				PlayAudioClip(shot,transform.position,0.3f);
@@ -306,7 +308,25 @@ public class firstPersonTower : MonoBehaviour {
 			
 			
 			
-			
+			if (tLC.currentMissileSelection==5)
+			{
+				lineRenderer.enabled = true;
+				int max=200;
+				int v;
+				Vector3 pos = transform.parent.position+transform.forward*20;
+				Vector3 vel = transform.forward*Bomb.projectilespeed + Bomb.initialVelocityOffset;
+				lineRenderer.SetVertexCount(max);
+				float dt = Time.fixedDeltaTime;
+				for (v=0; v < max && pos.y>0; v++)
+				{
+					vel += Bomb.gravity*Vector3.down*dt;
+					pos += vel*dt;
+					lineRenderer.SetPosition(v,pos);
+				}
+				lineRenderer.SetVertexCount(v);
+			} else{
+				lineRenderer.enabled = false;
+			}
 			
 			
 			if(Input.GetMouseButtonDown(0))
@@ -413,6 +433,7 @@ public class firstPersonTower : MonoBehaviour {
 		AudioListener aL = gameObject.GetComponent<AudioListener>();
 		aL.enabled = false;
 		Screen.lockCursor = false;
+		lineRenderer.enabled = false;
 	}
 	
 	AudioSource PlayAudioClip(AudioClip clip, Vector3 position, float volume) {
