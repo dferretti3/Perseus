@@ -368,7 +368,6 @@ public class resourceRobot : MonoBehaviour
 			Collider[] hitTurretts = Physics.OverlapSphere(transform.position,explosionRad,1<<10);
 			foreach(Collider turrett in hitTurretts)
 			{
-				topLevelController ttlc = turrett.transform.GetComponentInChildren<topLevelController>();
 				int hitFor = (int)(explosionRad - (turrett.transform.position - transform.position).magnitude)*halfHit + halfHit;
 				turrett.networkView.RPC("hitTower",RPCMode.All,hitFor);
 			}

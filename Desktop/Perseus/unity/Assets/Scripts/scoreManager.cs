@@ -15,14 +15,106 @@ public class scoreManager : MonoBehaviour {
 	public ArrayList playerTurrets;
 	public ArrayList aiTurrets;
 	
+	public Texture2D coloredLine;
+	
 	private bool isVisible = false;
 	
 	void OnGUI()
 	{
 		if(isVisible)
 		{
+			GUI.Button(new Rect(50,50,Screen.width-100,Screen.height-100),"");
+			
+			int currentRow = 0;
+			
+			for(int x = 0; x < PlayerManagerTestExpansion.teams.Length; x++)
+			{
+				if(teamHasPlayer(x))
+				{
+					GUI.color = PlayerManagerTestExpansion.teams[x];
+					GUI.DrawTexture(new Rect(70,70 + (currentRow * 25),Screen.width - 140,20),coloredLine);
+					GUI.color = Color.white;
+					currentRow++;
+					for(int y = 0; y < teams.Count; y++)
+					{
+						if((int)teams[y] == x)
+						{
+							GUI.Label(new Rect(70,70 + (currentRow *25),100,20),(string)playerNames[y]);
+							int health = 0;
+							if(playerTurrets.Count > y)
+							{
+								topLevelController tlC = (topLevelController)(playerTurrets[y]);
+								health = tlC.getHealth();
+							}
+							if(health >= 66)
+							{
+								GUI.color = Color.green;
+							}
+							else if(health >= 33)
+							{
+								GUI.color = Color.yellow;
+							}
+							else
+							{
+								GUI.color = Color.red;
+							}
+							GUI.DrawTexture(new Rect(170,70 + (currentRow *25),health,20),coloredLine);
+							currentRow++;
+						}
+					}
+					
+					for(int y = 0; y < aiTeams.Count; y++)
+					{
+						if((int)aiTeams[y] == x)
+						{
+							GUI.Label(new Rect(70,70 + (currentRow *25),100,20),(string)aiNames[y]);
+							int health = 0;
+							if(aiTurrets.Count > y)
+							{
+								AIControl aiC = (AIControl)(aiTurrets[y]);
+								health = aiC.getHealth();
+							}
+							if(health >= 66)
+							{
+								GUI.color = Color.green;
+							}
+							else if(health >= 33)
+							{
+								GUI.color = Color.yellow;
+							}
+							else
+							{
+								GUI.color = Color.red;
+							}
+							GUI.DrawTexture(new Rect(170,70 + (currentRow *25),health,20),coloredLine);
+							currentRow++;
+						}
+					}
+				}
+			}
 			//draw stuff
 		}
+	}
+	
+	bool teamHasPlayer(int teamNum)
+	{
+		for(int x = 0; x < teams.Count; x++)
+		{
+			if((int)teams[x] == teamNum)
+			{
+				return true;
+			}
+		}
+		
+		for(int x = 0; x < aiTeams.Count; x++)
+		{
+			if((int)aiTeams[x] == teamNum)
+			{
+				return true;
+			}
+		}
+		
+		return false;
 	}
 	
 	// Use this for initialization
@@ -45,6 +137,15 @@ public class scoreManager : MonoBehaviour {
 		if(1 != 1)
 		{
 			Debug.Log("..... really????");
+		}
+		
+		if(Input.GetKey(KeyCode.LeftShift))
+		{
+			isVisible = true;
+		}
+		else
+		{
+			isVisible = false;
 		}
 	}
 	

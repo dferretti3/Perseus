@@ -362,16 +362,18 @@ public class homingMissileScript : MonoBehaviour
 			PlayAudioClip(explosion,transform.position,4f);
 			transferControl();
 			ParticleSystem engine = GetComponentInChildren<ParticleSystem>();
-			engine.transform.parent = null;
-			engine.enableEmission = false;
+			if(engine != null)
+			{
+				engine.transform.parent = null;
+				engine.enableEmission = false;
+			}
 			float explosionRad = 10;
 			int halfHit = 10;
 			Collider[] hitTurretts = Physics.OverlapSphere(transform.position,explosionRad,1<<10);
 			foreach(Collider turrett in hitTurretts)
 			{
-				topLevelController ttlc = turrett.transform.GetComponentInChildren<topLevelController>();
-				int hitFor = (int)(explosionRad - (turrett.transform.position - transform.position).magnitude)*halfHit + halfHit;
-				turrett.gameObject.networkView.RPC("hitTower",RPCMode.All,hitFor);
+					int hitFor = (int)(explosionRad - (turrett.transform.position - transform.position).magnitude)*halfHit + halfHit;
+					turrett.gameObject.networkView.RPC("hitTower",RPCMode.All,hitFor);
 			}
         	Network.Destroy(gameObject);
 		}
@@ -399,8 +401,11 @@ public class homingMissileScript : MonoBehaviour
 	{
 		PlayAudioClip(explosion,pos,4f);
 		ParticleSystem engine = GetComponentInChildren<ParticleSystem>();
-		engine.transform.parent = null;
-		engine.enableEmission = false;
+		if(engine != null)
+		{
+			engine.transform.parent = null;
+			engine.enableEmission = false;
+		}
 	}
 	[RPC]
 	void setTag(string t)
