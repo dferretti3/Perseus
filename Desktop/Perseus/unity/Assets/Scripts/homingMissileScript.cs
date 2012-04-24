@@ -170,7 +170,7 @@ public class homingMissileScript : MonoBehaviour
 		
 		if(controlType == ControlType.Full && !justActivated)
 		{
-			if(Input.GetMouseButtonDown(1))
+			if(Input.GetMouseButtonDown(0))
 			{
 				if(hasTarget)
 				{
@@ -187,7 +187,7 @@ public class homingMissileScript : MonoBehaviour
 			{
 				transferControl();
 			}
-			if(Input.GetMouseButtonDown(0))
+			if(Input.GetMouseButtonDown(1) || Input.GetKey(KeyCode.Space))
 			{
 				kill();
 			}

@@ -86,8 +86,7 @@ public class firstPersonTower : MonoBehaviour {
 				GUI.DrawTexture(new Rect(10,260,50,50), machinegun);
 				GUI.DrawTexture(new Rect(10,320,50,50), gatherer);
 				GUI.DrawTexture(new Rect(10,380,50,50), defense);
-				
-				GUI.TextArea(new Rect(0,0,200,50),"\n\t\t" + currentMissile + "\n\t\t\t\t\t\t\t\t\t"+cost);
+				GUI.Label(new Rect(0,0,200,50),"\n\t\t" + currentMissile + "\n\t\t\t\t\t\t\t\t\t"+cost);
 			}
 		}
 	}
@@ -308,6 +307,28 @@ public class firstPersonTower : MonoBehaviour {
 			else if(Input.GetMouseButtonDown(1))
 			{
 				tLC.openMiniScreen(tLC.currentMissileSelection);
+			}
+			else if(Input.GetMouseButtonDown(2))
+			{
+				if(tLC == null)
+				{
+					tLC = transform.parent.GetComponentInChildren<topLevelController>();
+					if(tLC != null)
+					{
+						cleanUpOnExit();
+						tLC.moveToThirdPerson();
+					}
+				}
+				else
+				{
+					cleanUpOnExit();
+					tLC.moveToThirdPerson();
+				}
+			}
+			
+			if(Input.GetKeyDown(KeyCode.Tab))
+			{
+				tLC.manager.scrollFromTab();
 			}
 			float scrollValue = Input.GetAxis("Mouse ScrollWheel");
 			scrollValue = scrollValue*10;

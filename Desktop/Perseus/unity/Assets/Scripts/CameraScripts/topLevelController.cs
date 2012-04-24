@@ -268,4 +268,9 @@ public class topLevelController : MonoBehaviour
 	{
 		tPT.makeActive();
 	}
+	
+	public void setActive2()
+	{
+		fPT.makeActive();
+	}
 }

@@ -1,21 +1,17 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\CameraScripts\freeFlyCamera.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\resourceRobot.cs">
     <Files>
       <File FileName="Assets\Scripts\networkCatcher.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\resourceRobot.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\homingMissileScript.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\resourceRobot.cs" Line="249" Column="5" />
+      <File FileName="Assets\Scripts\homingMissileScript.cs" Line="190" Column="65" />
       <File FileName="Assets\Scripts\CameraScripts\homingMissileCamera.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\CameraScripts\thirdPersonTower.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\CameraScripts\topLevelController.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\ControlledMissile.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\CameraScripts\firstPersonTower.cs" Line="207" Column="5" />
-      <File FileName="Assets\Scripts\lobbyScript.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\CameraScripts\thirdPersonTower.cs" Line="54" Column="17" />
+      <File FileName="Assets\Scripts\CameraScripts\topLevelController.cs" Line="275" Column="3" />
+      <File FileName="Assets\Scripts\CameraScripts\firstPersonTower.cs" Line="338" Column="5" />
       <File FileName="Assets\Scripts\defensesystem.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\AIControl.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\AIControlledMissile.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\Bullet.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\CameraScripts\freeFlyCamera.cs" Line="73" Column="3" />
+      <File FileName="Assets\Scripts\TurrettManager.cs" Line="21" Column="26" />
+      <File FileName="Assets\Scripts\ControlledMissile.cs" Line="17" Column="24" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

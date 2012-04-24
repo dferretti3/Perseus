@@ -73,4 +73,53 @@ public class TurrettManager {
 		}
 		Debug.Log("setting "+current_index+" active");
 	}
+	
+	public void scrollFromTab()
+	{
+		int scroll = 1;
+		int y = 0;
+		int x = 0;
+		for(x = 0; x < conts.Length; x++)
+		{
+			if(conts[x] != null)
+			{
+				y++;
+			}
+		}
+		if(y < x)
+		{
+			topLevelController[] tempArray = conts;
+			conts = new  topLevelController[y];
+			y = 0;
+			for(x = 0; x < conts.Length; x++)
+			{
+				if(tempArray[x] != null)
+				{
+					conts[y] = tempArray[x];
+					y++;
+				}
+			}
+			max = y;
+		}
+		if (scroll%max==0) return;
+		if(conts[current_index] != null)
+		{
+			conts[current_index].setInactive();
+		}
+		Debug.Log("setting "+current_index+" inactive");
+		current_index = (current_index+scroll)%max;
+		current_index = (current_index+max)%max;//account for negative modulus
+		int h = 0;
+		while(conts[current_index] == null && h < max)
+		{
+			current_index++;
+			current_index = (current_index)%max;
+			h++;
+		}
+		if(conts[current_index] != null)
+		{
+			conts[current_index].setActive2();
+		}
+		Debug.Log("setting "+current_index+" active");
+	}
 }
