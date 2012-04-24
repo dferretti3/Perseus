@@ -1,20 +1,21 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\CameraScripts\firstPersonTower.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\CameraScripts\freeFlyCamera.cs">
     <Files>
-      <File FileName="Assets\Scripts\networkCatcher.cs" Line="14" Column="16" />
+      <File FileName="Assets\Scripts\networkCatcher.cs" Line="1" Column="1" />
       <File FileName="Assets\Scripts\resourceRobot.cs" Line="1" Column="1" />
       <File FileName="Assets\Scripts\homingMissileScript.cs" Line="1" Column="1" />
       <File FileName="Assets\Scripts\CameraScripts\homingMissileCamera.cs" Line="1" Column="1" />
       <File FileName="Assets\Scripts\CameraScripts\thirdPersonTower.cs" Line="1" Column="1" />
       <File FileName="Assets\Scripts\CameraScripts\topLevelController.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\ControlledMissile.cs" Line="206" Column="2" />
+      <File FileName="Assets\Scripts\ControlledMissile.cs" Line="1" Column="1" />
       <File FileName="Assets\Scripts\CameraScripts\firstPersonTower.cs" Line="207" Column="5" />
       <File FileName="Assets\Scripts\lobbyScript.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\defensesystem.cs" Line="47" Column="16" />
+      <File FileName="Assets\Scripts\defensesystem.cs" Line="1" Column="1" />
       <File FileName="Assets\Scripts\AIControl.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\AIControlledMissile.cs" Line="25" Column="3" />
-      <File FileName="Assets\Scripts\Bullet.cs" Line="10" Column="3" />
+      <File FileName="Assets\Scripts\AIControlledMissile.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\Bullet.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\CameraScripts\freeFlyCamera.cs" Line="73" Column="3" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
