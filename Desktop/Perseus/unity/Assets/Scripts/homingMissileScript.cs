@@ -334,7 +334,7 @@ public class homingMissileScript : MonoBehaviour
 	
 	public void transferControl ()
 	{ 
-		if (controlType == ControlType.Full) {
+		if (controlType == ControlType.Full && tLC != null) {
 			Screen.lockCursor = false;
 			AudioListener aL = cameraView.gameObject.GetComponent<AudioListener> ();
 			aL.enabled = false;
