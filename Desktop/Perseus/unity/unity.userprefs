@@ -1,26 +1,10 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-<<<<<<< HEAD
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\endscenescript.cs">
-=======
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\BillboardScripts\navPoint.cs">
->>>>>>> f3a2cc3e892bd45f8c2ad9794e1b89d2f41de978
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\winlosetext.cs">
     <Files>
-      <File FileName="Assets\Scripts\AIControl.cs" Line="24" Column="21" />
-      <File FileName="Assets\Scripts\SetupScripts\SaveTowerLocsTestExpansion.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\AIControlledMissile.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\AIresourceRobot.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\scoreManager.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\homingMissileScript.cs" Line="1" Column="1" />
-<<<<<<< HEAD
-      <File FileName="Assets\Scripts\BGM.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\endscenescript.cs" Line="18" Column="40" />
-      <File FileName="Assets\Scripts\MoneyManager.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\Money2.cs" Line="16" Column="30" />
-      <File FileName="Assets\Scripts\CameraScripts\endscenecamera.cs" Line="7" Column="17" />
-=======
-      <File FileName="Assets\Scripts\BillboardScripts\navPoint.cs" Line="92" Column="80" />
->>>>>>> f3a2cc3e892bd45f8c2ad9794e1b89d2f41de978
+      <File FileName="Assets\Scripts\TurrettManager.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\winlosetext.cs" Line="22" Column="29" />
+      <File FileName="Assets\Scripts\CameraScripts\firstPersonTower.cs" Line="332" Column="35" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
