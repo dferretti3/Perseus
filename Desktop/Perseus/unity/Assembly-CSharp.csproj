@@ -49,6 +49,7 @@
      <Compile Include="Assets\Scripts\AIControlledMissile.cs" />
      <Compile Include="Assets\Scripts\AIresourceRobot.cs" />
      <Compile Include="Assets\Scripts\BillboardScripts\navPoint.cs" />
+     <Compile Include="Assets\Scripts\Bomb.cs" />
      <Compile Include="Assets\Scripts\Bullet.cs" />
      <Compile Include="Assets\Scripts\CameraScripts\firstPersonTower.cs" />
      <Compile Include="Assets\Scripts\CameraScripts\freeFlyCamera.cs" />

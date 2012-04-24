@@ -50,6 +50,11 @@ public class thirdPersonTower : MonoBehaviour {
 					currentMissile = "COLLECTOR";
 					cost = "Cost: 0";
 				}
+				else if (tLC.currentMissileSelection == 5)
+				{
+					currentMissile = "BOMB";	
+					cost = "Cost: 0";
+				}
 				
 				GUI.TextArea(new Rect(0,0,200,50),"\n\t\t" + currentMissile + "\n\t\t\t\t\t\t\t\t\t"+cost);
 			}

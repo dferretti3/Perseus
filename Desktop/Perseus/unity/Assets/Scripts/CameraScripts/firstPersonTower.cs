@@ -79,6 +79,12 @@ public class firstPersonTower : MonoBehaviour {
 					cost = "Cost: 50";
 					highlighty = 375;
 				}
+				else if (tLC.currentMissileSelection == 5)
+				{
+					currentMissile = "BOMB";	
+					cost = "Cost: 0";
+					highlighty = 435;
+				}
 				
 				GUI.Label(new Rect(highlightx,highlighty,60,60), white);
 				GUI.DrawTexture(new Rect(10,140,50,50), homing);
@@ -86,6 +92,7 @@ public class firstPersonTower : MonoBehaviour {
 				GUI.DrawTexture(new Rect(10,260,50,50), machinegun);
 				GUI.DrawTexture(new Rect(10,320,50,50), gatherer);
 				GUI.DrawTexture(new Rect(10,380,50,50), defense);
+				GUI.DrawTexture(new Rect(10,440,50,50), homing);
 				
 				GUI.TextArea(new Rect(0,0,200,50),"\n\t\t" + currentMissile + "\n\t\t\t\t\t\t\t\t\t"+cost);
 			}
@@ -116,6 +123,10 @@ public class firstPersonTower : MonoBehaviour {
 		else if(missileTypeNum == 4)
 		{
 			mType = missileType.DefenseSystem;
+		}
+		else if (missileTypeNum == 5)
+		{
+			mType = missileType.Static;
 		}
 		else
 		{
@@ -184,7 +195,8 @@ public class firstPersonTower : MonoBehaviour {
 		{
 			if(!delaying)
 			{
-				prefabNum = 2;
+//				prefabNum = 2;
+				prefabNum = missileTypeNum;
 				if(PlayerPrefs.GetFloat("money")>=0.5f)
 				{
 					PlayerPrefs.SetFloat("money", PlayerPrefs.GetFloat("money")-0.5f);

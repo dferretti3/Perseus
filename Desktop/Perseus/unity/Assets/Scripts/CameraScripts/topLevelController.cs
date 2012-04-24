@@ -30,7 +30,7 @@ public class topLevelController : MonoBehaviour
 	public GameObject DefenseSystem;
 	public defensesystem DefenseSystemScript;
 	public int currentMissileSelection = 0;
-	private int numMissiles = 5;
+	private int numMissiles = 6;
 	private int health = 100;
 	public TurrettManager manager;
 	
