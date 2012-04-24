@@ -68,6 +68,7 @@ public class navPoint : MonoBehaviour
 	void OnWillRenderObject ()
 	{
 		Vector3 vectorTo = transform.position - Camera.current.transform.position;
+		float depth = Vector3.Cross(vectorTo,Camera.current.transform.forward).magnitude;
 		if ((vectorTo).magnitude < 25) {
 			transform.localScale = Vector3.zero;
 			nameDisplay.transform.localScale = Vector3.zero;
@@ -75,20 +76,20 @@ public class navPoint : MonoBehaviour
 		}
 		//Debug.Log("Camera: " + Camera.current.name + " OnWillRenderObject()");
 		//transform.position = Camera.current.NormalizedViewportToWorldPoint(pos);
-		transform.localScale = ((transform.position - Camera.current.transform.position).magnitude) * new Vector3 (.003f, .003f, .003f);
+		transform.localScale = ( depth* new Vector3 (.003f, .0f, .003f));/*(transform.position - Camera.current.transform.position).magnitude)*/
 		Vector3 fwd = Camera.current.transform.up;
 		
 		//then calc the player's new rotation quat
 		
-		transform.rotation = Quaternion.LookRotation (fwd, vectorTo);
 		transform.localPosition = localPos;
 		transform.position = transform.position + Camera.current.transform.up * transform.renderer.bounds.size.y;
+		transform.rotation = Quaternion.LookRotation (fwd, vectorTo.normalized);
 		
 		Vector3 screenPos = Camera.current.WorldToNormalizedViewportPoint(transform.parent.position);
 		Vector2 xY = new Vector2(screenPos.x - .5f,screenPos.y - .5f);
 		if(xY.magnitude < .1)
 		{
-			nameDisplay.transform.localScale = ((transform.position - Camera.current.transform.position).magnitude) * new Vector3 (.01f, .01f, .01f);
+			nameDisplay.transform.localScale = (depth) * new Vector3 (.01f, .01f, .01f);
 			nameDisplay.transform.position = transform.position + Camera.current.transform.up * nameDisplay.transform.renderer.bounds.size.y;
 			nameDisplay.transform.rotation = Quaternion.LookRotation(Camera.current.transform.forward,Camera.current.transform.up);
 		}
