@@ -9,10 +9,10 @@ public class SaveTowerLocsTestExpansion : MonoBehaviour {
 	private scoreManager scoreMan;
 	// Use this for initialization
 //	float money = 20;
-	float money = 200;
+	float money;
 	bool income = false;
 	void Start () {
-		PlayerPrefs.SetFloat("money", money);
+		PlayerPrefs.SetFloat("money", PlayerPrefs.GetInt("numTowers")*25f);
 	}
 	
 	// Update is called once per frame

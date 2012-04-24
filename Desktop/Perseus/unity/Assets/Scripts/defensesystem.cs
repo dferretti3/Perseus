@@ -29,25 +29,25 @@ public class defensesystem : MonoBehaviour {
 		
 	Collider[] cols = Physics.OverlapSphere(transform.position, 250);
 	foreach (Collider hit in cols){
-		if((hit.gameObject.name == "AIContMissile(Clone)" || hit.gameObject.name == "homingMissileRedo(Clone)" || hit.gameObject
-		.name == "ControlledMissile(Clone)"))
+		if(hit.gameObject.name == "AIContMissile(Clone)" || hit.gameObject.name == "ControlledMissile(Clone)" || hit.gameObject.name == "homingMissileRedo(Clone)" || 
+						hit.gameObject.name == "Bomb(Clone)")
 		{
 			GameObject closeobject = hit.gameObject;	
-			if(closeobject.transform.networkView.viewID.owner != Network.player || closeobject.tag=="ai")
+			if(closeobject.tag.CompareTo(""+tLC.teamNum)!=0)
 			{
 				Vector3 distance = transform.position - closeobject.transform.position;
-				float d = distance.sqrMagnitude;
-				if(d<=20000)
+				float d = distance.magnitude;
+				if(d>150)
+					{
+						closeobject=null;
+						return;
+					}
+				if(d<=120)
 				{
 					lead = 10;
-					spread = 2;
+					spread = 5;
 				}
-				if(d>20000)
-				{
-					lead = 40;
-					spread = 3;
-				}
-				if(count%20==0)
+				if(count%40==0)
 				{
 					PlayAudioClip(shot,transform.position,4f);
 

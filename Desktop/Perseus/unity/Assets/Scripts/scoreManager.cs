@@ -71,6 +71,7 @@ public class scoreManager : MonoBehaviour {
 									GUI.color = Color.red;
 								}
 								GUI.DrawTexture(new Rect(170,70 + (currentRow *25),health,20),coloredLine);
+								GUI.color = Color.white;
 							}
 							currentRow++;
 						}

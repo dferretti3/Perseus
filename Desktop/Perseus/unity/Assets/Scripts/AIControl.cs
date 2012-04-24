@@ -120,7 +120,6 @@ public class AIControl : MonoBehaviour {
 				{
 					Vector3 distance = transform.position - target.transform.position;
 					float d = distance.magnitude;
-					print(d);
 					if(d>150)
 					{
 						target=null;
