@@ -51,7 +51,7 @@ public class thirdPersonTower : MonoBehaviour {
 					cost = "Cost: 0";
 				}
 				
-				GUI.TextArea(new Rect(0,0,200,50),"\n\t\t" + currentMissile + "\n\t\t\t\t\t\t\t\t\t"+cost);
+				GUI.Label(new Rect(0,0,200,50),"\n\t\t" + currentMissile + "\n\t\t\t\t\t\t\t\t\t"+cost);
 			}
 		}
 	}
@@ -134,7 +134,7 @@ public class thirdPersonTower : MonoBehaviour {
 				tLC.openMiniScreen(tLC.currentMissileSelection);
 				
 			}
-			if(Input.GetKeyDown(KeyCode.Q))
+			if(Input.GetKeyDown(KeyCode.Q) || Input.GetMouseButtonDown(2))
 			{
 				if(tLC == null)
 				{
@@ -158,6 +158,9 @@ public class thirdPersonTower : MonoBehaviour {
 				print("scrolling "+scroll);
 				tLC.manager.scroll(scroll);
 			}
+			
+			if(Input.GetKeyDown(KeyCode.Tab))
+				tLC.manager.scroll(1);
 		}
 		else if(justActivated)
 		{

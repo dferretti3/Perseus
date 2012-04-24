@@ -10,7 +10,7 @@ public class ControlledMissile : MonoBehaviour
 	private float rectWidth = 0f;
 	private bool justActivated = false;
 	float turnspeed = 2.0f;
-	float flyspeed = 1.0f;
+	float flyspeed = 0.8f;
 	public Camera cameraView;
 	int view = -1;
 	int invert = 1;
@@ -21,6 +21,7 @@ public class ControlledMissile : MonoBehaviour
 	int lives = 3;
 	public AudioClip explosion;
 	public GameObject expSource;
+	public AudioClip thrusters;
 	// Use this for initialization
 	void Start ()
 	{
@@ -30,6 +31,11 @@ public class ControlledMissile : MonoBehaviour
 		myStyle.fontSize = 50;
 		myStyle.normal.textColor = Color.red;
 		myStyle.normal.background = null;
+		
+		PlayAudioClip(explosion,transform.position,4f);
+		this.audio.clip = thrusters;
+		this.audio.volume = 10f;
+		this.audio.Play();
 	}
 	
 	public void init ()
@@ -91,7 +97,7 @@ public class ControlledMissile : MonoBehaviour
 				if (Input.GetAxis ("Mouse ScrollWheel") != 0) {
 					transferControl ();
 				}
-				if (Input.GetMouseButtonDown (0)) {
+				if (Input.GetMouseButtonDown (1)) {
 					kill ();
 				}
 				float y = Input.GetAxis("Mouse Y");

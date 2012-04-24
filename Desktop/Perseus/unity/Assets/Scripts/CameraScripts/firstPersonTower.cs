@@ -24,11 +24,13 @@ public class firstPersonTower : MonoBehaviour {
 	public GameObject expSource;
 		float turnspeed = 2.0f;
 	string cost;
-	
+	public AudioClip shot;
 	int highlightx=8;
 	int highlighty;
 	bool warn=false;
 	int playcount=0;
+	bool delaying = false;
+	float delaycount = 0.33f;
 	// Use this for initialization
 	void Start () {
 		targetSize = Screen.width/10;
@@ -84,8 +86,7 @@ public class firstPersonTower : MonoBehaviour {
 				GUI.DrawTexture(new Rect(10,260,50,50), machinegun);
 				GUI.DrawTexture(new Rect(10,320,50,50), gatherer);
 				GUI.DrawTexture(new Rect(10,380,50,50), defense);
-				
-				GUI.TextArea(new Rect(0,0,200,50),"\n\t\t" + currentMissile + "\n\t\t\t\t\t\t\t\t\t"+cost);
+				GUI.Label(new Rect(0,0,200,50),"\n\t\t" + currentMissile + "\n\t\t\t\t\t\t\t\t\t"+cost);
 			}
 		}
 	}
@@ -180,8 +181,18 @@ public class firstPersonTower : MonoBehaviour {
 		}
 		else if(mType == missileType.Static)
 		{
-			prefabNum = 2;
-			tempMissile = (GameObject)Network.Instantiate(missilePrefab[prefabNum],transform.parent.position+transform.forward*20,Quaternion.LookRotation(transform.parent.forward,transform.parent.up),0);
+			if(!delaying)
+			{
+				prefabNum = 2;
+				if(PlayerPrefs.GetFloat("money")>=0.5f)
+				{
+					PlayerPrefs.SetFloat("money", PlayerPrefs.GetFloat("money")-0.5f);
+					tempMissile = (GameObject)Network.Instantiate(missilePrefab[prefabNum],transform.parent.position+transform.forward*20,Quaternion.LookRotation(transform.parent.forward,transform.parent.up),0);
+					PlayAudioClip(shot,transform.position,0.3f);
+					delaying=true;
+					delaycount=0.33f;
+				}
+			}
 		}
 		else if(mType == missileType.Collector)
 		{
@@ -246,7 +257,10 @@ public class firstPersonTower : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-			
+		if(delaying)
+			delaycount -= Time.deltaTime;
+		if(delaycount <= 0)
+			delaying=false;
 		if(tLC == null)
 		{
 			tLC = transform.parent.GetComponentInChildren<topLevelController>();
@@ -293,6 +307,28 @@ public class firstPersonTower : MonoBehaviour {
 			else if(Input.GetMouseButtonDown(1))
 			{
 				tLC.openMiniScreen(tLC.currentMissileSelection);
+			}
+			else if(Input.GetMouseButtonDown(2))
+			{
+				if(tLC == null)
+				{
+					tLC = transform.parent.GetComponentInChildren<topLevelController>();
+					if(tLC != null)
+					{
+						cleanUpOnExit();
+						tLC.moveToThirdPerson();
+					}
+				}
+				else
+				{
+					cleanUpOnExit();
+					tLC.moveToThirdPerson();
+				}
+			}
+			
+			if(Input.GetKeyDown(KeyCode.Tab))
+			{
+				tLC.manager.scrollFromTab();
 			}
 			float scrollValue = Input.GetAxis("Mouse ScrollWheel");
 			scrollValue = scrollValue*10;

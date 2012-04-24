@@ -10,6 +10,9 @@ public class defensesystem : MonoBehaviour {
 	int lead;
 	int spread;
 	int count = 0;
+	public AudioClip shot;
+	public GameObject expSource;
+
 	void Start () {
 	
 	}
@@ -41,14 +44,17 @@ public class defensesystem : MonoBehaviour {
 				}
 				if(d>20000)
 				{
-					lead = 30;
+					lead = 40;
 					spread = 3;
 				}
 				if(count%20==0)
 				{
+					PlayAudioClip(shot,transform.position,4f);
+
 					Bullet bul = (Bullet)Network.Instantiate(b, origin.position, origin.rotation, 0);
 					bul.transform.LookAt(closeobject.transform.position+closeobject.transform.forward*lead-new Vector3(Random.Range(-spread,spread),Random.Range(-spread,spread),Random.Range(-spread,spread)));
 					side++;
+					break;
 				}
 			}
 		}	
@@ -56,4 +62,15 @@ public class defensesystem : MonoBehaviour {
 		
 	
 	}
+	
+	AudioSource PlayAudioClip(AudioClip clip, Vector3 position, float volume) {
+        GameObject go = (GameObject)Instantiate(expSource);
+        go.transform.position = position;
+        AudioSource source = go.AddComponent<AudioSource>();
+        source.clip = clip;
+        source.volume = volume;
+        source.Play();
+        Destroy(go, clip.length);
+        return source;
+    }
 }
