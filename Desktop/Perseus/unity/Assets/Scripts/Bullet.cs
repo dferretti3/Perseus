@@ -27,7 +27,7 @@ public class Bullet : MonoBehaviour {
 	void OnTriggerEnter(Collider col)
 	{
 		if(col.gameObject.name==("Terrain") || col.gameObject.name==("ControlledMissile(Clone)") ||
-			col.gameObject.name==("homingMissile(Clone)"))
+			col.gameObject.name==("homingMissile(Clone)") || col.gameObject.name == ("AIContMissile(Clone)"))
 			Network.Destroy(this.gameObject);
 	}
 	
