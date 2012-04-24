@@ -56,41 +56,41 @@ public class firstPersonTower : MonoBehaviour {
 				if(tLC.currentMissileSelection == 0)
 				{
 					currentMissile = "HOMING MISSILE";
-					highlighty = 135;
+					highlighty = 75;
 				}
 				else if(tLC.currentMissileSelection == 1)
 				{
 					currentMissile = "CONTROLLED MISSILE";
-					highlighty = 195;
+					highlighty = 135;
 				}
 				else if(tLC.currentMissileSelection == 2)
 				{
 					currentMissile = "MACHINE GUN";
-					highlighty = 255;
+					highlighty = 195;
 				}
 				else if(tLC.currentMissileSelection == 3)
 				{
 					currentMissile = "COLLECTOR";
-					highlighty = 315;
+					highlighty = 255;
 				}
 				else if(tLC.currentMissileSelection == 4)
 				{
 					currentMissile = "DEFENSE SYSTEM";
-					highlighty = 375;
+					highlighty = 315;
 				}
 				else if (tLC.currentMissileSelection == 5)
 				{
 					currentMissile = "MORTAR";	
-					highlighty = 435;
+					highlighty = 375;
 				}
 				
 				GUI.Label(new Rect(highlightx,highlighty,60,60), white);
-				GUI.DrawTexture(new Rect(10,140,50,50), homing);
-				GUI.DrawTexture(new Rect(10,200,50,50), controlled);
-				GUI.DrawTexture(new Rect(10,260,50,50), machinegun);
-				GUI.DrawTexture(new Rect(10,320,50,50), gatherer);
-				GUI.DrawTexture(new Rect(10,380,50,50), defense);
-				GUI.DrawTexture(new Rect(10,440,50,50), mortar);
+				GUI.DrawTexture(new Rect(10,80,50,50), homing);
+				GUI.DrawTexture(new Rect(10,140,50,50), controlled);
+				GUI.DrawTexture(new Rect(10,200,50,50), machinegun);
+				GUI.DrawTexture(new Rect(10,260,50,50), gatherer);
+				GUI.DrawTexture(new Rect(10,320,50,50), defense);
+				GUI.DrawTexture(new Rect(10,380,50,50), mortar);
 				GUI.Label(new Rect(0,0,300,50),"\n\t\t" + currentMissile, myStyle);
 			}
 		}

@@ -64,7 +64,6 @@ public class AIControlledMissile : MonoBehaviour
 				cameraView.rect = viewRect;
 			
 			}
-		
 			if (controlType == ControlType.Full && !justActivated) {
 			
 				if (Input.GetAxis ("Mouse ScrollWheel") != 0) {
