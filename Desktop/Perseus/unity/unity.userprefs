@@ -1,8 +1,15 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\AIControl.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\scoreManager.cs">
     <Files>
       <File FileName="Assets\Scripts\AIControl.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\Bomb.cs" Line="80" Column="25" />
+      <File FileName="Assets\Scripts\AIControlledMissile.cs" Line="257" Column="100" />
+      <File FileName="Assets\Scripts\ControlledMissile.cs" Line="204" Column="100" />
+      <File FileName="Assets\Scripts\homingMissileScript.cs" Line="381" Column="101" />
+      <File FileName="Assets\Scripts\resourceRobot.cs" Line="371" Column="100" />
+      <File FileName="Assets\Scripts\AIresourceRobot.cs" Line="198" Column="24" />
+      <File FileName="Assets\Scripts\scoreManager.cs" Line="106" Column="33" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

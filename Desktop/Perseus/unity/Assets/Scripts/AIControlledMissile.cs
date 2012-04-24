@@ -254,7 +254,7 @@ public class AIControlledMissile : MonoBehaviour
 			foreach(Collider turrett in hitTurretts)
 			{
 				topLevelController ttlc = turrett.transform.GetComponentInChildren<topLevelController>();
-				int hitFor = (int)(explosionRad - (turrett.transform.position - transform.position).magnitude)*halfHit + halfHit;
+				int hitFor = (int)((explosionRad - (turrett.transform.position - transform.position).magnitude)/explosionRad)*halfHit + halfHit;
 				turrett.gameObject.networkView.RPC("hitTower",RPCMode.All,hitFor);
 			}
 			Network.Destroy (gameObject);
