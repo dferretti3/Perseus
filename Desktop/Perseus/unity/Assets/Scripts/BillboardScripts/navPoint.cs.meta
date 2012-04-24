@@ -2,6 +2,8 @@ fileFormatVersion: 2
 guid: 23e19e0591d328b4ab6c49c841e2546d
 MonoImporter:
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - nameDisplayPref: {instanceID: 0}
+  - navPref: {fileID: 100000, guid: 4202115712230ba43a7b4e7b7d460dc7, type: 2}
   executionOrder: 0
   icon: {instanceID: 0}
