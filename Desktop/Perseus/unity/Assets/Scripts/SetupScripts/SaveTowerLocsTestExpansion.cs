@@ -8,7 +8,8 @@ public class SaveTowerLocsTestExpansion : MonoBehaviour {
 	
 	private scoreManager scoreMan;
 	// Use this for initialization
-	float money = 20;
+//	float money = 20;
+	float money = 200;
 	bool income = false;
 	void Start () {
 		PlayerPrefs.SetFloat("money", money);

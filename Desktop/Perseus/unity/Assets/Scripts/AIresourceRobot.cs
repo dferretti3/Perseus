@@ -184,7 +184,7 @@ public class AIresourceRobot : MonoBehaviour {
 
 	}
 	
-	private void kill ()
+	public void kill ()
 	{
 		networkView.RPC("died",RPCMode.Others,transform.position);
 		PlayAudioClip(explosion,transform.position,4f);

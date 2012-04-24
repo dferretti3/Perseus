@@ -59,7 +59,7 @@ public class Bomb : MonoBehaviour {
 
 	}
 	
-	private void kill ()
+	public void kill ()
 	{
 		if(networkView.viewID.owner == Network.player)
 		{

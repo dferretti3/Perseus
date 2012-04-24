@@ -26,6 +26,7 @@ public class homingMissileScript : MonoBehaviour
 	public AudioClip explosion;
 	public AudioClip linkestablished;
 	public GameObject expSource;
+	public GameObject explosionRadius;
 	private GameObject target;
 	// Use this for initialization
 	void Start ()
@@ -380,7 +381,53 @@ public class homingMissileScript : MonoBehaviour
 					int hitFor = (int)(explosionRad - (turrett.transform.position - transform.position).magnitude)*halfHit + halfHit;
 					turrett.gameObject.networkView.RPC("hitTower",RPCMode.All,hitFor);
 			}
+			Vector3 pos = transform.position;
         	Network.Destroy(gameObject);
+			Explode(pos);
+		}
+	}
+	
+	public void Explode(Vector3 pos)
+	{
+		float radius = 22;
+		Collider[] projectiles = Physics.OverlapSphere(pos,radius,1<<13);
+		foreach (Collider proj in projectiles)
+		{
+			if (proj.gameObject==gameObject || !proj.gameObject.active) continue;
+			kill(proj.gameObject);
+		}
+		Network.Instantiate(explosionRadius,pos,Quaternion.identity,0);
+	}
+	
+	void kill(GameObject g)
+	{
+		if (g.GetComponent<AIControlledMissile>()!=null) {
+			g.GetComponent<AIControlledMissile>().gameObject.active = false;
+			g.GetComponent<AIControlledMissile>().kill();
+		}
+		else if (g.GetComponent<AIresourceRobot>()!=null) {
+			g.GetComponent<AIresourceRobot>().gameObject.active = false;
+			g.GetComponent<AIresourceRobot>().kill();
+		}
+		else if (g.GetComponent<Bomb>()!=null) {
+			g.GetComponent<Bomb>().gameObject.active = false;
+			g.GetComponent<Bomb>().kill();
+		}
+		else if (g.GetComponent<Bullet>()!=null) {
+			if (g.networkView.viewID.owner==Network.player)
+				Network.Destroy(g);
+		}
+		else if (g.GetComponent<ControlledMissile>()!=null) {
+			g.GetComponent<ControlledMissile>().gameObject.active = false;
+			g.GetComponent<ControlledMissile>().kill();
+		}
+		else if (g.GetComponent<homingMissileScript>()!=null) {
+			g.GetComponent<homingMissileScript>().gameObject.active = false;
+			g.GetComponent<homingMissileScript>().kill();
+		}
+		else if (g.GetComponent<resourceRobot>()!=null) {
+			g.GetComponent<resourceRobot>().gameObject.active = false;
+			g.GetComponent<resourceRobot>().kill();
 		}
 	}
 	

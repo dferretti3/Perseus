@@ -239,7 +239,7 @@ public class AIControlledMissile : MonoBehaviour
 		return controlType == ControlType.Inset;
 	}
 	
-	private void kill ()
+	public void kill ()
 	{
 		if (networkView.viewID.owner == Network.player) {
 			networkView.RPC("died",RPCMode.Others,transform.position);

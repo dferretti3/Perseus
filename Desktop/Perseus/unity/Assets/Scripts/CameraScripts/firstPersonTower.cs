@@ -243,7 +243,7 @@ public class firstPersonTower : MonoBehaviour {
 			prefabNum = 5;
 			if(PlayerPrefs.GetFloat("money")>=20f)
 			{
-//				PlayerPrefs.SetFloat("money", PlayerPrefs.GetFloat("money")-20f);
+				PlayerPrefs.SetFloat("money", PlayerPrefs.GetFloat("money")-20f);
 				tempMissile = (GameObject)Network.Instantiate(missilePrefab[prefabNum],transform.parent.position+transform.forward*20,Quaternion.LookRotation(transform.parent.forward,transform.parent.up),0);
 				tempMissile.networkView.RPC("setTag", RPCMode.All, ""+tLC.teamNum);
 				PlayAudioClip(shot,transform.position,0.3f);

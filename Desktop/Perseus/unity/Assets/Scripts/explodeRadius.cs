@@ -14,8 +14,9 @@ public class explodeRadius : MonoBehaviour {
 	void FixedUpdate () {
 		if (networkView.viewID.owner==Network.player)
 		{
-			if (Time.fixedTime-startTime > 1.0f)
+			if (Time.fixedTime-startTime > 10.0f)
 			{
+					print("DESTROYING PARTICLE EFFECT");
 				Network.Destroy(gameObject);
 			}
 		}
