@@ -15,6 +15,7 @@ public class topLevelController : MonoBehaviour
 	
 	public Color playerColor;
 	public string nameTag;
+	public int teamNum = -1;
 	private bool coloredParent = false;
 	public bool isActive = true;
 	public GameObject thirdPerson;
@@ -34,7 +35,10 @@ public class topLevelController : MonoBehaviour
 	private int health = 100;
 	public TurrettManager manager;
 	
-	
+	public int getHealth()
+	{
+		return health;
+	}
 	
 	// Use this for initialization
 	void Start ()
@@ -103,6 +107,7 @@ public class topLevelController : MonoBehaviour
 				if (toColor != null) {
 					toColor.playerColor = playerColor;
 					toColor.nameTag = nameTag;
+					toColor.playerTeam = teamNum;
 					toColor.refresh ();
 					coloredParent = true;
 				}
@@ -267,5 +272,10 @@ public class topLevelController : MonoBehaviour
 	public void setActive()
 	{
 		tPT.makeActive();
+	}
+	
+	public void setActive2()
+	{
+		fPT.makeActive();
 	}
 }

@@ -8,6 +8,7 @@ public class navPoint : MonoBehaviour
 	Vector3 localPos;
 	public Color playerColor;
 	public string nameTag;
+	public int playerTeam;
 	public GameObject nameDisplayPref;
 	private GameObject nameDisplay;
 

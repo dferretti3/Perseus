@@ -240,7 +240,7 @@ public class resourceRobot : MonoBehaviour
 			if(Input.GetKeyDown(KeyCode.O) || Input.GetKeyDown(KeyCode.P) || Input.GetAxis ("Mouse ScrollWheel") != 0) {
 					transferControl ();
 			}
-			if(Input.GetMouseButtonDown(0))
+			if(Input.GetMouseButtonDown(1) || Input.GetKey(KeyCode.Space))
 			{
 				kill();
 			}

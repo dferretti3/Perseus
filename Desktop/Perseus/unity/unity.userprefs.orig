@@ -1,34 +1,23 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
 <<<<<<< HEAD
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\SetupScripts\networkMarkerScript.cs">
+  <MonoDevelop.Ide.Workbench />
+=======
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\CameraScripts\thirdPersonTower.cs">
     <Files>
       <File FileName="Assets\Scripts\networkCatcher.cs" Line="1" Column="1" />
-=======
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\CameraScripts\firstPersonTower.cs">
-    <Files>
->>>>>>> d54a4f39db78438619ea42ea56ef865a56d69b79
-      <File FileName="Assets\Scripts\resourceRobot.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\AIControl.cs" Line="62" Column="5" />
-      <File FileName="Assets\Scripts\AIresourceRobot.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\BillboardScripts\navPoint.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\homingMissileScript.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\resourceRobot.cs" Line="19" Column="18" />
+      <File FileName="Assets\Scripts\homingMissileScript.cs" Line="190" Column="65" />
+      <File FileName="Assets\Scripts\CameraScripts\homingMissileCamera.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\CameraScripts\thirdPersonTower.cs" Line="71" Column="44" />
+      <File FileName="Assets\Scripts\CameraScripts\topLevelController.cs" Line="275" Column="3" />
+      <File FileName="Assets\Scripts\CameraScripts\firstPersonTower.cs" Line="87" Column="29" />
+      <File FileName="Assets\Scripts\defensesystem.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\TurrettManager.cs" Line="1" Column="1" />
       <File FileName="Assets\Scripts\ControlledMissile.cs" Line="1" Column="1" />
-<<<<<<< HEAD
-      <File FileName="Assets\Scripts\CameraScripts\firstPersonTower.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\SetupScripts\PlayerManager.cs" Line="257" Column="1" />
-      <File FileName="Assets\Scripts\SetupScripts\PlayerManagerTestExpansion.cs" Line="169" Column="13" />
-      <File FileName="Assets\Scripts\SetupScripts\Player.cs" Line="87" Column="33" />
-      <File FileName="Assets\Scripts\SetupScripts\PlayerTestExpansion.cs" Line="60" Column="11" />
-      <File FileName="Assets\Scripts\SetupScripts\SaveTowerLocsTestExpansion.cs" Line="4" Column="40" />
-      <File FileName="Assets\Scripts\SetupScripts\SaveTowerLocs.cs" Line="66" Column="31" />
-      <File FileName="Assets\Scripts\SetupScripts\networkMarkerScript.cs" Line="27" Column="48" />
-=======
-      <File FileName="Assets\Scripts\AIControlledMissile.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\CameraScripts\firstPersonTower.cs" Line="232" Column="4" />
->>>>>>> d54a4f39db78438619ea42ea56ef865a56d69b79
     </Files>
   </MonoDevelop.Ide.Workbench>
+>>>>>>> 1bb033db30c67de15e7cf42387bf82138b9bdaa5
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>

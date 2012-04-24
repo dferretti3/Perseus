@@ -10,7 +10,16 @@ public class thirdPersonTower : MonoBehaviour {
 	public ControlType controlType = ControlType.None;
 	private topLevelController tLC;
 	private bool justActivated = false;
-	private string cost;
+	public Font myFont;
+	int highlightx=8;
+	int highlighty;
+	
+	public Texture2D homing;
+	public Texture2D controlled;
+	public Texture2D gatherer;
+	public Texture2D machinegun;
+	public Texture2D white;
+	public Texture2D defense;
 	// Use this for initialization
 	void Start () {
 		Screen.lockCursor = true;
@@ -22,33 +31,37 @@ public class thirdPersonTower : MonoBehaviour {
 	{
 		if(controlType == ControlType.Full)
 		{
+			GUIStyle myStyle = new GUIStyle();
+			myStyle.font = myFont;
+			myStyle.normal.textColor = Color.white;
+			
 			if(tLC != null)
 			{
 				string currentMissile = "";
 				if(tLC.currentMissileSelection == 0)
 				{
 					currentMissile = "HOMING MISSILE";
-					cost = "Cost: 10";
+					highlighty = 135;
 				}
 				else if(tLC.currentMissileSelection == 1)
 				{
 					currentMissile = "CONTROLLED MISSILE";
-					cost = "Cost: 10";
+					highlighty = 195;
 				}
 				else if(tLC.currentMissileSelection == 2)
 				{
 					currentMissile = "MACHINE GUN";
-					cost = "Cost: 0";
+					highlighty = 255;
 				}
 				else if(tLC.currentMissileSelection == 3)
 				{
-					currentMissile = "AI MISSILE";
-					cost = "Cost: 0";
+					currentMissile = "COLLECTOR";
+					highlighty = 315;
 				}
 				else if(tLC.currentMissileSelection == 4)
 				{
-					currentMissile = "COLLECTOR";
-					cost = "Cost: 0";
+					currentMissile = "DEFENSE SYSTEM";
+					highlighty = 375;
 				}
 				else if (tLC.currentMissileSelection == 5)
 				{
@@ -56,7 +69,13 @@ public class thirdPersonTower : MonoBehaviour {
 					cost = "Cost: 0";
 				}
 				
-				GUI.TextArea(new Rect(0,0,200,50),"\n\t\t" + currentMissile + "\n\t\t\t\t\t\t\t\t\t"+cost);
+				GUI.Label(new Rect(highlightx,highlighty,60,60), white);
+				GUI.DrawTexture(new Rect(10,140,50,50), homing);
+				GUI.DrawTexture(new Rect(10,200,50,50), controlled);
+				GUI.DrawTexture(new Rect(10,260,50,50), machinegun);
+				GUI.DrawTexture(new Rect(10,320,50,50), gatherer);
+				GUI.DrawTexture(new Rect(10,380,50,50), defense);
+				GUI.Label(new Rect(0,0,300,50),"\n\t\t" + currentMissile, myStyle);
 			}
 		}
 	}
@@ -139,7 +158,7 @@ public class thirdPersonTower : MonoBehaviour {
 				tLC.openMiniScreen(tLC.currentMissileSelection);
 				
 			}
-			if(Input.GetKeyDown(KeyCode.Q))
+			if(Input.GetKeyDown(KeyCode.Q) || Input.GetMouseButtonDown(2))
 			{
 				if(tLC == null)
 				{
@@ -163,6 +182,9 @@ public class thirdPersonTower : MonoBehaviour {
 				print("scrolling "+scroll);
 				tLC.manager.scroll(scroll);
 			}
+			
+			if(Input.GetKeyDown(KeyCode.Tab))
+				tLC.manager.scroll(1);
 		}
 		else if(justActivated)
 		{

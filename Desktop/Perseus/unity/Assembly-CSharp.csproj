@@ -79,6 +79,7 @@
      <Compile Include="Assets\Scripts\networkCatcher.cs" />
      <Compile Include="Assets\Scripts\resourceRobot.cs" />
      <Compile Include="Assets\Scripts\sceneSelectionGUI.cs" />
+     <Compile Include="Assets\Scripts\scoreManager.cs" />
      <Compile Include="Assets\Scripts\spaceSetupScript.cs" />
      <None Include="Assets\testing.txt" />
      <None Include="Assets\Standard Assets\Particles\Sources\Shaders\Particle Alpha Blend (Queue +100).shader" />
