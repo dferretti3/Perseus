@@ -188,7 +188,7 @@ public class AIresourceRobot : MonoBehaviour {
 		{
 			topLevelController ttlc = turrett.transform.GetComponentInChildren<topLevelController>();
 			int hitFor = (int)(explosionRad - (turrett.transform.position - transform.position).magnitude)*halfHit + halfHit;
-			turrett.networkView.RPC("hitTower",turrett.networkView.owner,hitFor);
+			turrett.networkView.RPC("hitTower",RPCMode.All,hitFor);
 		}
     	Network.Destroy(gameObject);
 	}

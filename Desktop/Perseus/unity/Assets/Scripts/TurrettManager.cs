@@ -20,6 +20,7 @@ public class TurrettManager {
 			cont.nameTag = tag;
 			cont.isActive = false;
 			cont.teamNum = teamnum;
+			Debug.Log("ADAADA" + teamnum);
 			conts[i] = cont;
 		}
 		conts[current_index=max-1].isActive = true;

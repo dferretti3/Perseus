@@ -26,7 +26,6 @@ public class PlayerTestExpansion : MonoBehaviour {
 	void Update () {
 		if (!my_turn)
 		{
-			Debug.Log("Still not my turn.....");
 			return;
 		}
 		if ((Input.GetMouseButtonDown(0)||forceFlag)) {

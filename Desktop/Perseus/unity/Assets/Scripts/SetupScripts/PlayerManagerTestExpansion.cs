@@ -233,6 +233,7 @@ public class PlayerManagerTestExpansion : MonoBehaviour {
 		renderer.enabled = false;
 		
 		GameObject.Find("SavedData").GetComponent<SaveTowerLocsTestExpansion>().saveLocs(tower_pos,tower_rots,normals,teams[currentColor],callSign,currentColor);
+		Debug.Log("PlayerManager" + currentColor);
 		if(Network.isServer)
 		GameObject.Find("SavedData").GetComponent<SaveTowerLocsTestExpansion>().saveComp(comp_p,comp_n,comp_t,comp_names);
 		

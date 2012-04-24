@@ -20,6 +20,7 @@ public class thirdPersonTower : MonoBehaviour {
 	public Texture2D machinegun;
 	public Texture2D white;
 	public Texture2D defense;
+	public Texture2D mortar;
 	// Use this for initialization
 	void Start () {
 		Screen.lockCursor = true;
@@ -65,7 +66,7 @@ public class thirdPersonTower : MonoBehaviour {
 				}
 				else if (tLC.currentMissileSelection == 5)
 				{
-					currentMissile = "BOMB";	
+					currentMissile = "MORTAR";	
 					highlighty = 435;
 				}
 				
@@ -75,7 +76,7 @@ public class thirdPersonTower : MonoBehaviour {
 				GUI.DrawTexture(new Rect(10,260,50,50), machinegun);
 				GUI.DrawTexture(new Rect(10,320,50,50), gatherer);
 				GUI.DrawTexture(new Rect(10,380,50,50), defense);
-				GUI.DrawTexture(new Rect(10,380,50,50), homing);
+				GUI.DrawTexture(new Rect(10,380,50,50), mortar);
 				GUI.Label(new Rect(0,0,300,50),"\n\t\t" + currentMissile, myStyle);
 			}
 		}

@@ -39,4 +39,9 @@ public class Bomb : MonoBehaviour {
 	{
 		return transform.networkView.viewID.owner == Network.player;
 	}
+	[RPC]
+	void setTag(string t)
+	{
+		gameObject.tag = t;
+	}
 }

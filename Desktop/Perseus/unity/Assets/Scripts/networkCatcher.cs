@@ -25,7 +25,8 @@ public class networkCatcher : MonoBehaviour
 	[RPC]
 	void hitTower(int damage)
 	{
-		GetComponentInChildren<topLevelController>().hitPlayer(damage);
+		if(gameObject.networkView.owner == Network.player)
+			GetComponentInChildren<topLevelController>().hitPlayer(damage);
 	}
 	
 	[RPC]

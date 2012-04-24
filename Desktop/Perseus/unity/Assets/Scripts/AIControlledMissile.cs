@@ -79,13 +79,6 @@ public class AIControlledMissile : MonoBehaviour
 			if (started) {
 				toMove.transform.position = toMove.transform.position + toMove.transform.forward * speed * Time.deltaTime;
 				if (target == null) {
-					GameObject[] possibleTargets = GameObject.FindGameObjectsWithTag ("turrett");
-					for (int x = 0; x < possibleTargets.Length; x++) {
-						if (possibleTargets [x].networkView.owner != Network.player) {
-							target = possibleTargets [x];
-							break;
-						}
-					}
 					target = GameObject.Find("turrettSystem(Clone)");
 				}
 				if (target != null) {
@@ -256,7 +249,7 @@ public class AIControlledMissile : MonoBehaviour
 			{
 				topLevelController ttlc = turrett.transform.GetComponentInChildren<topLevelController>();
 				int hitFor = (int)(explosionRad - (turrett.transform.position - transform.position).magnitude)*halfHit + halfHit;
-				turrett.networkView.RPC("hitTower",turrett.networkView.owner,hitFor);
+				turrett.gameObject.networkView.RPC("hitTower",RPCMode.All,hitFor);
 			}
 			Network.Destroy (gameObject);
 		}

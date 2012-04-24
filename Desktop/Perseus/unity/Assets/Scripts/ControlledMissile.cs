@@ -197,7 +197,7 @@ public class ControlledMissile : MonoBehaviour
 			{
 				topLevelController ttlc = turrett.transform.GetComponentInChildren<topLevelController>();
 				int hitFor = (int)(explosionRad - (turrett.transform.position - transform.position).magnitude)*halfHit + halfHit;
-				turrett.networkView.RPC("hitTower",turrett.networkView.owner,hitFor);
+				turrett.networkView.RPC("hitTower",RPCMode.All,hitFor);
 			}
         	Network.Destroy(gameObject);
 		}
@@ -227,5 +227,11 @@ public class ControlledMissile : MonoBehaviour
 		ParticleSystem engine = GetComponentInChildren<ParticleSystem>();
 		engine.transform.parent = null;
 		engine.enableEmission = false;
+	}
+	
+	[RPC]
+	void setTag(string t)
+	{
+		gameObject.tag = t;
 	}
 }
