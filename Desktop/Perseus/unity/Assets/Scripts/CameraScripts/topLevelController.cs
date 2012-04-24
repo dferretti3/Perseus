@@ -145,8 +145,9 @@ public class topLevelController : MonoBehaviour
 			}
 		}
 		
-		if (Input.GetKeyDown("k"))
+		if (Input.GetKeyDown(KeyCode.K))
 		{
+			print("ASOUAHDOUAHDOUAHDOAUDH");
 			manager.scrollFromTab();	
 		}
 	}
