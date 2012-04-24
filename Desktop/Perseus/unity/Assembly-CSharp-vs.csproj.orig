@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+	<Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+	<Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+	<ProductVersion>10.0.20506</ProductVersion>
+	<SchemaVersion>2.0</SchemaVersion>
+	<ProjectGuid>{C3DA89E1-70C6-7D6C-993E-C8F831D35880}</ProjectGuid>
+	<OutputType>Library</OutputType>
+	<AppDesignerFolder>Properties</AppDesignerFolder>
+	<RootNamespace></RootNamespace>
+	<AssemblyName>Assembly-CSharp</AssemblyName>
+	<TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+	<FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+	<DebugSymbols>true</DebugSymbols>
+	<DebugType>full</DebugType>
+	<Optimize>false</Optimize>
+	<OutputPath>Temp\bin\Debug\</OutputPath>
+<<<<<<< HEAD
+	<DefineConstants>DEBUG;TRACE;UNITY_3_5_0;UNITY_3_5;UNITY_EDITOR;ENABLE_PROFILER;UNITY_STANDALONE_WIN;ENABLE_GENERICS;ENABLE_DUCK_TYPING;ENABLE_TERRAIN;ENABLE_MOVIES;ENABLE_WEBCAM;ENABLE_MICROPHONE;ENABLE_NETWORK;ENABLE_CLOTH;ENABLE_WWW;ENABLE_SUBSTANCE</DefineConstants>
+=======
+	<DefineConstants>DEBUG;TRACE;UNITY_3_5_1;UNITY_3_5;UNITY_EDITOR;ENABLE_PROFILER;UNITY_WEBPLAYER;ENABLE_GENERICS;ENABLE_DUCK_TYPING;ENABLE_TERRAIN;ENABLE_MOVIES;ENABLE_WEBCAM;ENABLE_MICROPHONE;ENABLE_NETWORK;ENABLE_CLOTH;ENABLE_WWW;ENABLE_SUBSTANCE</DefineConstants>
+>>>>>>> deee869d2f9870757bb0ed9aa9eb84bd67c4cbbd
+	<ErrorReport>prompt</ErrorReport>
+	<WarningLevel>4</WarningLevel>
+	<NoWarn>0169</NoWarn>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+	<DebugType>pdbonly</DebugType>
+	<Optimize>true</Optimize>
+	<OutputPath>Temp\bin\Release\</OutputPath>
+	<DefineConstants>TRACE</DefineConstants>
+	<ErrorReport>prompt</ErrorReport>
+	<WarningLevel>4</WarningLevel>
+	<NoWarn>0169</NoWarn>
+  </PropertyGroup>
+  <ItemGroup>
+	<Reference Include="System" />
+    <Reference Include="System.XML" />
+	<Reference Include="System.Core" />
+	<Reference Include="UnityEngine">
+	  <HintPath>C:/Program Files (x86)/Unity/Editor/Data/Managed/UnityEngine.dll</HintPath>
+	</Reference>
+	<Reference Include="UnityEditor">
+	  <HintPath>C:/Program Files (x86)/Unity/Editor/Data/Managed/UnityEditor.dll</HintPath>
+	</Reference>
+  </ItemGroup>
+  <ItemGroup>
+     <Compile Include="Assets\MainCam.cs" />
+     <Compile Include="Assets\Scripts\AIControl.cs" />
+     <Compile Include="Assets\Scripts\AIControlledMissile.cs" />
+     <Compile Include="Assets\Scripts\AIresourceRobot.cs" />
+     <Compile Include="Assets\Scripts\BGM.cs" />
+     <Compile Include="Assets\Scripts\BillboardScripts\navPoint.cs" />
+     <Compile Include="Assets\Scripts\Bomb.cs" />
+     <Compile Include="Assets\Scripts\Bullet.cs" />
+     <Compile Include="Assets\Scripts\CameraScripts\endscenecamera.cs" />
+     <Compile Include="Assets\Scripts\CameraScripts\firstPersonTower.cs" />
+     <Compile Include="Assets\Scripts\CameraScripts\freeFlyCamera.cs" />
+     <Compile Include="Assets\Scripts\CameraScripts\homingMissileCamera.cs" />
+     <Compile Include="Assets\Scripts\CameraScripts\thirdPersonTower.cs" />
+     <Compile Include="Assets\Scripts\CameraScripts\topLevelController.cs" />
+     <Compile Include="Assets\Scripts\ControlledMissile.cs" />
+     <Compile Include="Assets\Scripts\Money.cs" />
+     <Compile Include="Assets\Scripts\Money2.cs" />
+     <Compile Include="Assets\Scripts\MoneyManager.cs" />
+     <Compile Include="Assets\Scripts\SetupScripts\Player.cs" />
+     <Compile Include="Assets\Scripts\SetupScripts\PlayerManager.cs" />
+     <Compile Include="Assets\Scripts\SetupScripts\PlayerManagerTestExpansion.cs" />
+     <Compile Include="Assets\Scripts\SetupScripts\PlayerTestExpansion.cs" />
+     <Compile Include="Assets\Scripts\SetupScripts\SaveTowerLocs.cs" />
+     <Compile Include="Assets\Scripts\SetupScripts\SaveTowerLocsTestExpansion.cs" />
+     <Compile Include="Assets\Scripts\SetupScripts\networkMarkerScript.cs" />
+     <Compile Include="Assets\Scripts\TurrettManager.cs" />
+     <Compile Include="Assets\Scripts\asteroidField.cs" />
+     <Compile Include="Assets\Scripts\asteroidScript.cs" />
+     <Compile Include="Assets\Scripts\defensesystem.cs" />
+     <Compile Include="Assets\Scripts\endscenescript.cs" />
+     <Compile Include="Assets\Scripts\engineDriver.cs" />
+     <Compile Include="Assets\Scripts\explodeRadius.cs" />
+     <Compile Include="Assets\Scripts\homingMissileScript.cs" />
+     <Compile Include="Assets\Scripts\lightScripts\sunLight.cs" />
+     <Compile Include="Assets\Scripts\lobbyScript.cs" />
+     <Compile Include="Assets\Scripts\missileScript.cs" />
+     <Compile Include="Assets\Scripts\moneycounter.cs" />
+     <Compile Include="Assets\Scripts\networkCatcher.cs" />
+     <Compile Include="Assets\Scripts\resourceRobot.cs" />
+     <Compile Include="Assets\Scripts\sceneSelectionGUI.cs" />
+     <Compile Include="Assets\Scripts\scoreManager.cs" />
+     <Compile Include="Assets\Scripts\spaceSetupScript.cs" />
+     <Compile Include="Assets\Scripts\turrettCollision.cs" />
+     <Compile Include="Assets\Scripts\winlosetext.cs" />
+     <None Include="Assets\testing.txt" />
+     <None Include="Assets\Standard Assets\Particles\Sources\Shaders\Particle Alpha Blend (Queue +100).shader" />
+     <None Include="Assets\Fonts\3DTextShader.shader" />
+ <Reference Include="Assembly-UnityScript-firstpass">
+ <HintPath>Library\ScriptAssemblies\Assembly-UnityScript-firstpass.dll</HintPath>
+ </Reference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+	   Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+  
+</Project>

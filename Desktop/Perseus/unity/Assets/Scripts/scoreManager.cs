@@ -19,6 +19,9 @@ public class scoreManager : MonoBehaviour {
 	
 	private bool isVisible = false;
 	private bool gameDone = false;
+	private bool hasStarted = false;
+	private bool countdownStarted = false;
+	private float winAfter = -999f;
 	
 	void OnGUI()
 	{
@@ -181,41 +184,58 @@ public class scoreManager : MonoBehaviour {
 			Debug.Log("..... really????");
 		}
 		
-		int living = 0;
-		for(int x = 0; x < PlayerManagerTestExpansion.teams.Length; x++)
+		if(countdownStarted && winAfter > 0)
 		{
-			if(teamHasLivePlayer(x))
+			winAfter -= Time.deltaTime;
+			if(winAfter <= 0)
 			{
-				living++;
+				hasStarted = true;
 			}
 		}
-		if(living < 2)
-		{
-			gameDone = true;
-		}
 		
-		if(Input.GetKey(KeyCode.LeftShift))
+		if(hasStarted)
 		{
-			isVisible = true;
+			int living = 0;
+			int winningteam = -1;
+			for(int x = 0; x < PlayerManagerTestExpansion.teams.Length; x++)
+			{
+				if(teamHasLivePlayer(x))
+				{
+					winningteam = x;
+					living++;
+				}
+			}
+			if(living < 2)
+			{
+				if(PlayerPrefs.GetInt("currentTeam") == winningteam)
+				{
+					PlayerPrefs.SetInt("win",1);
+				}
+				else
+				{
+					PlayerPrefs.SetInt("win",0);
+				}
+				Application.LoadLevel(3);
+			}
+			
+			if(Input.GetKey(KeyCode.LeftShift))
+			{
+				isVisible = true;
+			}
+			else
+			{
+				isVisible = false;
+			}
 		}
-		else
-		{
-			isVisible = false;
-		}
-	}
-	
-	public void showCurrentStats()
-	{
-		
-	}
-	
-	public void hideCurrentStats()
-	{
-		
 	}
 	
 	public void addPlayerTower(GameObject turret,int team, string name)
 	{
+		if(!countdownStarted)
+		{
+			countdownStarted = true;
+			winAfter = 10f;
+		}
 		networkView.RPC("pushPlayerTurretAdd",RPCMode.Others,turret.networkView.viewID,team,name);
 		playerTurretTransforms.Add(turret);
 		playerTurrets.Add(turret.GetComponentInChildren<topLevelController>());
@@ -225,6 +245,11 @@ public class scoreManager : MonoBehaviour {
 	
 	public void addAITower(GameObject turret, int team, string name)
 	{
+		if(!countdownStarted)
+		{
+			countdownStarted = true;
+			winAfter = 10f;
+		}
 		networkView.RPC("pushAITurretAdd",RPCMode.Others,turret.networkView.viewID,team,name);
 		aiTurretTransforms.Add(turret);
 		aiTurrets.Add(turret.GetComponent<AIControl>());

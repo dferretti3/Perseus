@@ -84,6 +84,10 @@ public class navPoint : MonoBehaviour
 
 	void OnWillRenderObject ()
 	{
+		if(navPrefFree == null)
+		{
+			return;
+		}
 		transform.localScale = Vector3.zero;
 		Vector3 vectorTo = transform.position - Camera.current.transform.position;
 		float depth = Vector3.Cross(vectorTo,Camera.current.transform.forward).magnitude;

@@ -3,6 +3,7 @@ using System.Collections;
 
 public class endscenescript : MonoBehaviour {
 	public GameObject Money;
+
 	// Use this for initialization
 	void Start () {
 		Network.Disconnect(100);
@@ -24,6 +25,5 @@ public class endscenescript : MonoBehaviour {
 	}
 	// Update is called once per frame
 	void Update () {
-	
 	}
 }
