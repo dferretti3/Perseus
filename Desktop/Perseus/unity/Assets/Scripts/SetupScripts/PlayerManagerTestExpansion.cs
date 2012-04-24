@@ -36,6 +36,8 @@ public class PlayerManagerTestExpansion : MonoBehaviour {
 	RaycastHit lastHit;
 	
 	Vector3[] comp_p,comp_n;
+	int[] comp_t;
+	string[] comp_names;
 	GameObject[] comp_o;
 	PlayerTestExpansion[] computers;
 	public int num_computers;
@@ -72,16 +74,6 @@ public class PlayerManagerTestExpansion : MonoBehaviour {
 		normals = new Vector3[2*max_towers];
 		objects = new GameObject[2*max_towers];
 		
-		computers = new PlayerTestExpansion[num_computers];
-		for (int i = 0; i < num_computers; i++)
-		{
-			computers[i] = (GameObject.Instantiate(PlayerPrefab) as GameObject).GetComponent<PlayerTestExpansion>();
-			computers[i].color = teams[PlayerPrefs.GetInt("ai"+i+"team")];
-			computers[i].callSign = PlayerPrefs.GetString("ai"+i+"name");
-		}
-		comp_p = new Vector3[computers.Length];
-		comp_n = new Vector3[computers.Length];
-		comp_o = new GameObject[computers.Length];
 		
 		MAX_TOWERS = max_towers;
 		next_b = 0;
@@ -94,10 +86,7 @@ public class PlayerManagerTestExpansion : MonoBehaviour {
 		player.my_turn = false;
 		player.manager = this;
 		callSign = player.callSign;
-		foreach (PlayerTestExpansion p in computers) {
-			p.my_turn = false;
-			p.manager = this;
-		}
+		
 		//players[0].my_turn = true;
 		
 		GameObject cam = GameObject.Find("Main Camera");
@@ -112,6 +101,25 @@ public class PlayerManagerTestExpansion : MonoBehaviour {
 		
 		if(Network.isServer)
 		{
+			computers = new PlayerTestExpansion[num_computers];
+			comp_t = new int[computers.Length];
+			comp_names = new string[computers.Length];
+			for (int i = 0; i < num_computers; i++)
+			{
+				computers[i] = (GameObject.Instantiate(PlayerPrefab) as GameObject).GetComponent<PlayerTestExpansion>();
+				computers[i].color = teams[PlayerPrefs.GetInt("ai"+i+"team")];
+				computers[i].callSign = PlayerPrefs.GetString("ai"+i+"name");
+				comp_t[i] = PlayerPrefs.GetInt("ai"+i+"team");
+				comp_names[i] = PlayerPrefs.GetString("ai"+i+"name");
+			}
+			foreach (PlayerTestExpansion p in computers) {
+				p.my_turn = false;
+				p.manager = this;
+			}
+			comp_p = new Vector3[computers.Length];
+			comp_n = new Vector3[computers.Length];
+			comp_o = new GameObject[computers.Length];
+			
 			networkView.RPC("setStartIndex",RPCMode.All,Mathf.FloorToInt(Random.value*currentMaxPlayers));
 			if (num_computers>0 && comp_o[0]==null)
 			{
@@ -224,8 +232,8 @@ public class PlayerManagerTestExpansion : MonoBehaviour {
 	{
 		renderer.enabled = false;
 		
-		GameObject.Find("SavedData").GetComponent<SaveTowerLocsTestExpansion>().saveLocs(tower_pos,tower_rots,normals,teams[currentColor],callSign);
-		GameObject.Find("SavedData").GetComponent<SaveTowerLocsTestExpansion>().saveComp(comp_p,comp_n);
+		GameObject.Find("SavedData").GetComponent<SaveTowerLocsTestExpansion>().saveLocs(tower_pos,tower_rots,normals,teams[currentColor],callSign,currentColor);
+		GameObject.Find("SavedData").GetComponent<SaveTowerLocsTestExpansion>().saveComp(comp_p,comp_n,comp_t,comp_names);
 		
 		enabled = false;
 		my_camera.GetComponent<AudioListener>().enabled = false;
