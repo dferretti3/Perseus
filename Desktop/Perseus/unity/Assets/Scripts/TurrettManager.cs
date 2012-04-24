@@ -7,18 +7,19 @@ public class TurrettManager {
 	topLevelController[] conts;
 	int current_index;
 	
-	public TurrettManager(GameObject towerPrefab,Vector3[] p, Vector3[] n, Quaternion[] r, Color c, string tag)
+	public TurrettManager(GameObject towerPrefab,Vector3[] p, Vector3[] n, Quaternion[] r, Color c, string tag, int teamnum)
 	{
 		float d = 4;
 		conts = new topLevelController[max];
 		for (int i = 0; i < max; i++)
 		{
-			GameObject tower = (GameObject)Network.Instantiate(towerPrefab,p[i]+d*n[i],r[i],0);
+			GameObject tower = (GameObject)Network.Instantiate(towerPrefab,p[i]+d*n[i],r[i],teamnum+1);
 			topLevelController cont = tower.GetComponentInChildren<topLevelController>();
 			cont.manager = this;
 			cont.playerColor = c;
 			cont.nameTag = tag;
 			cont.isActive = false;
+			cont.teamNum = teamnum;
 			conts[i] = cont;
 		}
 		conts[current_index=max-1].isActive = true;

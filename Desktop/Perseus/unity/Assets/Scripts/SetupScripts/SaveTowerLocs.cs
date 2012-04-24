@@ -55,7 +55,7 @@ public class SaveTowerLocs : MonoBehaviour {
 			topCont1.playerColor = Color.red;
 			topCont1.nameTag = "PLR1";
 			topCont1.isActive = true;*/
-			TurrettManager manager = new TurrettManager(towerPrefab,p1,n1,r1,Color.red,"PLR1");
+			//TurrettManager manager = new TurrettManager(towerPrefab,p1,n1,r1,Color.red,"PLR1");
 		}
 		else
 		{
@@ -64,7 +64,7 @@ public class SaveTowerLocs : MonoBehaviour {
 			topCont2.playerColor = Color.blue;
 			topCont2.nameTag = "PLR2";
 			topCont2.isActive = true;*/
-			TurrettManager manager = new TurrettManager(towerPrefab,p2,n2,r2,Color.blue,"PLR2");
+			//TurrettManager manager = new TurrettManager(towerPrefab,p2,n2,r2,Color.blue,"PLR2");
 		}
 	}
 }

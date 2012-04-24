@@ -8,7 +8,7 @@ public class AIControl : MonoBehaviour {
 	public AIresourceRobot rrobot;
 	AIresourceRobot rr;
 	
-	int team = -1;
+	public int team = -1;
 	string callSign = "";
 	
 	
@@ -53,7 +53,7 @@ public class AIControl : MonoBehaviour {
 			
 			Collider[] cols = Physics.OverlapSphere(transform.position, 200);
 				foreach (Collider hit in cols){
-					if(hit.gameObject.name != "AIResourceGatherer(Clone)" && hit.gameObject.name != "ResourceGatherer(Clone)" && (hit.tag == "P1" || hit.tag == "P2"))
+					if(hit.networkView.group != 0 && hit.gameObject.name != "AIResourceGatherer(Clone)" && hit.gameObject.name != "ResourceGatherer(Clone)" && hit.gameObject.name != "turrettSystem(Clone)" && (hit.networkView.group != (team+1)))
 					{
 						target = hit.gameObject;
 						break;
@@ -90,6 +90,7 @@ public class AIControl : MonoBehaviour {
 				{
 					m = (AIControlledMissile) Network.Instantiate(missile, transform.position+transform.forward*20, transform.rotation, 0);
 					m.init();
+					m.tag = ""+team;
 					money -= 10;
 					slerpcount=0;
 					slerping=false;

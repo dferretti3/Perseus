@@ -79,7 +79,7 @@ public class firstPersonTower : MonoBehaviour {
 				}
 				else if (tLC.currentMissileSelection == 5)
 				{
-					currentMissile = "BOMB";	
+					currentMissile = "MORTAR";	
 					highlighty = 435;
 				}
 				
@@ -122,7 +122,7 @@ public class firstPersonTower : MonoBehaviour {
 		}
 		else if (missileTypeNum == 5)
 		{
-			mType = missileType.Static;
+			mType = missileType.Mortar;
 		}
 		else
 		{
@@ -133,12 +133,7 @@ public class firstPersonTower : MonoBehaviour {
 		if(mType == missileType.Homing)
 		{
 			prefabNum = 0;
-			tempMissile = (GameObject)Network.Instantiate(missilePrefab[prefabNum],new Vector3(-1000f,-1000f,-1000f),Quaternion.identity,0);
-			if(Network.isServer)
-				tempMissile.tag = "P1";
-			if(Network.isClient)
-				tempMissile.tag = "P2";
-			
+			tempMissile = (GameObject)Network.Instantiate(missilePrefab[prefabNum],new Vector3(-1000f,-1000f,-1000f),Quaternion.identity,tLC.teamNum+1);
 			if(!tLC.moveToMissile(0)&&PlayerPrefs.GetFloat("money")>10)
 			{
 				if(tLC.addNewMissile(tempMissile,mType))
@@ -162,11 +157,7 @@ public class firstPersonTower : MonoBehaviour {
 		else if(mType == missileType.Controlled)
 		{
 			prefabNum = 1;
-			tempMissile = (GameObject)Network.Instantiate(missilePrefab[prefabNum],new Vector3(-1000f,-1000f,-1000f),Quaternion.identity,0);
-			if(Network.isServer)
-				tempMissile.tag = "P1";
-			if(Network.isClient)
-				tempMissile.tag = "P2";
+			tempMissile = (GameObject)Network.Instantiate(missilePrefab[prefabNum],new Vector3(-1000f,-1000f,-1000f),Quaternion.identity,tLC.teamNum+1);
 			if(!tLC.moveToMissile(1)&&PlayerPrefs.GetFloat("money")>10)
 			{
 				if(tLC.addNewMissile(tempMissile,mType))
@@ -191,8 +182,7 @@ public class firstPersonTower : MonoBehaviour {
 		{
 			if(!delaying)
 			{
-//				prefabNum = 2;
-				prefabNum = missileTypeNum;
+				prefabNum = 2;
 				if(PlayerPrefs.GetFloat("money")>=0.5f)
 				{
 					PlayerPrefs.SetFloat("money", PlayerPrefs.GetFloat("money")-0.5f);
@@ -206,11 +196,7 @@ public class firstPersonTower : MonoBehaviour {
 		else if(mType == missileType.Collector)
 		{
 			prefabNum = 3;
-			tempMissile = (GameObject)Network.Instantiate(missilePrefab[prefabNum],new Vector3(-1000f,-1000f,-1000f),Quaternion.identity,0);
-			if(Network.isServer)
-				tempMissile.tag = "P1";
-			if(Network.isClient)
-				tempMissile.tag = "P2";
+			tempMissile = (GameObject)Network.Instantiate(missilePrefab[prefabNum],new Vector3(-1000f,-1000f,-1000f),Quaternion.identity,tLC.teamNum+1);
 			if(!tLC.moveToMissile(3)&&PlayerPrefs.GetFloat("money")>30)
 			{
 				Debug.Log("Sending message to controller");
@@ -234,7 +220,7 @@ public class firstPersonTower : MonoBehaviour {
 		else if(mType == missileType.DefenseSystem)
 		{
 			prefabNum = 4;
-			tempMissile = (GameObject)Network.Instantiate(missilePrefab[prefabNum], transform.parent.position, Quaternion.identity, 0);
+			tempMissile = (GameObject)Network.Instantiate(missilePrefab[prefabNum], transform.parent.position, Quaternion.identity, tLC.teamNum+1);
 			if(tLC.addNewMissile(tempMissile,mType) && PlayerPrefs.GetFloat("money")>=50)
 			{
 				tempMissile.transform.position = transform.parent.position;
@@ -245,6 +231,16 @@ public class firstPersonTower : MonoBehaviour {
 			else
 			{
 				Destroy(tempMissile);
+			}
+		}
+		else if(mType == missileType.Mortar)
+		{
+			prefabNum = 5;
+			if(PlayerPrefs.GetFloat("money")>=20f)
+			{
+				PlayerPrefs.SetFloat("money", PlayerPrefs.GetFloat("money")-20f);
+				tempMissile = (GameObject)Network.Instantiate(missilePrefab[prefabNum],transform.parent.position+transform.forward*20,Quaternion.LookRotation(transform.parent.forward,transform.parent.up),tLC.teamNum+1);
+				PlayAudioClip(shot,transform.position,0.3f);
 			}
 		}
 		if(missilePrefab.Length <= prefabNum || prefabNum < 0)

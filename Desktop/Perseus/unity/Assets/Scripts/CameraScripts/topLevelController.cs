@@ -7,7 +7,8 @@ public enum missileType
 	Controlled,
 	Static,
 	Collector, 
-	DefenseSystem
+	DefenseSystem,
+	Mortar
 };
 
 public class topLevelController : MonoBehaviour

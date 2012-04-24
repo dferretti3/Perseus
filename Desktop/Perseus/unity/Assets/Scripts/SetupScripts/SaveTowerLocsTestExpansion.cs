@@ -32,8 +32,10 @@ public class SaveTowerLocsTestExpansion : MonoBehaviour {
 		float d = 4;
 		for (int i = 0; i < p.Length; i++)
 		{
-			GameObject tower = (GameObject)Network.Instantiate(AIPrefab,p[i]+d*n[i],Quaternion.identity,0);	
+			GameObject tower = (GameObject)Network.Instantiate(AIPrefab,p[i]+d*n[i],Quaternion.identity,t[i]+1);	
 			scoreMan.addAITower(tower,t[i],names[i]);
+			AIControl tow = tower.GetComponent<AIControl>();
+			tow.pushNavPointInfo(t[i],names[i]);
 		}
 	}
 	
@@ -50,6 +52,6 @@ public class SaveTowerLocsTestExpansion : MonoBehaviour {
 		{
 			ssS.GetComponentInChildren<spaceSetupScript>().setupSpace();
 		}
-		TurrettManager manager = new TurrettManager(towerPrefab,p1,n1,r1,team,callSign);
+		TurrettManager manager = new TurrettManager(towerPrefab,p1,n1,r1,team,callSign, teamNum);
 	}
 }
