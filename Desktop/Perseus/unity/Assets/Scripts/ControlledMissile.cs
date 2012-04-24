@@ -21,6 +21,7 @@ public class ControlledMissile : MonoBehaviour
 	int lives = 3;
 	public AudioClip explosion;
 	public GameObject expSource;
+	public AudioClip thrusters;
 	// Use this for initialization
 	void Start ()
 	{
@@ -30,6 +31,11 @@ public class ControlledMissile : MonoBehaviour
 		myStyle.fontSize = 50;
 		myStyle.normal.textColor = Color.red;
 		myStyle.normal.background = null;
+		
+		PlayAudioClip(explosion,transform.position,4f);
+		this.audio.clip = thrusters;
+		this.audio.volume = 10f;
+		this.audio.Play();
 	}
 	
 	public void init ()

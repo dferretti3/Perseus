@@ -22,6 +22,7 @@ public class homingMissileScript : MonoBehaviour
 	private bool hasTarget = false;
 	private float normalSpeed = 15;
 	private float targetSpeed = 45;
+	public AudioClip thrusters;
 	public AudioClip explosion;
 	public AudioClip linkestablished;
 	public GameObject expSource;
@@ -35,6 +36,11 @@ public class homingMissileScript : MonoBehaviour
 		myStyle.fontSize = 50;
 		myStyle.normal.textColor = Color.red;
 		myStyle.normal.background = null;
+		PlayAudioClip(explosion,transform.position,4f);
+		this.audio.clip = thrusters;
+		this.audio.volume = 20f;
+		this.audio.Play();
+		
 	}
 	
 	public void init ()

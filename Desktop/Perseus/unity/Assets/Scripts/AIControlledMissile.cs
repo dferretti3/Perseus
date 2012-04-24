@@ -17,10 +17,14 @@ public class AIControlledMissile : MonoBehaviour
 	public topLevelController tLC;
 	public AudioClip explosion;
 	public GameObject expSource;
+	public AudioClip thrusters;
 	// Use this for initialization
 	void Start ()
 	{
-	
+		PlayAudioClip(explosion,transform.position,4f);
+		this.audio.clip = thrusters;
+		this.audio.volume = 20f;
+		this.audio.Play();
 	}
 	
 	public void init ()

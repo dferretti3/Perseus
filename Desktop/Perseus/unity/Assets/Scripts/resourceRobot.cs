@@ -22,6 +22,10 @@ public class resourceRobot : MonoBehaviour
 	int lives = 3;
 	public AudioClip explosion;
 	public GameObject expSource;
+	
+	public AudioClip[] sounds;
+	
+	private float randomdelay;
 	// Use this for initialization
 	void Start ()
 	{
@@ -60,6 +64,9 @@ public class resourceRobot : MonoBehaviour
 		if (networkView.viewID.owner != Network.player) {
 			return;
 		}
+		
+		
+		
 			if (controlType == ControlType.Inset && rectWidth < .2) {
 				rectWidth += .4f * Time.deltaTime;
 				if (rectWidth >= .2f) {
@@ -102,6 +109,7 @@ public class resourceRobot : MonoBehaviour
 			if(foundAt > -1)
 			{
 				moneyTarget = coins[foundAt].gameObject;
+				playRandomClip();
 			}
 		}
 		
@@ -219,6 +227,11 @@ public class resourceRobot : MonoBehaviour
 		}
 		else if(!justActivated)
 		{
+			randomdelay -= Time.deltaTime;
+			if(randomdelay <= 0)
+			{
+				playRandomClip();
+			}
 			float y = Input.GetAxis("Mouse Y");
 			float x = Input.GetAxis("Mouse X");
 			transform.Rotate(new Vector3(-y, x, 0) * Time.deltaTime * 50);
@@ -288,7 +301,18 @@ public class resourceRobot : MonoBehaviour
 		}
 
 	}
-
+	
+	private void playRandomClip()
+	{
+		if(!this.audio.isPlaying)
+		{
+			int x = Random.Range(0,sounds.Length);
+			this.audio.clip = sounds[x];
+			this.audio.volume = 10f;
+			this.audio.Play();	
+		}
+		randomdelay = Random.value*5f+5f;
+	}
 	public void makeActive ()
 	{
 		Screen.lockCursor = true;
@@ -299,6 +323,8 @@ public class resourceRobot : MonoBehaviour
 		AudioListener aL = cameraView.gameObject.GetComponent<AudioListener> ();
 		aL.enabled = true;
 		moneyTarget = null;
+		playRandomClip();
+		
 	}
 	
 	public void transferControl ()

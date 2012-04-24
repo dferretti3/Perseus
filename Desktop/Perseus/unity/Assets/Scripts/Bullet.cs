@@ -3,7 +3,7 @@ using System.Collections;
 
 public class Bullet : MonoBehaviour {
 	
-	float projectilespeed = 2.0f;
+	float projectilespeed = 2.5f;
 	int count = 0;
 	// Use this for initialization
 	void Start () {
