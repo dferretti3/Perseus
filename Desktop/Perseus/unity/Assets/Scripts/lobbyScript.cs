@@ -4,14 +4,16 @@ using System.Collections;
 public class lobbyScript : MonoBehaviour {
 	
 	
-	private string[] sampleNames = new string[] {"PLYR","YOYO","DUCK","BONE","CRAB","FIDO","SPOT","BOND","GRIM","HACK","MOON"};
+	private string[] sampleNames = new string[] {"PLYR","YOYO","DUCK","BONE","CRAB","FIDO","SPOT","BOND","GRIM","HACK","TANK"};
 	private string[] sampleAINames = new string[] {"TINY", "BIGS", "HART", "NOOB", "NEMO", "SOLO", "TOBY", "BOOT", "TIRE", "FISH", "WHAM", "MOON", "WEST", "RAIN", "ARTI"};
 	private bool connected = false;
 	private bool isHost = false;
 	private int plyrNum = -1;
 	private int maxPlayers = -1;
+	private int timeout = 30;
 	private string callSign = "";
 	private int currentColor = 0;
+	private int numTowers = 1;
 	private string ip = "127.0.0.1";
 	
 	
@@ -70,6 +72,30 @@ public class lobbyScript : MonoBehaviour {
 				if(GUI.Button(new Rect(Screen.width-110,10,100,20),"Start Game"))
 				{
 					networkView.RPC("beginGame",RPCMode.All);
+				}
+				
+				Rect towerCountRect = new Rect(230,10,100,20);
+				GUI.Button(towerCountRect,"Num Towers: " + numTowers);
+				if(towerCountRect.Contains(Event.current.mousePosition))
+				{
+					int scroll = Mathf.RoundToInt(Input.GetAxis("Mouse ScrollWheel") * 10.0f);
+					if (scroll!=0)
+					{
+						networkView.RPC("setTowerNums",RPCMode.All,numTowers - scroll);
+					}
+				}
+				
+				
+				Rect timeoutRect = new Rect(340,10,100,20);
+				GUI.Button(timeoutRect,"Timeout(s): " + timeout);
+				if(timeoutRect.Contains(Event.current.mousePosition))
+				{
+					int scroll = Mathf.RoundToInt(Input.GetAxis("Mouse ScrollWheel") * 10.0f);
+					if (scroll!=0)
+					{
+						scroll = scroll/4;
+						networkView.RPC("setTimeout",RPCMode.All,timeout + scroll);
+					}
 				}
 			}
 			
@@ -268,8 +294,39 @@ public class lobbyScript : MonoBehaviour {
 	[RPC]
 	void eraseLastAI()
 	{
-		aiNames.RemoveAt(aiNames.Count-1);
-		aiColors.RemoveAt(aiColors.Count-1);
+		if(aiNames.Count >= 1)
+		{
+			aiNames.RemoveAt(aiNames.Count-1);
+			aiColors.RemoveAt(aiColors.Count-1);
+		}
+	}
+	
+	[RPC]
+	void setTowerNums(int toThis)
+	{
+		numTowers = toThis;
+		while(numTowers > 5)
+		{
+			numTowers -= 5;
+		}
+		while(numTowers < 1)
+		{
+			numTowers += 5;
+		}
+	}
+	
+	[RPC]
+	void setTimeout(int toThis)
+	{
+		timeout = toThis;
+		if(timeout <=  10)
+		{
+			timeout = 10;
+		}
+		if(timeout >= 60)
+		{
+			timeout = 60;
+		}
 	}
 	
 	[RPC]
@@ -279,8 +336,8 @@ public class lobbyScript : MonoBehaviour {
 		PlayerPrefs.SetInt("connectedPlayers",names.Count);
 		PlayerPrefs.SetString("currentCall",callSign);
 		PlayerPrefs.SetInt("currentTeam",currentColor);
-		PlayerPrefs.SetInt("numTowers",2);
-		PlayerPrefs.SetInt("timeout",30);
+		PlayerPrefs.SetInt("numTowers",numTowers);
+		PlayerPrefs.SetInt("timeout",timeout);
 		
 		if(isHost)
 		{

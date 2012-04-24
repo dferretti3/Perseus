@@ -11,6 +11,8 @@ public class TurrettManager {
 	{
 		float d = 4;
 		conts = new topLevelController[max];
+		GameObject sM = GameObject.FindGameObjectWithTag("scoreManagerTag");
+		scoreManager scM = sM.GetComponent<scoreManager>();
 		for (int i = 0; i < max; i++)
 		{
 			GameObject tower = (GameObject)Network.Instantiate(towerPrefab,p[i]+d*n[i],r[i],teamnum+1);
@@ -22,6 +24,7 @@ public class TurrettManager {
 			cont.teamNum = teamnum;
 			Debug.Log("ADAADA" + teamnum);
 			conts[i] = cont;
+			scM.addPlayerTower(tower,teamnum,tag);
 		}
 		conts[current_index=max-1].isActive = true;
 	}
