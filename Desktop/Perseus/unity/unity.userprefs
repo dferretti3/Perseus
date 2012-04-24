@@ -1,6 +1,10 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+<<<<<<< HEAD
   <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\AIControl.cs">
+=======
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\scoreManager.cs">
+>>>>>>> 3a1bdf7cf324df298cdb556dbe35916f6c8d6dc8
     <Files>
       <File FileName="Assets\Scripts\CameraScripts\firstPersonTower.cs" Line="282" Column="66" />
       <File FileName="Assets\Scripts\CameraScripts\thirdPersonTower.cs" Line="1" Column="1" />
@@ -8,20 +12,34 @@
       <File FileName="Assets\Scripts\AIControl.cs" Line="160" Column="1" />
       <File FileName="Assets\Scripts\networkCatcher.cs" Line="19" Column="2" />
       <File FileName="Assets\Scripts\TurrettManager.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\CameraScripts\topLevelController.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\CameraScripts\topLevelController.cs" Line="86" Column="5" />
       <File FileName="Assets\Scripts\SetupScripts\SaveTowerLocs.cs" Line="1" Column="1" />
+<<<<<<< HEAD
       <File FileName="Assets\Scripts\CameraScripts\homingMissileCamera.cs" Line="1" Column="1" />
       <File FileName="Assets\Scripts\homingMissileScript.cs" Line="1" Column="1" />
       <File FileName="Assets\Scripts\SetupScripts\PlayerManagerTestExpansion.cs" Line="7" Column="16" />
       <File FileName="Assets\Scripts\ControlledMissile.cs" Line="1" Column="1" />
       <File FileName="Assets\Scripts\BillboardScripts\navPoint.cs" Line="177" Column="3" />
+=======
+      <File FileName="Assets\Scripts\homingMissileScript.cs" Line="374" Column="5" />
+      <File FileName="Assets\Scripts\SetupScripts\PlayerManagerTestExpansion.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\ControlledMissile.cs" Line="200" Column="5" />
+      <File FileName="Assets\Scripts\BillboardScripts\navPoint.cs" Line="1" Column="1" />
+>>>>>>> 3a1bdf7cf324df298cdb556dbe35916f6c8d6dc8
       <File FileName="Assets\Scripts\SetupScripts\PlayerTestExpansion.cs" Line="1" Column="1" />
       <File FileName="Assets\Scripts\lobbyScript.cs" Line="104" Column="20" />
       <File FileName="Assets\Scripts\AIControlledMissile.cs" Line="282" Column="2" />
       <File FileName="Assets\Scripts\Bomb.cs" Line="1" Column="1" />
+<<<<<<< HEAD
       <File FileName="Assets\Scripts\AIresourceRobot.cs" Line="215" Column="8" />
       <File FileName="Assets\Scripts\resourceRobot.cs" Line="1" Column="1" />
       <File FileName="Assets\Scripts\scoreManager.cs" Line="1" Column="1" />
+=======
+      <File FileName="Assets\Scripts\networkCatcher.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\AIresourceRobot.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\resourceRobot.cs" Line="370" Column="5" />
+      <File FileName="Assets\Scripts\scoreManager.cs" Line="75" Column="21" />
+>>>>>>> 3a1bdf7cf324df298cdb556dbe35916f6c8d6dc8
       <File FileName="Assets\Scripts\Money.cs" Line="1" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>

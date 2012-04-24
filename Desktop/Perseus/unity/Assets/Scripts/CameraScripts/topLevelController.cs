@@ -68,8 +68,21 @@ public class topLevelController : MonoBehaviour
 		health -= damage;
 		if(health <= 0)
 		{
+			transform.parent.networkView.RPC("updateHealth",RPCMode.OthersBuffered,0);
 			if(isActive)
 			{
+				if(mC != null)
+				{
+					mC.transferControl();
+				}
+				if(contMisScript != null)
+				{
+					contMisScript.transferControl();
+				}
+				if(resourceMissileScript != null)
+				{
+					resourceMissileScript.transferControl();
+				}
 				manager.scroll(1);
 			}
 			Network.Destroy(transform.parent.gameObject);
