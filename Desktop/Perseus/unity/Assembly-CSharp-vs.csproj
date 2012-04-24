@@ -52,6 +52,7 @@
      <Compile Include="Assets\Scripts\BillboardScripts\navPoint.cs" />
      <Compile Include="Assets\Scripts\Bomb.cs" />
      <Compile Include="Assets\Scripts\Bullet.cs" />
+     <Compile Include="Assets\Scripts\CameraScripts\endscenecamera.cs" />
      <Compile Include="Assets\Scripts\CameraScripts\firstPersonTower.cs" />
      <Compile Include="Assets\Scripts\CameraScripts\freeFlyCamera.cs" />
      <Compile Include="Assets\Scripts\CameraScripts\homingMissileCamera.cs" />
@@ -59,6 +60,7 @@
      <Compile Include="Assets\Scripts\CameraScripts\topLevelController.cs" />
      <Compile Include="Assets\Scripts\ControlledMissile.cs" />
      <Compile Include="Assets\Scripts\Money.cs" />
+     <Compile Include="Assets\Scripts\Money2.cs" />
      <Compile Include="Assets\Scripts\MoneyManager.cs" />
      <Compile Include="Assets\Scripts\SetupScripts\Player.cs" />
      <Compile Include="Assets\Scripts\SetupScripts\PlayerManager.cs" />
@@ -71,6 +73,7 @@
      <Compile Include="Assets\Scripts\asteroidField.cs" />
      <Compile Include="Assets\Scripts\asteroidScript.cs" />
      <Compile Include="Assets\Scripts\defensesystem.cs" />
+     <Compile Include="Assets\Scripts\endscenescript.cs" />
      <Compile Include="Assets\Scripts\engineDriver.cs" />
      <Compile Include="Assets\Scripts\homingMissileScript.cs" />
      <Compile Include="Assets\Scripts\lightScripts\sunLight.cs" />

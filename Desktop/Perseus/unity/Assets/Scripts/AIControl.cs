@@ -22,7 +22,6 @@ public class AIControl : MonoBehaviour {
 	Vector3 randomangle;
 	bool slerping = false;
 	int slerpcount = 0;
-	
 	float waitTime;
 	bool saving = false;
 	private scoreManager sm;

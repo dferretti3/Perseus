@@ -177,7 +177,7 @@ public class AIresourceRobot : MonoBehaviour {
 			if(lives<=0)
 				kill();
 		}
-		else if(col.gameObject.name != "Money(Clone)")
+		else if(col.gameObject.name != "Money(Clone)" && col.gameObject.name != "Money2(Clone)")
 		{
 			kill();
 		}

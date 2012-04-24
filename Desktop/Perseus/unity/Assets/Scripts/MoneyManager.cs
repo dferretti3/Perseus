@@ -22,7 +22,7 @@ public class MoneyManager : MonoBehaviour {
 		}
 	}
 	
-	void createMoney(){
+	public void createMoney(){
 		setup=true;
 		
 		int RandomCount = Mathf.FloorToInt(Random.value*50 + 175);
