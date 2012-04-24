@@ -163,6 +163,7 @@ public class lobbyScript : MonoBehaviour {
 		}
 		Debug.Log("Giving player their number");
 		networkView.RPC("tellNumber",player,maxPlayers);
+		networkView.RPC("setTowerNums",RPCMode.All,numTowers);
 		Debug.Log("Increasing player count");
 		networkView.RPC("increaseMaxNum",RPCMode.All,maxPlayers+1);
 		Debug.Log("Done");
